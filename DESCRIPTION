@@ -1,0 +1,27 @@
+Package: simplerspec
+Type: Package
+Title: Soil and plant spectroscopic model building and prediction
+Depends: R (>= 3.2)
+Imports:
+    ggplot2 (>= 2.0.0),
+    plyr,
+    data.table,
+    reshape2,
+    mvoutlier,
+    hexView,
+    Rcpp,
+    hyperSpec,
+    prospectr,
+    dplyr,
+    caret,
+    tidyr
+Version: 0.1.0
+Authors@R: person("Philipp", "Baumann",
+  email = "baumanph@student.ethz.ch", role = c("aut", "cre"))
+Description: Functions that cover
+    reading of spectral data, outlier removal,
+    spectral preprocessing, calibration sampling, PLS regression
+    using caret, and model diagnostic statistics and plots.
+License: GPL-2
+LazyData: TRUE
+RoxygenNote: 5.0.1
