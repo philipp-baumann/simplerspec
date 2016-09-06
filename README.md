@@ -41,10 +41,14 @@ The functions are built to work in a pipeline and cover commonly used procedures
 2. Provide a reproducible data analysis workflow for FT-IR spectroscopy
 3. R packges are an ideal way to organize and share R code
 4. Make soil FT-IR spectroscopy modeling accessible to people that have basic R knowledge
+5. Provide a package interface that keeps data with various structures for spectral modeling related in R objects
 
-This package builds mainly upon functions from the following packages:
+This package builds mainly upon functions from the following R packages:
 
-* `prospectr `: 
+* `prospectr `: Various utilities for pre-processing and sample selection. An introduction to the package with examples can be found [here](http://antoinestevens.github.io/prospectr/).
+* `plyr` and `dplyr `: Fast data manipulation tools with a unified interface. See [here](https://github.com/hadley/dplyr) for details.
+* `ggplot2 `: Plotting system for R, based on the grammar of graphics. See [here](http://ggplot2.org/)
+* `caret `: Classification and regression training. A set of functions that attempt to streamline the process for creating predictive models. See [here](http://topepo.github.io/caret/index.html) for details.
 
 Consistent and reproducible data and metadata management is a important prerequisite for spectral model development. Therefore, different outputs should be stored as R objects in a consistent way using R data structures. Simplerspec functions use lists as R data structures because they allow to store complex, hierarchical objects in a flexible way. Lists can e.g. contain other lists, vectors, data.frames, or matrices.
 
@@ -100,17 +104,28 @@ spec_chem <- join_chem_spec(dat_chem = soilchem, dat_spec = soilspec)
 ## Part 2: Run PLS regression models for different soil variables
 ################################################################################
 
-# Example Partial Least Squares (PLS) regression model for total Carbon (C)
+# Example Partial Least Squares (PLS) Regression model for total Carbon (C)
 pls_C <- pls_ken_stone(
   spec_chem = spec_chem[!is.na(spec_chem$C), ],
+  # Use 2/3 of samples for calibration and 1/3 of samples for validation
   ratio_val = 1/3,
   variable = C,
   validation = TRUE
 )
 ```
 
-# Details on functions
+# Details on functions, arguments, and input and output data structures
 
 ## `read.spectra()` function
+
+# Credits
+
+I would like to thank the following people for the inspiration by concepts, code and packages:
+
+* Antoine Stevens Leonardo Ramirez-Lopez for their contributions to the [prospectr package](https://cran.r-project.org/web/packages/prospectr/index.html) and the
+*Guide to Diffuse Reflectance Spectroscopy & Multivariate Calibration*
+* Andrew Sila, Tomislav Hengl, and Thomas Terhoeven-Urselmans for the `read.opus()`
+function from the [soil.spec](https://cran.r-project.org/web/packages/soil.spec/index.html) package developed at ICRAF.
+* [Hadley Wickham](http://hadley.nz/) for his work and concepts on data science within R
 
 
