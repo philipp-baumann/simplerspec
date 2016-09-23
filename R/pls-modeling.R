@@ -13,8 +13,8 @@
 #' @usage ken_stone(spec_chem, ratio_val, pc, print = TRUE,
 #' validation = TRUE)
 #' @export
-ken_stone <- function(spec_chem, ratio_val, pc,
-  print = TRUE, validation = TRUE) {
+ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
+  print = TRUE, validation = TRUE, env = parent.frame()) {
   MIR <- model <- type <- PC1 <- PC2 <- NULL
   # Now with a real dataset
   # k = number of samples to select
@@ -22,8 +22,9 @@ ken_stone <- function(spec_chem, ratio_val, pc,
   # (see ?kenStone)
   if(validation == TRUE) {
     # pc = 0.99 before !!!
+    pc_number <- eval(pc, envir = parent.frame())
     sel <- prospectr::kenStone(X = spec_chem$MIR,
-      k = round(ratio_val * nrow(spec_chem)), pc = 2)
+      k = round(ratio_val * nrow(spec_chem)), pc = substitute(pc_number))
     sel$model # The row index of calibration samples
     # plot(sel$pc[, 1:2], xlab = 'PC1', ylab = 'PC2')
     # Points selected for calibration
@@ -448,8 +449,8 @@ pls_ken_stone <- function(spec_chem, ratio_val, pc,
   env = parent.frame()) {
   calibration <- 0
   # Calibration sampling
-  list_sampled <- ken_stone(
-    spec_chem, ratio_val = ratio_val, pc = 2, validation = TRUE
+  list_sampled <- ken_stone_q(
+    spec_chem, ratio_val = ratio_val, pc = substitute(pc), validation = TRUE
   )
   tr_control <- tune_model_q(list_sampled,
     substitute(variable), env
@@ -460,7 +461,7 @@ pls_ken_stone <- function(spec_chem, ratio_val, pc,
   stats <- evaluate_pls_q(x = list_sampled, pls_model = pls,
     variable = substitute(variable), env = parent.frame()
   )
-  list(data = list_sampled, p_pc = list_sampled$p_pc, 
+  list(data = list_sampled, p_pc = list_sampled$p_pc,
     pls_model = pls, stats = stats$stats, p_model = stats$p_model)
 }
 
