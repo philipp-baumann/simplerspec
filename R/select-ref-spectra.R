@@ -52,7 +52,7 @@ select_ref_samples <- function(list_spectra, ratio_ref = 0.15, pc = 2,
     ggplot2::geom_point(
       ggplot2::aes(x = PC1, y = PC2, shape = type), size = 4) +
     ggplot2::coord_fixed(ratio = 1) +
-    ggplot2::scale_shape_manual(values=c(1, 19)) +
+    ggplot2::scale_shape_manual(values=c(19, 1)) +
     ggplot2::scale_colour_manual(values=c("black", "red")) +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.title = ggplot2::element_blank())
