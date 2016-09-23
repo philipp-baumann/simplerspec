@@ -29,13 +29,13 @@ select_ref_samples <- function(list_spectra, ratio_ref = 0.15, pc = 2,
   pred_spectra <- list_spectra$MIR0[sel$model, ]
   # Create list of reference samples containing metadata and spectra
   ref_samples <- list(
-    ref_metadata = ref_metadata,
-    ref_spectra = ref_spectra
+    metadata = ref_metadata,
+    spectra = ref_spectra
   )
   # Create list of prediction samples containing metadata and spectra
   pred_samples <- list(
-    pred_metadata = pred_metadata,
-    pred_spectra = pred_spectra
+    metadata = pred_metadata,
+    spectra = pred_spectra
   )
   # Plot samples selected for calibration in ggplot
   sel_df_ref <- data.frame(sel$pc[sel$model, 1:2])
