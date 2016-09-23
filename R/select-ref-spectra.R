@@ -40,7 +40,7 @@ select_ref_samples <- function(list_spectra, ratio_ref = 0.15, pc = 2,
   # Plot samples selected for calibration in ggplot
   sel_df_ref <- data.frame(sel$pc[sel$model, 1:2])
   sel_df_ref$type <- as.factor(
-    rep("reference analysis", nrow(sel_df_cal))
+    rep("reference analysis", nrow(sel_df_ref))
   )
   sel_df_pred <- data.frame(sel$pc[- sel$model, 1:2])
   sel_df_pred$type <- as.factor(
