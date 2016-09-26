@@ -24,7 +24,7 @@ ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
     # pc = 0.99 before !!!
     pc_number <- eval(pc, envir = parent.frame())
     sel <- prospectr::kenStone(X = spec_chem$MIR,
-      k = round(ratio_val * nrow(spec_chem)), pc = substitute(pc_number))
+      k = round((1 - ratio_val) * nrow(spec_chem)), pc = substitute(pc_number))
     sel$model # The row index of calibration samples
     # plot(sel$pc[, 1:2], xlab = 'PC1', ylab = 'PC2')
     # Points selected for calibration
@@ -55,10 +55,10 @@ ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
     # Split MIR data into calibration and validation set using
     # the results of Kennard-Stone Calibration Sampling
     # Selct by row index of calibration samples
-    val_set <- spec_chem[sel$model, ]
+    val_set <- spec_chem[- sel$model, ]
     # Check number of observations (rows) for validation set
     nrow(val_set)
-    cal_set <- spec_chem[- sel$model, ]
+    cal_set <- spec_chem[sel$model, ]
     list_out <- list(
       calibration = cal_set,
       validation = val_set,
@@ -183,6 +183,38 @@ fit_pls <- function(x, validation = TRUE,
     variable = substitute(variable), env
   )
 }
+
+# Fit a random forest model using the caret package -------------
+
+#' @title Fit a random forest model
+#' (quoted version of the function)
+#' @description Uses the caret package to perform random forest
+#' modeling.
+#' Spectra are centered and scaled prior to modeling.
+#' @param x List that contains calibration
+#' set, validation set, and model tuning options
+#' @param validation Logical expression weather independent
+#' validation is performed
+#' @param variable Response variable to be modeled
+#' @param tr_control Object that defines controlling parameters
+#' of the desired internal validation framework
+#' @param env Environment where function is evaluated
+#' @export
+fit_rf_q <- function(x, validation = TRUE,
+  variable, tr_control, env = parent.frame()) {
+  # Fit a partial least square regression (pls) model
+  # center and scale MIR (you can try without)
+  calibration <- MIR <- NULL
+  v <- eval(variable, x$calibration, env)
+  rf_model <- caret::train(x = x$calibration$MIR, y = v,
+    method = "rf",
+    ntree = 500,
+    trControl = tr_control,
+    preProcess = c("center", "scale")
+  )
+  rf_model
+}
+
 
 # Evaluate PLS performance (validation and cross-validation) ----
 
