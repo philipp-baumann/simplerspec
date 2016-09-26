@@ -31,11 +31,11 @@ ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
     # points(sel$pc[sel$model, 1:2], pch = 19, col = 2)
 
     # Plot samples selected for calibration in ggplot
-    sel_df_cal <- data.frame(sel$pc[- sel$model,1:2])
+    sel_df_cal <- data.frame(sel$pc[sel$model, 1:2])
     sel_df_cal$type <- as.factor(
       rep("calibration", nrow(sel_df_cal))
     )
-    sel_df_val <- data.frame(sel$pc[sel$model, 1:2])
+    sel_df_val <- data.frame(sel$pc[- sel$model, 1:2])
     sel_df_val$type <- as.factor(
       rep("validation", nrow(sel_df_val)))
     sel_df <- rbind(sel_df_cal, sel_df_val)
