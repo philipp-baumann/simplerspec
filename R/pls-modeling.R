@@ -444,7 +444,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
 #' @param env Environment where function is evaluated
 #' @export
 # Note: check non standard evaluation, argument passing...
-pls_ken_stone <- function(spec_chem, ratio_val, pc,
+pls_ken_stone <- function(spec_chem, ratio_val, pc = 2,
   print = TRUE, validation = TRUE, variable,
   env = parent.frame()) {
   calibration <- 0
