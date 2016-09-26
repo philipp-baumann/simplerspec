@@ -20,7 +20,7 @@ ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
   # k = number of samples to select
   # pc = if provided, the number of principal components
   # (see ?kenStone)
-  if(validation == TRUE)
+  if(validation == TRUE) {
     # pc = 0.99 before !!!
     pc_number <- eval(pc, envir = parent.frame())
     sel <- prospectr::kenStone(X = spec_chem$MIR,
