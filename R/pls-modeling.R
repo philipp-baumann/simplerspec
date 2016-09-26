@@ -526,7 +526,7 @@ rf_ken_stone <- function(spec_chem, ratio_val, pc = 2,
   tr_control <- tune_model_q(list_sampled,
     substitute(variable), env
   )
-  rf <- fit_rm_q(x = list_sampled, validation = TRUE,
+  rf <- fit_rf_q(x = list_sampled, validation = TRUE,
     variable = substitute(variable), tr_control = tr_control, env
   )
   stats <- evaluate_pls_q(x = list_sampled, pls_model = rf,
