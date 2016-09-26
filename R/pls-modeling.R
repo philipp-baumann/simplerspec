@@ -497,3 +497,41 @@ pls_ken_stone <- function(spec_chem, ratio_val, pc = 2,
     pls_model = pls, stats = stats$stats, p_model = stats$p_model)
 }
 
+## Random forest modeling in one function =======================
+
+#' @title Calibration sampling, model tuning, and PLS regression
+#' @description Perform calibration sampling and use selected
+#' calibration set for model tuning
+#' @param spec_chem data.frame that contains IR spectroscopy
+#' and chemical data
+#' @param k Number of validation samples
+#' @param pc Number of Principal Components used for Calibration
+#' sampling (Kennard-Stones algorithm)
+#' @param ratio_val Ratio of number of validation and all samples.
+#' @param print Logical expression weather graphs shall be printed
+#' @param validation Logical expression weather independent
+#' validation is performed
+#' @param variable Response variable (without quotes)
+#' @param env Environment where function is evaluated
+#' @export
+# Note: check non standard evaluation, argument passing...
+rf_ken_stone <- function(spec_chem, ratio_val, pc = 2,
+    print = TRUE, validation = TRUE, variable,
+    env = parent.frame()) {
+  calibration <- 0
+  # Calibration sampling
+  list_sampled <- ken_stone_q(
+    spec_chem, ratio_val = ratio_val, pc = substitute(pc), validation = TRUE
+  )
+  tr_control <- tune_model_q(list_sampled,
+    substitute(variable), env
+  )
+  rf <- fit_rm_q(x = list_sampled, validation = TRUE,
+    variable = substitute(variable), tr_control = tr_control, env
+  )
+  stats <- evaluate_pls_q(x = list_sampled, pls_model = rf,
+    variable = substitute(variable), env = parent.frame()
+  )
+  list(data = list_sampled, p_pc = list_sampled$p_pc,
+    rf_model = rf, stats = stats$stats, p_model = stats$p_model)
+}
