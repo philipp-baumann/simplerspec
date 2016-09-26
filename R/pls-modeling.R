@@ -499,7 +499,7 @@ pls_ken_stone <- function(spec_chem, ratio_val, pc = 2,
 
 ## Random forest modeling in one function =======================
 
-#' @title Calibration sampling, model tuning, and PLS regression
+#' @title Calibration sampling, model tuning, and random forest modeling
 #' @description Perform calibration sampling and use selected
 #' calibration set for model tuning
 #' @param spec_chem data.frame that contains IR spectroscopy
