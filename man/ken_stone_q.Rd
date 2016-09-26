@@ -2,7 +2,7 @@
 % Please edit documentation in R/pls-modeling.R
 \name{ken_stone_q}
 \alias{ken_stone_q}
-\title{Split}
+\title{Split spectra into calibration and validation sets}
 \usage{
 ken_stone(spec_chem, ratio_val, pc, print = TRUE,
 validation = TRUE)
