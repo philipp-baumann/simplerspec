@@ -17,7 +17,7 @@ predict_from_spectra <- function(model_list, spectra_list) {
   # resulting from do_pretreatment())
   predictions_caret <- caret::extractPrediction(
     models_prediction,
-    unkX = soilspec_test$MIR0
+    unkX = model_list$MIR0
   )
 
   # Convert data.frame into long form; one sample should be represented by
