@@ -31,6 +31,13 @@ do_pretreatment <- function(list_spectra, select) {
     m = 0, p = 3, w = 9) # smoothing and averaging
   MIR1 <- prospectr::savitzkyGolay(X = list_spectra$MIR_mean,
     m = 1, p = 3, w = 5) # first derivative ***
+  # Implement window size of 21, corresponds to ICRAF standard;
+  # see e.g. Terhoeven-Urselmans et al. (2010)
+  MIR1_w21 <- prospectr::savitzkyGolay(X = list_spectra$MIR_mean,
+    m = 1, p = 3, w = 21)
+  # First derivative and window size of 13
+  MIR1_w13 <- prospectr::savitzkyGolay(X = list_spectra$MIR_mean,
+    m = 1, p = 3, w = 13)
   MIR2 <- prospectr::savitzkyGolay(X = list_spectra$MIR_mean,
     m = 2, p = 3, w = 5) # second derivative ***
   # Calculate standard normal variate (SNV) after smoothing
