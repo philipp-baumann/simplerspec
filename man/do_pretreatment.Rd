@@ -22,7 +22,7 @@ baseline correction.}
 }
 \value{
 list_spectra: List that contains preprocessed
-spectra in element \code{MIR0}
+spectra in element \code{MIR_pre}
 }
 \description{
 Use commonly used preprocessing algorithms on
