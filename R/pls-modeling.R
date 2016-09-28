@@ -47,8 +47,8 @@ ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
     # Split MIR data into calibration and validation set using
     # the results of Kennard-Stone Calibration Sampling
     # Selct by row index of calibration samples
-    val_set <- spec_chem[- sel$model, ]
-    cal_set <- spec_chem[sel$model, ]
+    val_set <- spec_chem[sel$model, ]
+    cal_set <- spec_chem[- sel$model, ]
     }
 
     # Add additional columns to calibration set and validation sets for plotting
