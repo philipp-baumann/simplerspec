@@ -14,7 +14,7 @@
 #' baseline correction.
 #' @usage do_pretreatment(list_spectra, select)
 #' @return list_spectra: List that contains preprocessed
-#' spectra in element \code{MIR0}
+#' spectra in element \code{MIR_pre}
 #' @import hyperSpec
 #' @export
 do_pretreatment <- function(list_spectra, select) {
