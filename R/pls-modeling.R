@@ -491,12 +491,13 @@ evaluate_pls_q <- function(x, pls_model, variable,
 #' @export
 # Note: check non standard evaluation, argument passing...
 pls_ken_stone <- function(spec_chem, ratio_val, pc = 2,
-  print = TRUE, validation = TRUE, variable,
+  print = TRUE, validation = TRUE, variable, invert = TRUE,
   env = parent.frame()) {
   calibration <- 0
   # Calibration sampling
   list_sampled <- ken_stone_q(
-    spec_chem, ratio_val = ratio_val, pc = substitute(pc), validation = TRUE
+    spec_chem, ratio_val = ratio_val, pc = substitute(pc), validation = TRUE,
+    invert = substitute(invert)
   )
   tr_control <- tune_model_q(list_sampled,
     substitute(variable), env
