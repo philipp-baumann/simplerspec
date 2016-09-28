@@ -10,7 +10,7 @@ resample_spectra <- function(
   {
   # Create sequence of new wavenumbers
   wn_seq <- rev(seq(from = wn_lower, wn_upper, by = wn_interval))
-  list_spectra$MIR0 <- prospectr::resample(
+  list_spectra$MIR_rs <- prospectr::resample(
     X = list_spectra$MIR_mean, # spectral matrix to resample
     wav = as.numeric(colnames(list_spectra$MIR_mean)), # old wavenumbers
     new.wav = wn_seq # new wavenumbers

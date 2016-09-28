@@ -11,7 +11,7 @@
 join_chem_spec <- function(
   dat_chem, dat_spec, by = "sample_ID") {
   # Alternative when "no visible binding for global variable":
-  data_meta <- MIR <- MIR0 <- ori <- MIR_mean <- NULL
+  data_meta <- MIR <- MIR_pre <- ori <- MIR_mean <- NULL
   # http://stackoverflow.com/questions/23475309/in-r-is-it-possible-to-suppress-note-no-visible-binding-for-global-variable
   # Replace sample_ID by ID
   if(!is.data.frame(dat_chem)) {
@@ -24,7 +24,7 @@ join_chem_spec <- function(
   ID <- as.factor(dat_spec$data_meta$ID)
   # Join ref analyses
   MIRdata <- data.frame(ID = ID)
-  MIRdata$MIR <- dat_spec$MIR0
+  MIRdata$MIR <- dat_spec$MIR_pre
   MIRdata$ori <- dat_spec$MIR_mean
   # Joining by ID, type = "inner"
   MIRdata_chem <- plyr::join(dat_chem, MIRdata, type = "inner")

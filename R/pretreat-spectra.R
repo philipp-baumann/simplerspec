@@ -27,32 +27,32 @@ do_pretreatment <- function(list_spectra, select) {
   # w = window size (must be odd)
   # m = m-th derivative of the polynomial coefficients
   # (0 = smoothing)
-  MIR0 <- prospectr::savitzkyGolay(X = list_spectra$MIR_mean,
+  MIR0 <- prospectr::savitzkyGolay(X = list_spectra$MIR_rs,
     m = 0, p = 3, w = 9) # smoothing and averaging
-  MIR1 <- prospectr::savitzkyGolay(X = list_spectra$MIR_mean,
+  MIR1 <- prospectr::savitzkyGolay(X = list_spectra$MIR_rs,
     m = 1, p = 3, w = 5) # first derivative ***
   # Implement window size of 21, corresponds to ICRAF standard;
   # see e.g. Terhoeven-Urselmans et al. (2010)
-  MIR1_w21 <- prospectr::savitzkyGolay(X = list_spectra$MIR_mean,
+  MIR1_w21 <- prospectr::savitzkyGolay(X = list_spectra$MIR_rs,
     m = 1, p = 3, w = 21)
   # First derivative and window size of 13
-  MIR1_w13 <- prospectr::savitzkyGolay(X = list_spectra$MIR_mean,
+  MIR1_w13 <- prospectr::savitzkyGolay(X = list_spectra$MIR_rs,
     m = 1, p = 3, w = 13)
-  MIR2 <- prospectr::savitzkyGolay(X = list_spectra$MIR_mean,
+  MIR2 <- prospectr::savitzkyGolay(X = list_spectra$MIR_rs,
     m = 2, p = 3, w = 5) # second derivative ***
   # Calculate standard normal variate (SNV) after smoothing
   MIR0_snv <- prospectr::standardNormalVariate(MIR0)
   MIR1_snv <- prospectr::standardNormalVariate(MIR1) # added 2016-08-05
   # Baseline correction
   # Compute baseline but first, create hyperSpec obj
-  spc <- new("hyperSpec", spc = as.matrix(list_spectra$MIR_mean),
-    wavelength = as.numeric(colnames(list_spectra$MIR_mean)))
+  spc <- new("hyperSpec", spc = as.matrix(list_spectra$MIR_rs),
+    wavelength = as.numeric(colnames(list_spectra$MIR_rs)))
   below <- hyperSpec::spc.fit.poly.below(
     fit.to = spc[, , 4000 ~ 900],
     apply.to = spc, npts.min = 20, poly.order = 2)
   spc_corr <- spc - below
   MIRb <- spc_corr[[]]
   pre <- select
-  list_spectra$MIR0 <- get(pre)
+  list_spectra$MIR_pre <- get(pre)
   return(list_spectra)
 }
