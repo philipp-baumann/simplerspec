@@ -19,14 +19,14 @@
 select_ref_samples <- function(list_spectra, ratio_ref = 0.15, pc = 2,
   print = TRUE) {
   pc_number <- eval(pc, envir = parent.frame())
-  sel <- prospectr::kenStone(X = list_spectra$MIR0,
-    k = round(ratio_ref * nrow(list_spectra$MIR0)), pc = substitute(pc_number))
+  sel <- prospectr::kenStone(X = list_spectra$MIR_pre,
+    k = round(ratio_ref * nrow(list_spectra$MIR_pre)), pc = substitute(pc_number))
   # Select metadata and spectra of reference samples based on row indices
   ref_metadata <- list_spectra$data_meta[sel$model, ]
-  ref_spectra <- list_spectra$MIR0[sel$model, ]
+  ref_spectra <- list_spectra$MIR_pre[sel$model, ]
   # Select metadata and spectra of prediction samples based on row indices
   pred_metadata <- list_spectra$data_meta[sel$model, ]
-  pred_spectra <- list_spectra$MIR0[sel$model, ]
+  pred_spectra <- list_spectra$MIR_pre[sel$model, ]
   # Create list of reference samples containing metadata and spectra
   ref_samples <- list(
     metadata = ref_metadata,
