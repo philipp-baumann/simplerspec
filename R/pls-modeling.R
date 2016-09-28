@@ -14,7 +14,7 @@
 #' validation = TRUE)
 #' @export
 ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
-  print = TRUE, validation = TRUE, env = parent.frame()) {
+  print = TRUE, validation = TRUE, invert = FALSE, env = parent.frame()) {
   MIR <- model <- type <- PC1 <- PC2 <- NULL
   # Now with a real dataset
   # k = number of samples to select
@@ -23,42 +23,55 @@ ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
   if(validation == TRUE) {
     # pc = 0.99 before !!!
     pc_number <- eval(pc, envir = parent.frame())
+
+    if(invert == FALSE) {
+    ## Select calibration set by Kennard-Stones algorithm
     sel <- prospectr::kenStone(X = spec_chem$MIR,
       k = round((1 - ratio_val) * nrow(spec_chem)), pc = substitute(pc_number))
-    sel$model # The row index of calibration samples
-    # plot(sel$pc[, 1:2], xlab = 'PC1', ylab = 'PC2')
-    # Points selected for calibration
-    # points(sel$pc[sel$model, 1:2], pch = 19, col = 2)
-
-    # Plot samples selected for calibration in ggplot
+    # Split MIR data into calibration and validation set using
+    # the results of Kennard-Stone Calibration Sampling
+    # Selct by row index of calibration samples
+    val_set <- spec_chem[- sel$model, ]
+    cal_set <- spec_chem[sel$model, ]
+    # Create data frames for plotting of calibration and validation sets in PC
+    # space
     sel_df_cal <- data.frame(sel$pc[sel$model, 1:2])
+    sel_df_val <- data.frame(sel$pc[- sel$model, 1:2])
+    } else {
+
+    ## Select validation set by Kennard-Stones algorithm
+    sel <- prospectr::kenStone(X = spec_chem$MIR,
+      k = round(ratio_val * nrow(spec_chem)), pc = substitute(pc_number))
+    sel_df_cal <- data.frame(sel$pc[- sel$model, 1:2])
+    sel_df_val <- data.frame(sel$pc[sel$model, 1:2])
+    # Split MIR data into calibration and validation set using
+    # the results of Kennard-Stone Calibration Sampling
+    # Selct by row index of calibration samples
+    val_set <- spec_chem[- sel$model, ]
+    cal_set <- spec_chem[sel$model, ]
+    }
+
+    # Add additional columns to calibration set and validation sets for plotting
     sel_df_cal$type <- as.factor(
       rep("calibration", nrow(sel_df_cal))
     )
-    sel_df_val <- data.frame(sel$pc[- sel$model, 1:2])
     sel_df_val$type <- as.factor(
       rep("validation", nrow(sel_df_val)))
     sel_df <- rbind(sel_df_cal, sel_df_val)
     # Compute ratio needed to make the figure square
     ratio <- with(sel_df, diff(range(PC1))/diff(range(PC2)))
+    # Save graph showing the selected calibration and validation samples
+    # for the first two principal components (pc)
     p_pc <- ggplot2::ggplot(data = sel_df) +
       ggplot2::geom_point(
         ggplot2::aes(x = PC1, y = PC2, shape = type), size = 4) +
       ggplot2::coord_fixed(ratio = 1) +
       ggplot2::scale_shape_manual(values=c(1, 19)) +
       ggplot2::scale_colour_manual(values=c("black", "red")) +
-      ggplot2::theme_bw()
-      # ggplot2::theme.user +
+      ggplot2::theme_bw() +
       ggplot2::theme(legend.title = ggplot2::element_blank())
-    # print(p_pc)
 
-    # Split MIR data into calibration and validation set using
-    # the results of Kennard-Stone Calibration Sampling
-    # Selct by row index of calibration samples
-    val_set <- spec_chem[- sel$model, ]
-    # Check number of observations (rows) for validation set
-    nrow(val_set)
-    cal_set <- spec_chem[sel$model, ]
+    # Print outputs to list
     list_out <- list(
       calibration = cal_set,
       validation = val_set,
@@ -72,6 +85,7 @@ ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
     list(calibration = cal_set)
   }
 }
+
 #' @title Perform model tuning
 #' @description Uses function from caret to to model tuning
 #' for PLS regression.
@@ -105,9 +119,9 @@ tune_model_q <- function(x, variable,
   savePredictions = T)
   if (validation == TRUE) {
   tr_control
-} else {
+  } else {
   tr_control
-}
+  }
 }
 
 #' @title Perform model tuning
