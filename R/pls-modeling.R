@@ -16,6 +16,7 @@
 ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
   print = TRUE, validation = TRUE, invert = FALSE, env = parent.frame()) {
   MIR <- model <- type <- PC1 <- PC2 <- NULL
+  invert <- eval(invert, envir = parent.frame())
   # Now with a real dataset
   # k = number of samples to select
   # pc = if provided, the number of principal components
@@ -155,22 +156,23 @@ tune_model <- function(x, variable,
 #' @param env Environment where function is evaluated
 #' @export
 fit_pls_q <- function(x, validation = TRUE,
-  variable, tr_control, env = parent.frame()) {
+  variable, tr_control, env = parent.frame(), pls_ncomp_max = 20) {
 # Fit a partial least square regression (pls) model
 # center and scale MIR (you can try without)
   calibration <- MIR <- NULL
   v <- eval(variable, x$calibration, env)
+  pls_ncomp_max <- eval(pls_ncomp_max, envir = parent.frame())
   if (validation == TRUE) {
   pls_model <- caret::train(x = x$calibration$MIR, y = v,
     method = "pls",
-    tuneLength = 20,
+    tuneLength = pls_ncomp_max,
     trControl = tr_control,
     preProcess = c("center", "scale")
     )
   } else {
     pls_model <- caret::train(x = x$calibration$MIR, y = v,
       method = "pls",
-      tuneLength = 20,
+      tuneLength = pls_ncomp_max,
       trControl = tr_control,
       preProcess = c("center", "scale")
     )
@@ -492,7 +494,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
 # Note: check non standard evaluation, argument passing...
 pls_ken_stone <- function(spec_chem, ratio_val, pc = 2,
   print = TRUE, validation = TRUE, variable, invert = TRUE,
-  env = parent.frame()) {
+  env = parent.frame(), pls_ncomp_max = 20) {
   calibration <- 0
   # Calibration sampling
   list_sampled <- ken_stone_q(
@@ -503,7 +505,8 @@ pls_ken_stone <- function(spec_chem, ratio_val, pc = 2,
     substitute(variable), env
   )
   pls <- fit_pls_q(x = list_sampled, validation = TRUE,
-    variable = substitute(variable), tr_control = tr_control, env
+    variable = substitute(variable), tr_control = tr_control, env,
+    pls_ncomp_max = substitute(pls_ncomp_max)
   )
   stats <- evaluate_pls_q(x = list_sampled, pls_model = pls,
     variable = substitute(variable), env = parent.frame()
