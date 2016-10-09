@@ -6,7 +6,7 @@
 \usage{
 pls_ken_stone(spec_chem, ratio_val, pc = 2, print = TRUE,
   validation = TRUE, variable, invert = TRUE, env = parent.frame(),
-  max_ncomp_pls = 20)
+  pls_ncomp_max = 20)
 }
 \arguments{
 \item{spec_chem}{data.frame that contains IR spectroscopy
