@@ -1,6 +1,5 @@
 #' @title Resample spectra stored to new
-#' @description Calculates model statistics for predicted (y)
-#' vs. observed (y) values
+#' @description
 #' @param list_spectra List of spectra and metadata
 #' @param wn_lower Numerical value for lowest  wavenumber in sampling interval
 #' @param wn_upper Numerical value for highest wavenumber in sampling interval
