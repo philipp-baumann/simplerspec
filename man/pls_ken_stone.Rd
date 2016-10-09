@@ -5,7 +5,8 @@
 \title{Calibration sampling, model tuning, and PLS regression}
 \usage{
 pls_ken_stone(spec_chem, ratio_val, pc = 2, print = TRUE,
-  validation = TRUE, variable, env = parent.frame())
+  validation = TRUE, variable, invert = TRUE, env = parent.frame(),
+  max_ncomp_pls = 20)
 }
 \arguments{
 \item{spec_chem}{data.frame that contains IR spectroscopy
