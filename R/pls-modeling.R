@@ -21,28 +21,49 @@ ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
   # k = number of samples to select
   # pc = if provided, the number of principal components
   # (see ?kenStone)
+
+  # Slice based on sample_id if spectral data is in tibble class
+  if(tibble::is_tibble(spec_chem)) {
+    spec_chem <- spec_chem %>% group_by(sample_id) %>%
+      slice(1L)
+  }
+
   if(validation == TRUE) {
     # pc = 0.99 before !!!
     pc_number <- eval(pc, envir = parent.frame())
 
     if(invert == FALSE) {
     ## Select calibration set by Kennard-Stones algorithm
-    sel <- prospectr::kenStone(X = spec_chem$MIR,
-      k = round((1 - ratio_val) * nrow(spec_chem)), pc = substitute(pc_number))
-    # Split MIR data into calibration and validation set using
-    # the results of Kennard-Stone Calibration Sampling
-    # Selct by row index of calibration samples
-    val_set <- spec_chem[- sel$model, ]
-    cal_set <- spec_chem[sel$model, ]
-    # Create data frames for plotting of calibration and validation sets in PC
-    # space
-    sel_df_cal <- data.frame(sel$pc[sel$model, 1:2])
-    sel_df_val <- data.frame(sel$pc[- sel$model, 1:2])
+    # Check if tibble; if yes slice tibble and bind list of data.tables in
+    # one data table for spectral data
+      if(tibble::is_tibble(spec_chem)) {
+        spc_pre <- as.matrix(data.table::rbindlist(spec_chem$spc_pre))
+        sel <- prospectr::kenStone(X = spc_pre,
+          k = round((1 - ratio_val) * nrow(spec_chem)), pc = substitute(pc_number))
+      } else {
+      sel <- prospectr::kenStone(X = spec_chem$MIR,
+        k = round((1 - ratio_val) * nrow(spec_chem)), pc = substitute(pc_number))
+      }
+      # Split MIR data into calibration and validation set using
+      # the results of Kennard-Stone Calibration Sampling
+      # Selct by row index of calibration samples
+      val_set <- spec_chem[- sel$model, ]
+      cal_set <- spec_chem[sel$model, ]
+      # Create data frames for plotting of calibration and validation sets in PC
+      # space
+      sel_df_cal <- data.frame(sel$pc[sel$model, 1:2])
+      sel_df_val <- data.frame(sel$pc[- sel$model, 1:2])
     } else {
 
-    ## Select validation set by Kennard-Stones algorithm
-    sel <- prospectr::kenStone(X = spec_chem$MIR,
-      k = round(ratio_val * nrow(spec_chem)), pc = substitute(pc_number))
+        if(tibble::is_tibble(spec_chem)) {
+          spc_pre <- as.matrix(data.table::rbindlist(spec_chem$spc_pre))
+          sel <- prospectr::kenStone(X = spc_pre,
+            k = round(ratio_val * nrow(spec_chem)), pc = substitute(pc_number))
+        } else {
+        ## Select validation set by Kennard-Stones algorithm
+        sel <- prospectr::kenStone(X = spec_chem$MIR,
+          k = round(ratio_val * nrow(spec_chem)), pc = substitute(pc_number))
+        }
     sel_df_cal <- data.frame(sel$pc[- sel$model, 1:2])
     sel_df_val <- data.frame(sel$pc[sel$model, 1:2])
     # Split MIR data into calibration and validation set using
@@ -162,12 +183,14 @@ fit_pls_q <- function(x, validation = TRUE,
   calibration <- MIR <- NULL
   v <- eval(variable, x$calibration, env)
   pls_ncomp_max <- eval(pls_ncomp_max, envir = parent.frame())
-  if (validation == TRUE) {
-  pls_model <- caret::train(x = x$calibration$MIR, y = v,
-    method = "pls",
-    tuneLength = pls_ncomp_max,
-    trControl = tr_control,
-    preProcess = c("center", "scale")
+
+  if (tibble::is_tibble(x$calibration)) {
+    spc_pre <- data.table::rbindlist(x$calibration$spc_pre)
+    pls_model <- caret::train(x = spc_pre, y = v,
+      method = "pls",
+      tuneLength = pls_ncomp_max,
+      trControl = tr_control,
+      preProcess = c("center", "scale")
     )
   } else {
     pls_model <- caret::train(x = x$calibration$MIR, y = v,
@@ -272,8 +295,14 @@ evaluate_pls_q <- function(x, pls_model, variable,
     # Calculate training (calibration) and test (validation) data
     # predictions based on pls model with calibration data
     v <- eval(variable, x$validation, env)
-    predobs_val <- caret::extractPrediction(list_models,
-      testX = x$validation$MIR, testY = v) # update ***
+    if (tibble::is_tibble(x$validation)) {
+      spc_pre <- data.table::rbindlist(x$validation$spc_pre)
+      predobs_val <- caret::extractPrediction(list_models,
+        testX = spc_pre, testY = v) # update ***
+    } else {
+      predobs_val <- caret::extractPrediction(list_models,
+        testX = x$validation$MIR, testY = v) # update ***
+    }
     # Create new data frame column <object>
     predobs_val$object <- predobs_val$model
 
