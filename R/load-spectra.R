@@ -65,7 +65,7 @@ readOPUS_bin <- function(file.name){
       snm <- grepRaw("SNM", pr, all = TRUE)[1] + 7
       lwn <- grepRaw("LWN", pr, all = TRUE)[1] + 7
       fx <- grepRaw("FXV", pr, all = TRUE)[3] + 7
-      lx <- grepRaw("LXV", pr, all = TRUE)[3] + 7
+      lx <- grepRaw("LXV", pr, all = TRUE)[1] + 7 # changed for ETH spectra !!! -> before: [3] + 7
       npt0 <- grepRaw("NPT", pr, all = TRUE)[2] + 3
       npt1 <- grepRaw("NPT", pr, all = TRUE)[3] + 7
       mxy <- grepRaw("MXY", pr, all = TRUE)[1] + 7
@@ -75,6 +75,10 @@ readOPUS_bin <- function(file.name){
       tim <- grepRaw("TIM", pr, all = TRUE) + 11
       # calculate end and start of each block
       offs <- end[5:10]
+      # for ICRAF spectra:
+      if (offs[1] > 50000) {
+        lx <- grepRaw("LXV", pr, all = TRUE)[4] + 7
+      }
 
       byts <- diff(offs)
       ZFF <- hexView::readRaw(file.name, offset = z, nbytes = 4,
@@ -148,17 +152,28 @@ readOPUS_bin <- function(file.name){
         human = "real", size = 8)[[5]][1]
       # Read all through all the data blocks inside the OPUS file
       nbytes1 <- NPT0 * 4 # initial parameters
+      smxa <- c()
+      smna <- c()
       nbytes.f <- NPT1 * 4
+      # return(offs[1]) -> check offset of different spectral files
+
+      ## Calculate wavenumbers
+      wavenumbers <- rev(seq(lxv, fxv, (fxv - lxv)/(NPT1 - 1)))
+
       if (offs[1] < 2000) {
         offs.f <- offs[3]
-        nbytes.f <- NPT1 * 4
-        wavenumbers <- rev(seq(lxv, fxv, (fxv - lxv)/(NPT1 - 1)))
-      }
+          nbytes.f <- NPT1 * 4
+          wavenumbers <- rev(seq(lxv, fxv, (fxv - lxv)/(NPT1 - 1)))
+        }
       else if (offs[1] > 20000) {
-        offs.f <- offs[2]
+        offs.f <- offs[3]
         nbytes.f <- NPT1 * 4
-        wavenumbers <- rev(seq(lxv, fxv, (fxv - lxv)/(NPT1 - 1)))
-      } else { # for vert-MIR
+        wavenumbers <- rev(seq(lxv, fxv, (fxv - lxv)/(NPT1 - 1))) }
+      else if (offs[1] < 10000) {  # added!
+        offs.f <- offs[1]
+        nbytes.f <- NPT0 * 4
+        wavenumbers <- rev(seq(lxv, fxv, (fxv - lxv)/(NPT0 - 1)))
+      } else {  # for vert-MIR
         offs.f <- 7188
         nbytes.f <- NPT0 * 4
         lxv <- hexView::readRaw(
@@ -168,11 +183,11 @@ readOPUS_bin <- function(file.name){
           file.name, offset = 8752, nbytes = 16,
           human = "real", size = 8)[[5]][1]
         wavenumbers <- rev(seq(lxv, fxv, (fxv - lxv)/(NPT0 - 1)))
-      }
+        }
 
-      spectra <- hexView::readRaw(file.name, width = NULL,
-        offset = offs.f - 4, nbytes = nbytes.f, human = "real", # needs to be -4 according to soil.spec function
-        size = 4, endian = "little")[[5]]
+        spectra <- hexView::readRaw(file.name, width = NULL,
+          offset = offs.f - 4, nbytes = nbytes.f, human = "real", # needs to be -4 according to soil.spec function
+          size = 4, endian = "little")[[5]]
 
       # File name
       file_name <- sub(".+/(.+)", "\\1", file.name)
