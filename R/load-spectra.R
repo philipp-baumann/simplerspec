@@ -7,9 +7,9 @@
 #' an Bruker Vertex FTIR Instrument
 #' (as exported from OPUS software)
 #' @param file.name Character vector with path to files
-#' @usage readOPUS_text(file.name)
+#' @usage read_opus_text(file.name)
 #' @export
-readOPUS_text <- function(file.name){
+read_opus_text <- function(file.name){
   if (file.exists(file.name)) {
     out <- read.csv(file.name, header=F,
       col.names = c("wavenumber", "absorbance")
@@ -25,9 +25,9 @@ readOPUS_text <- function(file.name){
 #' Read single binary file acquired with an
 #' Bruker Vertex FTIR Instrument
 #' @param file.name Character vector with path to files
-#' @usage readOPUS_bin(file.name)
+#' @usage read_opus_bin(file.name)
 #' @export
-readOPUS_bin <- function(file.name){
+read_opus_bin <- function(file.name){
   size <- fileRaw <- NULL
   if (file.exists(file.name)) {
     try(
@@ -242,7 +242,7 @@ readOPUS_bin <- function(file.name){
 #' Read single or multiple binary and ASCII files acquired with
 #' an Bruker Vertex FTIR Instrument
 #' @usage
-#' readOPUS(fnames, in_format, out_format)
+#' read_opus(fnames, in_format, out_format)
 #' @param fnames character \code{vector} of the name(s)
 #' (with absolute path) of the file(s) to read
 #' @param in_format format of the input file: \code{'binary'} or
@@ -276,7 +276,7 @@ readOPUS_bin <- function(file.name){
 #' The function should also work for other OPUS files (eg alpha),
 #' see \code{read.opus}.
 #' @export
-readOPUS<- function(fnames, in_format = c("binary", "txt"),
+read_opus <- function(fnames, in_format = c("binary", "txt"),
   out_format = c("matrix", "list")) {
   # hexView and plyr are required
 
@@ -290,9 +290,9 @@ readOPUS<- function(fnames, in_format = c("binary", "txt"),
   i <- 1
   for (file.name in fnames) {
     if (in_format == "binary") {
-      spc[[i]] <- readOPUS_bin(file.name)
+      spc[[i]] <- read_opus_bin(file.name)
     } else {
-      spc[[i]] <- readOPUS_text(file.name)
+      spc[[i]] <- read_opus_text(file.name)
     }
     i <- i + 1
   }
