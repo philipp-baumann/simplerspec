@@ -45,7 +45,7 @@ read_spectra <- function(path){
   lf <- list.files(path, full.names = TRUE)
   # Read files into R with readOPUS()
   # (comes from the github file)
-  MIR <- readOPUS(lf, in_format = "txt")
+  MIR <- read_opus(lf, in_format = "txt")
   # Wavenumber, from 3996.4 to 599.8 cm-1
   colnames(MIR) <- round(as.numeric(colnames(MIR)), 1)
   # Remove the txt extension
