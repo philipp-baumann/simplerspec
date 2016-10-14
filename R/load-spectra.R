@@ -64,23 +64,27 @@ read_opus_bin <- function(file.name){
       re <- grepRaw("RES", pr, all = TRUE)[1] + 5
       snm <- grepRaw("SNM", pr, all = TRUE)[1] + 7
       lwn <- grepRaw("LWN", pr, all = TRUE)[1] + 7
-      fx <- grepRaw("FXV", pr, all = TRUE)[3] + 7
-      lx <- grepRaw("LXV", pr, all = TRUE)[1] + 7 # changed for ETH spectra !!! -> before: [3] + 7
-      npt0 <- grepRaw("NPT", pr, all = TRUE)[2] + 3
-      npt1 <- grepRaw("NPT", pr, all = TRUE)[3] + 7
       mxy <- grepRaw("MXY", pr, all = TRUE)[1] + 7
       mny <- grepRaw("MNY", pr, all = TRUE)[3] + 7
       end <- grepRaw("END", pr, all = TRUE) + 11
       dat <- grepRaw( "DAT", pr, all = TRUE)[1] + 7
       tim <- grepRaw("TIM", pr, all = TRUE) + 11
-      # calculate end and start of each block
-      offs <- end[5:10]
-      # for ICRAF spectra:
-      if (offs[1] > 50000) {
-        lx <- grepRaw("LXV", pr, all = TRUE)[4] + 7
+      # Select matching positions based on file structure
+      # Calculate how many number of points blocks are present in file
+      npt_length <- length(grepRaw("NPT", pr, all = TRUE))
+      # If spectra are from ETH Alpha
+      if (npt_length < 9) {
+        fx_sample <- grepRaw("FXV", pr, all = TRUE)[1] + 7
+        lx_sample <- grepRaw("LXV", pr, all = TRUE)[1] + 7
+        npt_sample <- grepRaw("NPT", pr, all = TRUE)[1] + 7
+      # If spectra are from ICRAF Alpha
+      } else {
+        fx_sample <- grepRaw("FXV", pr, all = TRUE)[3] + 7
+        lx_sample <- grepRaw("LXV", pr, all = TRUE)[3] + 7
+        npt_sample <- grepRaw("NPT", pr, all = TRUE)[3] + 7
       }
 
-      byts <- diff(offs)
+      # byts <- diff(offs)
       ZFF <- hexView::readRaw(file.name, offset = z, nbytes = 4,
         human = "int", size = 2)[[5]][1]
       RES <- hexView::readRaw(file.name, offset = re, nbytes = 4,
@@ -136,58 +140,46 @@ read_opus_bin <- function(file.name){
       # Combine the above parameters
       spectrum.meta <- c(SSN, Material, Scandate, ZFF, RES, LWN)
       # Get number of data points for each spectra data block
-      NPT0 <- hexView::readRaw(
-        file.name, offset = npt0, nbytes = 12,
-        human = "int", size = 4)[[5]][2]
-      NPT1 <- hexView::readRaw(
-        file.name, offset = npt1, nbytes = 4,
+      NPT_sample <- hexView::readRaw(
+        file.name, offset = npt_sample, nbytes = 12,
         human = "int", size = 4)[[5]][1]
+      # Add extra step for spectrum "CI_tb_05_soil_cal.2" measured at ETH
+      if(NPT_sample > 10000) {
+        npt_sample <- grepRaw("NPT", pr, all = TRUE)[2] + 7
+        NPT_sample <- hexView::readRaw(
+          file.name, offset = npt_sample, nbytes = 12,
+          human = "int", size = 4)[[5]][1]
+      }
       # fxv:	Frequency of first point
-      fxv <- hexView::readRaw(
-        file.name, offset = fx, nbytes = 16,
+      fxv_sample <- hexView::readRaw(
+        file.name, offset = fx_sample, nbytes = 16,
         human = "real", size = 8)[[5]][1]
       # lxv:	Frequency of last point
-      lxv <- hexView::readRaw(
-        file.name, offset = lx, nbytes = 16,
+      lxv_sample <- hexView::readRaw(
+        file.name, offset = lx_sample, nbytes = 16,
         human = "real", size = 8)[[5]][1]
       # Read all through all the data blocks inside the OPUS file
-      nbytes1 <- NPT0 * 4 # initial parameters
-      smxa <- c()
-      smna <- c()
-      nbytes.f <- NPT1 * 4
-      # return(offs[1]) -> check offset of different spectral files
+      nbytes_spc_sample <- NPT_sample * 4
+
+      # Offsets (start) of sample spectra
+      if (length(end) == 17) {
+      offs_spc_sample <- end[16]
+      }
+      if (length(end) == 16) {
+        offs_spc_sample <- end[15]
+      } else {
+        offs_spc_sample <- end[7]
+      }
 
       ## Calculate wavenumbers
-      wavenumbers <- rev(seq(lxv, fxv, (fxv - lxv)/(NPT1 - 1)))
+      wavenumbers <- rev(seq(lxv_sample, fxv_sample,
+        (fxv_sample - lxv_sample)/(NPT_sample - 1)))
 
-      if (offs[1] < 2000) {
-        offs.f <- offs[3]
-          nbytes.f <- NPT1 * 4
-          wavenumbers <- rev(seq(lxv, fxv, (fxv - lxv)/(NPT1 - 1)))
-        }
-      else if (offs[1] > 20000) {
-        offs.f <- offs[3]
-        nbytes.f <- NPT1 * 4
-        wavenumbers <- rev(seq(lxv, fxv, (fxv - lxv)/(NPT1 - 1))) }
-      else if (offs[1] < 10000) {  # added!
-        offs.f <- offs[1]
-        nbytes.f <- NPT0 * 4
-        wavenumbers <- rev(seq(lxv, fxv, (fxv - lxv)/(NPT0 - 1)))
-      } else {  # for vert-MIR
-        offs.f <- 7188
-        nbytes.f <- NPT0 * 4
-        lxv <- hexView::readRaw(
-          file.name, offset = 8768, nbytes = 16,
-          human = "real", size = 8)[[5]][1]
-        fxv <- hexView::readRaw(
-          file.name, offset = 8752, nbytes = 16,
-          human = "real", size = 8)[[5]][1]
-        wavenumbers <- rev(seq(lxv, fxv, (fxv - lxv)/(NPT0 - 1)))
-        }
-
-        spectra <- hexView::readRaw(file.name, width = NULL,
-          offset = offs.f - 4, nbytes = nbytes.f, human = "real", # needs to be -4 according to soil.spec function
-          size = 4, endian = "little")[[5]]
+      # Read spectra
+      spectra <- hexView::readRaw(file.name, width = NULL,
+        offset = offs_spc_sample, nbytes = nbytes_spc_sample,
+        human = "real",
+        size = 4, endian = "little")[[5]]
 
       # File name
       file_name <- sub(".+/(.+)", "\\1", file.name)
