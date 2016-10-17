@@ -32,3 +32,23 @@ join_chem_spec <- function(
   MIRdata_chem
   }
 }
+
+## Join spectra and chemical tibbles ===========================================
+
+#' @title Join spectra data and chemical data tibbles
+#' @description Combines spectral data (tibble class) and chemical
+#' data (tibble class).
+#' @param spc_tbl Tibble that contains spectral data
+#' @param chem_tbl Tibble that contains chemical reference values of
+#' the samples
+#' @param by character of column name that defines sample_ID
+#' @return Tibble joined by sample_id
+join_spc_chem <- function(spc_tbl, chem_tbl, by = "sample_id") {
+  if(!is.data.frame(spc_tbl)) {
+    stop(dat_chem, "needs to be a Tibble", call. = FALSE)
+  } else {
+    # Rename column sample_id
+    chem_tbl <- dplyr::rename(chem_tbl, sample_id = sample_ID)
+    spc_tbl <- dplyr::inner_join(spc_tbl, chem_tbl)
+  }
+}
