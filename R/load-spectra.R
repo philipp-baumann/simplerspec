@@ -167,6 +167,8 @@ read_opus_bin <- function(file.name){
       }
       else if (length(end) == 16) {
         offs_spc_sample <- end[15]
+      } else if(length(end) == 18) {
+        offs_spc_sample <- end[17]
       } else {
         offs_spc_sample <- end[7]
       }
