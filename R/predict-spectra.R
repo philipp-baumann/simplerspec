@@ -39,7 +39,4 @@ predict_from_spectra <- function(model_list, spectra_list) {
   predictions_wide <- tidyr::spread(
     data = predictions_metadata, key = "object", value = "pred"
   )
-
-  # Join predictions with tibble
-  dplyr::inner_join(spc_tbl, pred_wide)
 }
