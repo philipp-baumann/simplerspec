@@ -2,10 +2,10 @@
 #' @description Preprocesses spectra in tibble column by sample_id after
 #' averaging spectra by \code{simplerspec::average_spc()}.
 #' @export
-preprocess_spc <- function(spc_tbl, select) {
+preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean") {
 
   # Convert list of spectral data.tables to one data.table
-  spc_raw <- data.table::rbindlist(spc_tbl$spc_mean)
+  spc_raw <- data.table::rbindlist(spc_tbl[column_in][[column_in]])
 
   # Perform preprocessing
   sg_0 <- prospectr::savitzkyGolay(X = spc_raw,
