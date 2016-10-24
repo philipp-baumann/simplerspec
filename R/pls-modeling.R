@@ -240,17 +240,29 @@ fit_pls <- function(x, validation = TRUE,
 #' @param env Environment where function is evaluated
 #' @export
 fit_rf_q <- function(x, validation = TRUE,
-  variable, tr_control, env = parent.frame()) {
+  variable, tr_control, ntree_max = 500, env = parent.frame()) {
   # Fit a partial least square regression (pls) model
   # center and scale MIR (you can try without)
   calibration <- MIR <- NULL
   v <- eval(variable, x$calibration, env)
-  rf_model <- caret::train(x = x$calibration$MIR, y = v,
-    method = "rf",
-    ntree = 500,
-    trControl = tr_control,
-    preProcess = c("center", "scale")
-  )
+  ntree_max <- eval(ntree_max, envir = parent.frame())
+  if (tibble::is_tibble(x$calibration)) {
+    spc_pre <- data.table::rbindlist(x$calibration$spc_pre)
+    rf_model <- caret::train( x = spc_pre, y = v,
+      method = "rf",
+      ntree = ntree_max,
+      trControl = tr_control,
+      preProcess = c("center", "scale")
+    )
+
+  } else {
+    rf_model <- caret::train(x = x$calibration$MIR, y = v,
+      method = "rf",
+      ntree = ntree_max,
+      trControl = tr_control,
+      preProcess = c("center", "scale")
+    )
+  }
   rf_model
 }
 
@@ -564,6 +576,7 @@ pls_ken_stone <- function(spec_chem, ratio_val, pc = 2,
 # Note: check non standard evaluation, argument passing...
 rf_ken_stone <- function(spec_chem, ratio_val, pc = 2,
     print = TRUE, validation = TRUE, variable,
+    ntree_max = 500,
     env = parent.frame()) {
   calibration <- 0
   # Calibration sampling
@@ -574,7 +587,8 @@ rf_ken_stone <- function(spec_chem, ratio_val, pc = 2,
     substitute(variable), env
   )
   rf <- fit_rf_q(x = list_sampled, validation = TRUE,
-    variable = substitute(variable), tr_control = tr_control, env
+    variable = substitute(variable), tr_control = tr_control, env,
+    ntree_max = substitute(ntree_max)
   )
   stats <- evaluate_pls_q(x = list_sampled, pls_model = rf,
     variable = substitute(variable), env = parent.frame()
