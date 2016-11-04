@@ -20,7 +20,7 @@ The newest version of the package is available on this GitHub repository. Note t
 # List of packages to be installed
 list_packages <- c("ggplot2", "plyr", "data.table", "reshape2",
   "mvoutlier", "hexView", "Rcpp", "hyperSpec", "prospectr",
-  "dplyr", "caret")
+  "dplyr", "caret", "tidyverse")
 # Install packages from CRAN
 install.packages(list_packages, dependencies = TRUE)
 ```
