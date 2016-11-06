@@ -69,6 +69,48 @@ read_opus_bin <- function(file.name){
       end <- grepRaw("END", pr, all = TRUE) + 11
       dat <- grepRaw( "DAT", pr, all = TRUE)[1] + 7
       tim <- grepRaw("TIM", pr, all = TRUE) + 11
+
+      # Get scanner temperature during last background measurement (KBR)
+      tsc_bg <- grepRaw("TSC", pr, all = TRUE)[1] + 7
+      # Read value from matching block position
+      TSC_bg <- hexView::readRaw(
+        file.name, offset = tsc_bg, nbytes = 16,
+        human = "real", size = 8)[[5]][[1]]
+      # Get scanner temperature during sample measurement
+      tsc_sm <-  grepRaw("TSC", pr, all = TRUE)[2] + 7
+      # Read value from matching block position
+      TSC_bg <- hexView::readRaw(
+        file.name, offset = tsc_sm, nbytes = 16,
+        human = "real", size = 8)[[5]][[1]]
+
+      # Get relative humidity of the interferometer during the last background
+      # measurement (KBR)
+      hum_rel_bg <- grepRaw("HUM", pr, all = TRUE)[1] + 7
+      # Read value from matching block position
+      HUM_rel_bg <- hexView::readRaw(
+        file.name, offset = hum_rel_bg, nbytes = 16,
+        human = "int", size = 8)[[5]][[1]]
+      # Get relative humidity of the interferometer during sample measurment
+      hum_rel_sm <- grepRaw("HUM", pr, all = TRUE)[2] + 7
+      # Read value from matching block position
+      HUM_rel_sm <- hexView::readRaw(
+        file.name, offset = hum_rel_sm, nbytes = 16,
+        human = "int", size = 8)[[5]][[1]]
+
+      # Get absolute humidity of the interferometer during the last background
+      # measurement (KBR)
+      hum_abs_bg <- grepRaw("HUA", pr, all = TRUE)[1] + 7
+      # Read value from matching block position
+      HUM_abs_bg <- hexView::readRaw(
+        file.name, offset = hum_abs_bg, nbytes = 16,
+        human = "int", size = 8)[[5]][[1]]
+      # Get absolute humidity of the interferometer during sample measurement
+      hum_abs_sm <- grepRaw("HUA", pr, all = TRUE)[2] + 7
+      # Read value from matching block position
+      HUM_abs_sm <- hexView::readRaw(
+        file.name, offset = hum_abs_sm, nbytes = 16,
+        human = "int", size = 8)[[5]][[1]]
+
       # Select matching positions based on file structure
       # Calculate how many number of points blocks are present in file
       npt_length <- length(grepRaw("NPT", pr, all = TRUE))
@@ -217,7 +259,13 @@ read_opus_bin <- function(file.name){
           instrument_name = instr.range,
           resolution = spectrum.meta[5],
           bms = bms,
-          lwn = spectrum.meta[6]
+          lwn = spectrum.meta[6],
+          temp_scanner_bg = TSC_bg,
+          temp_scanner_sample = TSC_sm,
+          hum_rel_bg = HUM_rel_bg,
+          hum_rel_sample = HUM_rel_sm,
+          hum_abs_bg = HUM_abs_bg,
+          hum_abs_sample <- HUM_abs_sm
           ),
         spc = spc_m,
         wavenumbers =  wavenumbers
