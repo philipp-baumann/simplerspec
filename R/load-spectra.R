@@ -265,7 +265,7 @@ read_opus_bin <- function(file.name){
           hum_rel_bg = HUM_rel_bg,
           hum_rel_sample = HUM_rel_sm,
           hum_abs_bg = HUM_abs_bg,
-          hum_abs_sample <- HUM_abs_sm
+          hum_abs_sample = HUM_abs_sm
           ),
         spc = spc_m,
         wavenumbers =  wavenumbers
