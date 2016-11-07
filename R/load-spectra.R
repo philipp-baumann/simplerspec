@@ -79,7 +79,7 @@ read_opus_bin <- function(file.name){
       # Get scanner temperature during sample measurement
       tsc_sm <-  grepRaw("TSC", pr, all = TRUE)[2] + 7
       # Read value from matching block position
-      TSC_bg <- hexView::readRaw(
+      TSC_sm <- hexView::readRaw(
         file.name, offset = tsc_sm, nbytes = 16,
         human = "real", size = 8)[[5]][[1]]
 
