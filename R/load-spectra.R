@@ -103,13 +103,13 @@ read_opus_bin <- function(file.name){
       # Read value from matching block position
       HUM_abs_bg <- hexView::readRaw(
         file.name, offset = hum_abs_bg, nbytes = 16,
-        human = "int", size = 8)[[5]][[1]]
+        human = "real", size = 8)[[5]][[1]]
       # Get absolute humidity of the interferometer during sample measurement
       hum_abs_sm <- grepRaw("HUA", pr, all = TRUE)[2] + 7
       # Read value from matching block position
       HUM_abs_sm <- hexView::readRaw(
         file.name, offset = hum_abs_sm, nbytes = 16,
-        human = "int", size = 8)[[5]][[1]]
+        human = "real", size = 8)[[5]][[1]]
 
       # Select matching positions based on file structure
       # Calculate how many number of points blocks are present in file
