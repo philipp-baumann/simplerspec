@@ -146,6 +146,46 @@ tune_model_q <- function(x, variable,
   }
 }
 
+## Adapt model tuning to leave-one-out cross-validation ========================
+
+#' @title Perform model tuning
+#' @description Uses function from caret to to model tuning
+#' for PLS regression.
+#' @param x list from calibration sampling
+#' @param variable response variable for PLS regression, supplied
+#' as character expression
+#' @param validation Logical expression weather an independent
+#' validation is performed.
+#' @param env Environment where function is evaluated
+#' @export
+tune_model_loocv_q <- function(x, variable,
+  env = parent.frame(), validation = TRUE) {
+  calibration <- NULL
+  # List of calibration and validation samples
+  # set up a cross-validation scheme
+  # create 10 folds that we will keep for the different
+  # modeling approaches to allow comparison
+  # randomly break the data into 10 partitions
+  # note that k is the total number of samples for leave-one-out
+  # use substitute function to make non-standard evaluation
+  # of variable argument (looks at a function as argument,
+  # sees code used to compute value;
+  # see chapter 13.1 Capturing expressions
+  # in Advanced R (Hadley Wickham)
+  # !! p. 270
+  r <- eval(variable, x$calibration, env)
+  idx <- caret::createFolds(y = r, k = 10, returnTrain = T) # update ***
+  idx
+  # inject the index in the trainControl object
+  tr_control <- caret::trainControl(method = "LOOCV", index = idx,
+  savePredictions = T)
+  if (validation == TRUE) {
+  tr_control
+  } else {
+  tr_control
+  }
+}
+
 #' @title Perform model tuning
 #' @description Uses function from caret to to model tuning
 #' for PLS regression.
@@ -205,6 +245,7 @@ fit_pls_q <- function(x, validation = TRUE,
   # fitList_cal
   pls_model
 }
+
 
 #' @title Fit a PLS regression model
 #' @description Uses the caret package to perform PLS modeling.
