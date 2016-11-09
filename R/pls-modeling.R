@@ -576,16 +576,24 @@ evaluate_pls_q <- function(x, pls_model, variable,
 # Note: check non standard evaluation, argument passing...
 pls_ken_stone <- function(spec_chem, ratio_val, pc = 2,
   print = TRUE, validation = TRUE, variable, invert = TRUE,
-  env = parent.frame(), pls_ncomp_max = 20) {
+  env = parent.frame(), pls_ncomp_max = 20,
+  cv = "LOOCV") {
   calibration <- 0
   # Calibration sampling
   list_sampled <- ken_stone_q(
     spec_chem, ratio_val = ratio_val, pc = substitute(pc), validation = TRUE,
     invert = substitute(invert)
   )
-  tr_control <- tune_model_q(list_sampled,
-    substitute(variable), env
+  # Check on method for cross-validation to be used in caret model tuning
+  if(cv == "LOOCV") {
+    tr_control <- tune_model_loocv_q(list_sampled,
+      substitute(variable), env
   )
+  } else {
+    tr_control <- tune_model_q(list_sampled,
+      substitute(variable), env
+  )
+  }
   pls <- fit_pls_q(x = list_sampled, validation = TRUE,
     variable = substitute(variable), tr_control = tr_control, env,
     pls_ncomp_max = substitute(pls_ncomp_max)
