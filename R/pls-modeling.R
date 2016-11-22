@@ -13,7 +13,7 @@
 #' @usage ken_stone(spec_chem, ratio_val, pc, print = TRUE,
 #' validation = TRUE)
 #' @export
-ken_stone_q <- function(spec_chem, ratio_val, pc = 2, split_method,
+ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
   print = TRUE, validation = TRUE, invert = FALSE, env = parent.frame()) {
   MIR <- model <- type <- PC1 <- PC2 <- NULL
   invert <- eval(invert, envir = parent.frame())
