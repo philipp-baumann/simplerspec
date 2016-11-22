@@ -6,26 +6,27 @@
 #' @param y column with predicted values
 #' @export
 summary_df <- function(df, x, y){
+  # !!! note that y are predicted values and x are observed values
   x <- df[, x]
   y <- df[, y]
+  b <- lm(x ~ y)$coefficients[2]
   data.frame(rmse = sqrt(sum((x - y)^2, na.rm = T) / (length(x)-1)),
-    rmsd = mean((x - y)^2)^.5,
-    msd = mean((x - y)^2),
+    rmsd = mean((y - x)^2)^.5,
+    msd = mean((y - x)^2),
     sdev = sd(x, na.rm = T),
     rpd =  sd(x,na.rm = T) /
-      sqrt(sum((x - y)^2, na.rm = T) / (length(x) - 1)),
+      sqrt(sum((y - x)^2, na.rm = T) / (length(x) - 1)),
     rpiq = (quantile(x, .75, na.rm = T) - quantile(x, .25, na.rm = T)) /
       sqrt(sum((x - y)^2, na.rm = T) / (length(x) - 1)),
     r2  = cor(x, y, use = "pairwise.complete.obs")^2,
-    bias  = mean(x, na.rm = T) - mean(y, na.rm = T),
-    SB = (mean(x, na.rm = T) - mean(y, na.rm = T))^2,
-    NU = var(x, na.rm = T) * (1 - lm(y ~ x)$coefficients[2])^2,
-    LC = var(y, na.rm = T) *
-      (1 - cor(x, y, use = "pairwise.complete.obs")^2),
-    SB_prop = (mean(x, na.rm = T) - mean(y, na.rm = T))^2 / mean((x - y)^2),
-    NU_prop = var(x, na.rm = T) * (1 - lm(y ~ x)$coefficients[2])^2 / mean((x - y)^2),
-    LC_prop = var(y, na.rm = T) *
-      (1 - cor(x, y, use = "pairwise.complete.obs")^2) / mean((x - y)^2),
-    n = length(x)
+    bias  = mean(y, na.rm = T) - mean(x, na.rm = T),
+    SB = (mean(y, na.rm = T) - mean(x, na.rm = T))^2,
+    NU = mean((y - mean(y))^2) * (1 - lm(x ~ y)$coefficients[2])^2,
+    LC = mean((x - mean(x))^2) * (1 - cor(x, y, use = "pairwise.complete.obs")^2),
+    SB_prop = round((mean(y, na.rm = T) - mean(x, na.rm = T))^2 / mean((y - x)^2) * 100, 0),
+    NU_prop = round(mean((y - mean(y))^2) * (1 - lm(x ~ y)$coefficients[2])^2 / mean((y - x)^2) * 100, 0),
+    LC_prop = round(mean((x - mean(x))^2) * (1 - cor(x, y, use = "pairwise.complete.obs")^2) / mean((y - x)^2) * 100, 0),
+    n = length(x),
+    b = b
   )
 }
