@@ -13,7 +13,7 @@
 #' @usage ken_stone(spec_chem, ratio_val, pc, print = TRUE,
 #' validation = TRUE)
 #' @export
-ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
+ken_stone_q <- function(spec_chem, ratio_val, pc = 2, split_method,
   print = TRUE, validation = TRUE, invert = FALSE, env = parent.frame()) {
   MIR <- model <- type <- PC1 <- PC2 <- NULL
   invert <- eval(invert, envir = parent.frame())
@@ -49,6 +49,24 @@ ken_stone_q <- function(spec_chem, ratio_val, pc = 2,
       # Selct by row index of calibration samples
       val_set <- spec_chem[- sel$model, ]
       cal_set <- spec_chem[sel$model, ]
+
+      # Optionally split up calibation (train) and validation (test) sets
+      # randomly; use function from modelr package
+      # !!! Important note: The option to split up the calibration and
+      # sets randomly is still experimental and a modification for the
+      # PC space projection is not yet implemented for graphical output.
+      # p_pc ggplot2 output needs to be updated for split_method = "random"
+      if(split_method == "random") {
+        # Split data sets into test and traing using modelr package
+        df_split <- modelr::crossv_mc(spec_chem, n = 1, test = 1/3)
+        # Select train of df_split and convert back into tibble,
+        # assign to calibration set
+        cal_set <-  df_split[1, ] %>% .$train %>% .[[1]] %>% as_tibble()
+        # Select test of df_split and convert back into tibble,
+        # assign to validation set
+        val_set <- df_split[1, ] %>% .$test %>% .[[1]] %>% as_tibble()
+      }
+
       # Create data frames for plotting of calibration and validation sets in PC
       # space
       sel_df_cal <- data.frame(sel$pc[sel$model, 1:2])
@@ -574,14 +592,16 @@ evaluate_pls_q <- function(x, pls_model, variable,
 #' @param env Environment where function is evaluated
 #' @export
 # Note: check non standard evaluation, argument passing...
-pls_ken_stone <- function(spec_chem, ratio_val, pc = 2,
+pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
+  ratio_val, pc = 2,
   print = TRUE, validation = TRUE, variable, invert = TRUE,
   env = parent.frame(), pls_ncomp_max = 20,
   cv = "LOOCV") {
   calibration <- 0
   # Calibration sampling
   list_sampled <- ken_stone_q(
-    spec_chem, ratio_val = ratio_val, pc = substitute(pc), validation = TRUE,
+    spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
+    validation = TRUE,
     invert = substitute(invert)
   )
   # Check on method for cross-validation to be used in caret model tuning
@@ -623,14 +643,15 @@ pls_ken_stone <- function(spec_chem, ratio_val, pc = 2,
 #' @param env Environment where function is evaluated
 #' @export
 # Note: check non standard evaluation, argument passing...
-rf_ken_stone <- function(spec_chem, ratio_val, pc = 2,
+rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val, pc = 2,
     print = TRUE, validation = TRUE, variable,
     ntree_max = 500,
     env = parent.frame()) {
   calibration <- 0
   # Calibration sampling
   list_sampled <- ken_stone_q(
-    spec_chem, ratio_val = ratio_val, pc = substitute(pc), validation = TRUE
+    spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
+    validation = TRUE
   )
   tr_control <- tune_model_q(list_sampled,
     substitute(variable), env
