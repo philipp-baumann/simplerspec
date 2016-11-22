@@ -5,7 +5,8 @@
 \title{Fit a random forest model
 (quoted version of the function)}
 \usage{
-fit_rf_q(x, validation = TRUE, variable, tr_control, env = parent.frame())
+fit_rf_q(x, validation = TRUE, variable, tr_control, ntree_max = 500,
+  env = parent.frame())
 }
 \arguments{
 \item{x}{List that contains calibration

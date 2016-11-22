@@ -4,7 +4,7 @@
 \alias{preprocess_spc}
 \title{Preprocess spectra from spectral data object (tibble)}
 \usage{
-preprocess_spc(spc_tbl, select)
+preprocess_spc(spc_tbl, select, column_in = "spc_mean")
 }
 \description{
 Preprocesses spectra in tibble column by sample_id after
