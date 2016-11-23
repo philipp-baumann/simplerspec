@@ -50,7 +50,8 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean") {
   # 2nd Gap-segment derivative
   gsd_m2_w21_s21 <- prospectr::gapDer(X = spc_raw, m = 2, w = 21, s = 21)
   # Continuum-removal
-  cr <- prospectr::continuumRemoval(X = spc_raw, type = "A")
+  cr <- prospectr::continuumRemoval(X = spc_raw,
+    wav = as.numeric(colnames(spc_raw)), type = "A")
   # Select final preprocessing based on selection argument and
   # save matrix in data table
   pre <- select
