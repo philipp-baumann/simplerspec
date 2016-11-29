@@ -58,7 +58,7 @@ ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
       # p_pc ggplot2 output needs to be updated for split_method = "random"
       if(split_method == "random") {
         # Split data sets into test and traing using modelr package
-        df_split <- modelr::crossv_mc(spec_chem, n = 1, test = 1/3)
+        df_split <- modelr::crossv_mc(spec_chem, n = 1, test = ratio_val)
         # Select train of df_split and convert back into tibble,
         # assign to calibration set
         cal_set <-  df_split[1, ] %>% .$train %>% .[[1]] %>% as_tibble()
@@ -235,7 +235,8 @@ tune_model <- function(x, variable,
 #' @param env Environment where function is evaluated
 #' @export
 fit_pls_q <- function(x, validation = TRUE,
-  variable, tr_control, env = parent.frame(), pls_ncomp_max = 20) {
+  variable, tr_control, env = parent.frame(), pls_ncomp_max = 20,
+  center, scale) {
 # Fit a partial least square regression (pls) model
 # center and scale MIR (you can try without)
   calibration <- MIR <- NULL
@@ -244,12 +245,21 @@ fit_pls_q <- function(x, validation = TRUE,
 
   if (tibble::is_tibble(x$calibration)) {
     spc_pre <- data.table::rbindlist(x$calibration$spc_pre)
-    pls_model <- caret::train(x = spc_pre, y = v,
-      method = "pls",
-      tuneLength = pls_ncomp_max,
-      trControl = tr_control,
-      preProcess = c("center", "scale")
-    )
+    if(scale == TRUE & center == TRUE) {
+      pls_model <- caret::train(x = spc_pre, y = v,
+        method = "pls",
+        tuneLength = pls_ncomp_max,
+        trControl = tr_control,
+        preProcess = c("center", "scale")
+      )
+    } else {
+      pls_model <- caret::train(x = spc_pre, y = v,
+        method = "pls",
+        tuneLength = pls_ncomp_max,
+        trControl = tr_control
+        # No centering and scaling!
+      )
+    }
   } else {
     pls_model <- caret::train(x = x$calibration$MIR, y = v,
       method = "pls",
@@ -595,6 +605,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
 pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
   ratio_val, pc = 2,
   print = TRUE, validation = TRUE, variable, invert = TRUE,
+  center = TRUE, scale = TRUE,
   env = parent.frame(), pls_ncomp_max = 20,
   cv = "LOOCV") {
   calibration <- 0
@@ -615,8 +626,9 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
   )
   }
   pls <- fit_pls_q(x = list_sampled, validation = TRUE,
-    variable = substitute(variable), tr_control = tr_control, env,
-    pls_ncomp_max = substitute(pls_ncomp_max)
+    variable = substitute(variable), tr_control = tr_control,
+    center = center, scale = scale,
+    pls_ncomp_max = substitute(pls_ncomp_max), env
   )
   stats <- evaluate_pls_q(x = list_sampled, pls_model = pls,
     variable = substitute(variable), env = parent.frame()
