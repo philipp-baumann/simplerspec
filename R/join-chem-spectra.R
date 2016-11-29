@@ -48,8 +48,10 @@ join_spc_chem <- function(spc_tbl, chem_tbl, by = "sample_id") {
   if(!is.data.frame(spc_tbl)) {
     stop(dat_chem, "needs to be a Tibble", call. = FALSE)
   } else {
-    # Rename column sample_id
+    # Rename column sample_ID to sample_id if sample_ID exists
+    if("sample_ID" %in% colnames(chem_tbl)) {
     chem_tbl <- dplyr::rename(chem_tbl, sample_id = sample_ID)
+    }
     spc_tbl <- dplyr::inner_join(spc_tbl, chem_tbl)
   }
 }
