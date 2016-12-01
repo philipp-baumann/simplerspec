@@ -31,7 +31,7 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean") {
     m = 2, p = 3, w = 11)
   # Savitzky-Golay (order 0) smoothing and derivative with a window size of
   # 21 points
-  sg_0_1_w21 <- prospectr::savitzkyGolay(X = sg_0,
+  sg_0_1_w21 <- prospectr::savitzkyGolay(X = sg_0_w9,
     m = 1, p = 3, w = 21)
   # First derivative and window size of 13
   sg_1_w13 <- prospectr::savitzkyGolay(X = spc_raw,
