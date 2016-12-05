@@ -4,9 +4,10 @@
 \alias{pls_ken_stone}
 \title{Calibration sampling, model tuning, and PLS regression}
 \usage{
-pls_ken_stone(spec_chem, ratio_val, pc = 2, print = TRUE,
-  validation = TRUE, variable, invert = TRUE, env = parent.frame(),
-  pls_ncomp_max = 20, cv = "LOOCV")
+pls_ken_stone(spec_chem, split_method = "ken_stone", ratio_val, pc = 2,
+  print = TRUE, validation = TRUE, variable, invert = TRUE,
+  center = TRUE, scale = TRUE, env = parent.frame(), pls_ncomp_max = 20,
+  cv = "LOOCV")
 }
 \arguments{
 \item{spec_chem}{data.frame that contains IR spectroscopy

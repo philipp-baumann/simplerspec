@@ -4,8 +4,9 @@
 \alias{rf_ken_stone}
 \title{Calibration sampling, model tuning, and random forest modeling}
 \usage{
-rf_ken_stone(spec_chem, ratio_val, pc = 2, print = TRUE,
-  validation = TRUE, variable, ntree_max = 500, env = parent.frame())
+rf_ken_stone(spec_chem, split_method = "ken_stone", ratio_val, pc = 2,
+  print = TRUE, validation = TRUE, variable, ntree_max = 500,
+  env = parent.frame())
 }
 \arguments{
 \item{spec_chem}{data.frame that contains IR spectroscopy

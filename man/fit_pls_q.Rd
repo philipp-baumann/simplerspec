@@ -6,7 +6,7 @@
 (quoted version of the function)}
 \usage{
 fit_pls_q(x, validation = TRUE, variable, tr_control, env = parent.frame(),
-  pls_ncomp_max = 20)
+  pls_ncomp_max = 20, center, scale)
 }
 \arguments{
 \item{x}{List that contains calibration
