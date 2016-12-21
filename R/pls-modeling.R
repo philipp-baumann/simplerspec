@@ -380,7 +380,11 @@ evaluate_pls_q <- function(x, pls_model, variable,
       spc_pre <- data.table::rbindlist(x$validation$spc_pre)
       predobs_val <- caret::extractPrediction(list_models,
         testX = spc_pre, testY = v) # update ***
+      # Append sample_id column to predobs_val data.frame
+      # extract sample_id from validation set
+      predobs_val$sample_id <- x$validation$sample_id
     } else {
+      # depreciated
       predobs_val <- caret::extractPrediction(list_models,
         testX = x$validation$MIR, testY = v) # update ***
     }
@@ -580,7 +584,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
     print(p_model)
   }
 
-  list(stats = stats, p_model = p_model)
+  list(stats = stats, p_model = p_model, predobs_val = predobs_val)
 }
 
 
@@ -676,5 +680,6 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val, pc = 
     variable = substitute(variable), env = parent.frame()
   )
   list(data = list_sampled, p_pc = list_sampled$p_pc,
-    rf_model = rf, stats = stats$stats, p_model = stats$p_model)
+    rf_model = rf, stats = stats$stats, p_model = stats$p_model,
+    predobs_val = stats$predobs_val)
 }
