@@ -638,7 +638,8 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
     variable = substitute(variable), env = parent.frame()
   )
   list(data = list_sampled, p_pc = list_sampled$p_pc,
-    pls_model = pls, stats = stats$stats, p_model = stats$p_model)
+    pls_model = pls, stats = stats$stats, p_model = stats$p_model,
+    predobs_val = stats$predobs_val)
 }
 
 ## Random forest modeling in one function =======================
@@ -680,6 +681,5 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val, pc = 
     variable = substitute(variable), env = parent.frame()
   )
   list(data = list_sampled, p_pc = list_sampled$p_pc,
-    rf_model = rf, stats = stats$stats, p_model = stats$p_model,
-    predobs_val = stats$predobs_val)
+    rf_model = rf, stats = stats$stats, p_model = stats$p_model)
 }
