@@ -246,8 +246,6 @@ tune_model_rcv_q <- function(x, variable,
 ## Fitting models without parameter tuning =====================================
 # 5.9; https://topepo.github.io/caret/model-training-and-tuning.html
 
-# !!! still needs some extra work
-
 #' @title Perform model fitting without parameter tuning
 #' @description Uses function from caret to set model tuning to none
 #' for PLS regression.
@@ -277,12 +275,12 @@ tune_model_none_q <- function(x, variable,
   idx <- caret::createFolds(y = r, k = 10, returnTrain = T) # update ***
   idx
   # inject the index in the trainControl object
-  tr_control <- caret::trainControl(method = "LOOCV", index = idx,
-  savePredictions = T)
+  tr_control <- caret::trainControl(method = "none", index = idx,
+    savePredictions = T)
   if (validation == TRUE) {
-  tr_control
+    tr_control
   } else {
-  tr_control
+    tr_control
   }
 }
 
@@ -710,6 +708,9 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
   } else if (cv == "repeatedcv") {
     # repeated k-fold cross-validation
     tr_control <- tune_model_rcv_q(list_sampled,
+      substitute(variable), env)
+  } else if (cv == "none") {
+    tr_control <- tune_model_none_q(list_sampled,
       substitute(variable), env)
   } else {
     # k-fold cross validation
