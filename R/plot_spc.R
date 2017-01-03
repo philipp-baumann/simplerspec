@@ -20,7 +20,7 @@
 #' @export
 plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL, y, by,
                      graph_id_1 = "graph_1", graph_id_2 = NULL,
-                     graph_id_1_col = "grey", graph_id_2_col = "red",
+                     graph_id_1_col = "black", graph_id_2_col = "red",
                      xlab = expression(paste("Wavenumber [", cm^-1, "]")),
                      ylab = "Absorbance", slice = TRUE, alpha = 0.2,
                      legend = TRUE) {
@@ -90,7 +90,10 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL, y, by,
     labs(x = xlab, y = ylab) +
     theme_bw() +
     scale_x_reverse(breaks = brk) +
-    geom_line(aes(colour = graph_id, group = id), alpha = alpha, size = 0.2) +
+    # Bring graph_id_2 spectra to front
+    # http://stackoverflow.com/questions/21120088/ggplot2-bring-one-line-to-the-front-but-save-the-colors
+    geom_line(aes(colour = graph_id, group = id),
+      alpha = alpha, size = 0.2) +
     # scale_color_manual(values = rep("black", nrow(dt)))
     scale_color_manual(values = c(graph_id_1_col, graph_id_2_col))
   if(legend == FALSE) {
