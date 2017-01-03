@@ -156,7 +156,7 @@ tune_model_q <- function(x, variable,
   idx
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "cv", index = idx,
-  savePredictions = T)
+    savePredictions = T)
   if (validation == TRUE) {
   tr_control
   } else {
@@ -177,6 +177,88 @@ tune_model_q <- function(x, variable,
 #' @param env Environment where function is evaluated
 #' @export
 tune_model_loocv_q <- function(x, variable,
+  env = parent.frame(), validation = TRUE) {
+  calibration <- NULL
+  # List of calibration and validation samples
+  # set up a cross-validation scheme
+  # create 10 folds that we will keep for the different
+  # modeling approaches to allow comparison
+  # randomly break the data into 10 partitions
+  # note that k is the total number of samples for leave-one-out
+  # use substitute function to make non-standard evaluation
+  # of variable argument (looks at a function as argument,
+  # sees code used to compute value;
+  # see chapter 13.1 Capturing expressions
+  # in Advanced R (Hadley Wickham)
+  # !! p. 270
+  r <- eval(variable, x$calibration, env)
+  idx <- caret::createFolds(y = r, k = 10, returnTrain = T) # update ***
+  idx
+  # inject the index in the trainControl object
+  tr_control <- caret::trainControl(method = "LOOCV", index = idx,
+  savePredictions = T)
+  if (validation == TRUE) {
+  tr_control
+  } else {
+  tr_control
+  }
+}
+
+## Adapt model tuning to repeated k-fold cross-validation ======================
+
+#' @title Perform model tuning
+#' @description Uses function from caret to to model tuning
+#' for PLS regression.
+#' @param x list from calibration sampling
+#' @param variable response variable for PLS regression, supplied
+#' as character expression
+#' @param validation Logical expression weather an independent
+#' validation is performed.
+#' @param env Environment where function is evaluated
+#' @export
+tune_model_rcv_q <- function(x, variable,
+  env = parent.frame(), validation = TRUE) {
+  calibration <- NULL
+  # List of calibration and validation samples
+  # set up a cross-validation scheme
+  # create 10 folds that we will keep for the different
+  # modeling approaches to allow comparison
+  # randomly break the data into 10 partitions
+  # note that k is the total number of samples for leave-one-out
+  # use substitute function to make non-standard evaluation
+  # of variable argument (looks at a function as argument,
+  # sees code used to compute value;
+  # see chapter 13.1 Capturing expressions
+  # in Advanced R (Hadley Wickham)
+  # !! p. 270
+  r <- eval(variable, x$calibration, env)
+  idx <- caret::createMultiFolds(y = r, k = 10, times = 5) # update ***
+  # inject the index in the trainControl object
+  tr_control <- caret::trainControl(method = "repeatedcv", index = idx,
+    savePredictions = T)
+  if (validation == TRUE) {
+  tr_control
+  } else {
+  tr_control
+  }
+}
+
+## Fitting models without parameter tuning =====================================
+# 5.9; https://topepo.github.io/caret/model-training-and-tuning.html
+
+# !!! still needs some extra work
+
+#' @title Perform model fitting without parameter tuning
+#' @description Uses function from caret to set model tuning to none
+#' for PLS regression.
+#' @param x list from calibration sampling
+#' @param variable response variable for PLS regression, supplied
+#' as character expression
+#' @param validation Logical expression weather an independent
+#' validation is performed.
+#' @param env Environment where function is evaluated
+#' @export
+tune_model_none_q <- function(x, variable,
   env = parent.frame(), validation = TRUE) {
   calibration <- NULL
   # List of calibration and validation samples
@@ -382,7 +464,8 @@ evaluate_pls_q <- function(x, pls_model, variable,
         testX = spc_pre, testY = v) # update ***
       # Append sample_id column to predobs_val data.frame
       # extract sample_id from validation set
-      predobs_val$sample_id <- x$validation$sample_id
+      predobs_val$sample_id <- c(
+        x$calibration$sample_id, x$validation$sample_id)
     } else {
       # depreciated
       predobs_val <- caret::extractPrediction(list_models,
@@ -611,7 +694,7 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
   print = TRUE, validation = TRUE, variable, invert = TRUE,
   center = TRUE, scale = TRUE,
   env = parent.frame(), pls_ncomp_max = 20,
-  cv = "LOOCV") {
+  cv = "kfold_cv") {
   calibration <- 0
   # Calibration sampling
   list_sampled <- ken_stone_q(
