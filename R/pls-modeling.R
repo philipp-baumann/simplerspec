@@ -246,6 +246,12 @@ tune_model_rcv_q <- function(x, variable,
 ## Fitting models without parameter tuning =====================================
 # 5.9; https://topepo.github.io/caret/model-training-and-tuning.html
 
+# !!! remark: still need to adapt the train() part after trainControl()
+# to one single model; use
+# train(..., tuneGrid = data.frame(ncomp = 5))
+# "## Only a single model can be passed to the
+# ## function when no resampling is used:"
+
 #' @title Perform model fitting without parameter tuning
 #' @description Uses function from caret to set model tuning to none
 #' for PLS regression.
@@ -316,7 +322,7 @@ tune_model <- function(x, variable,
 #' @export
 fit_pls_q <- function(x, validation = TRUE,
   variable, tr_control, env = parent.frame(), pls_ncomp_max = 20,
-  center, scale) {
+  center, scale, tuning_method = "resampling") {
 # Fit a partial least square regression (pls) model
 # center and scale MIR (you can try without)
   calibration <- MIR <- NULL
@@ -326,21 +332,31 @@ fit_pls_q <- function(x, validation = TRUE,
   if (tibble::is_tibble(x$calibration)) {
     spc_pre <- data.table::rbindlist(x$calibration$spc_pre)
     if(scale == TRUE & center == TRUE) {
-      pls_model <- caret::train(x = spc_pre, y = v,
-        method = "pls",
-        tuneLength = pls_ncomp_max,
-        trControl = tr_control,
-        preProcess = c("center", "scale")
-      )
+      if(tuning_method == "resampling") {
+        # Fit model with parameter tuning
+        pls_model <- caret::train(x = spc_pre, y = v,
+          method = "pls",
+          tuneLength = pls_ncomp_max,
+          trControl = tr_control,
+          preProcess = c("center", "scale"))
+      } else if (tuning_method == "none") {
+        # Fit model without parameter tuning
+        pls_model <- caret::train(x = spc_pre, y = v,
+          method = "pls",
+          tuneLength = pls_ncomp_max,
+          trControl = tr_control,
+          preProcess = c("center", "scale"),
+          tuneGrid = data.frame(ncomp = 5))
+      }
     } else {
+      # No centering and scaling!
       pls_model <- caret::train(x = spc_pre, y = v,
         method = "pls",
         tuneLength = pls_ncomp_max,
-        trControl = tr_control
-        # No centering and scaling!
-      )
+        trControl = tr_control)
     }
   } else {
+    # depreciated list interface
     pls_model <- caret::train(x = x$calibration$MIR, y = v,
       method = "pls",
       tuneLength = pls_ncomp_max,
