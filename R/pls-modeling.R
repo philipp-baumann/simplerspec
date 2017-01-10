@@ -16,11 +16,11 @@
 ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
   print = TRUE, validation = TRUE, invert = FALSE, env = parent.frame()) {
   MIR <- model <- type <- PC1 <- PC2 <- NULL
+
+  # Evaluate the invert argument in the parent function (pls_ken_stone)
   invert <- eval(invert, envir = parent.frame())
-  # Now with a real dataset
-  # k = number of samples to select
-  # pc = if provided, the number of principal components
-  # (see ?kenStone)
+  # Evaluate the validation argument in the parent function (pls_ken_stone)
+  validation <- eval(validation, envir = parent.frame())
 
   # Slice based on sample_id if spectral data is in tibble class
   if(tibble::is_tibble(spec_chem)) {
@@ -38,6 +38,9 @@ ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
     # one data table for spectral data
       if(tibble::is_tibble(spec_chem)) {
         spc_pre <- as.matrix(data.table::rbindlist(spec_chem$spc_pre))
+        # k = number of samples to select
+        # pc = if provided, the number of principal components
+        # (see ?kenStone)
         sel <- prospectr::kenStone(X = spc_pre,
           k = round((1 - ratio_val) * nrow(spec_chem)), pc = substitute(pc_number))
       } else {
@@ -66,9 +69,6 @@ ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
         # assign to validation set
         val_set <- df_split[1, ] %>% .$test %>% .[[1]] %>% as_tibble()
       }
-
-      # Create data frames for plotting of calibration and validation sets in PC
-      # space
       sel_df_cal <- data.frame(sel$pc[sel$model, 1:2])
       sel_df_val <- data.frame(sel$pc[- sel$model, 1:2])
     } else {
@@ -106,8 +106,8 @@ ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
       ggplot2::geom_point(
         ggplot2::aes(x = PC1, y = PC2, shape = type), size = 4) +
       ggplot2::coord_fixed(ratio = 1) +
-      ggplot2::scale_shape_manual(values=c(1, 19)) +
-      ggplot2::scale_colour_manual(values=c("black", "red")) +
+      ggplot2::scale_shape_manual(values = c(1, 19)) +
+      ggplot2::scale_colour_manual(values = c("black", "red")) +
       ggplot2::theme_bw() +
       ggplot2::theme(legend.title = ggplot2::element_blank())
 
@@ -122,7 +122,11 @@ ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
     # nrow(cal_set)
   } else {
     cal_set <- spec_chem
-    list(calibration = cal_set)
+    list(
+      calibration = cal_set,
+      validation = NULL,
+      p_pc = NULL
+    )
   }
 }
 
@@ -246,12 +250,6 @@ tune_model_rcv_q <- function(x, variable,
 ## Fitting models without parameter tuning =====================================
 # 5.9; https://topepo.github.io/caret/model-training-and-tuning.html
 
-# !!! remark: still need to adapt the train() part after trainControl()
-# to one single model; use
-# train(..., tuneGrid = data.frame(ncomp = 5))
-# "## Only a single model can be passed to the
-# ## function when no resampling is used:"
-
 #' @title Perform model fitting without parameter tuning
 #' @description Uses function from caret to set model tuning to none
 #' for PLS regression.
@@ -279,7 +277,6 @@ tune_model_none_q <- function(x, variable,
   # !! p. 270
   r <- eval(variable, x$calibration, env)
   idx <- caret::createFolds(y = r, k = 10, returnTrain = T) # update ***
-  idx
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "none", index = idx,
     savePredictions = T)
@@ -321,14 +318,19 @@ tune_model <- function(x, variable,
 #' @param env Environment where function is evaluated
 #' @export
 fit_pls_q <- function(x, validation = TRUE,
-  variable, tr_control, env = parent.frame(), pls_ncomp_max = 20,
+  variable, tr_control, env = parent.frame(),
+  pls_ncomp_max = 20, ncomp_fixed = 5,
   center, scale, tuning_method = "resampling") {
 # Fit a partial least square regression (pls) model
 # center and scale MIR (you can try without)
   calibration <- MIR <- NULL
   v <- eval(variable, x$calibration, env)
+  # ? Is it really necessary to evaluate this in the parent frame?
   pls_ncomp_max <- eval(pls_ncomp_max, envir = parent.frame())
-
+  # Evaluate fixed number of PLS regression components
+  # from ncomp_fixed object in parent frame (pls_ken_stone function)
+  ncomp_fixed <- eval(ncomp_fixed, envir = parent.frame())
+  # Test whether the spectral object has the class "tibble"
   if (tibble::is_tibble(x$calibration)) {
     spc_pre <- data.table::rbindlist(x$calibration$spc_pre)
     if(scale == TRUE & center == TRUE) {
@@ -343,10 +345,9 @@ fit_pls_q <- function(x, validation = TRUE,
         # Fit model without parameter tuning
         pls_model <- caret::train(x = spc_pre, y = v,
           method = "pls",
-          tuneLength = pls_ncomp_max,
           trControl = tr_control,
           preProcess = c("center", "scale"),
-          tuneGrid = data.frame(ncomp = 5))
+          tuneGrid = data.frame(ncomp = ncomp_fixed))
       }
     } else {
       # No centering and scaling!
@@ -383,7 +384,7 @@ fit_pls_q <- function(x, validation = TRUE,
 #' @export
 fit_pls <- function(x, validation = TRUE,
   variable, env = parent.frame()) {
-  fit_pls_q(x = x, validation = TRUE,
+  q(x = x, validation = TRUE,
     variable = substitute(variable), env
   )
 }
@@ -456,19 +457,24 @@ fit_rf_q <- function(x, validation = TRUE,
 #' \code{parent.frame()}
 #' @export
 evaluate_pls_q <- function(x, pls_model, variable,
-  validation = TRUE, print = TRUE, env = parent.frame()) {
+  validation, tuning_method, print = TRUE, env = parent.frame()) {
   # Set global variables to NULL to avoid R CMD check notes
   MIR <- object <- model <- dataType <- obs <- pred <- NULL
   ncomp <- finalModel <- rmsd <- r2 <- r2 <- rpd <- n <- NULL
   rmse <- calibration <- NULL
   # Collect fitted object into a list
   list_models <- list(pls = pls_model)
+  # Evaluate validation argument in parent.frame !!!
+  validation <- eval(validation, envir = parent.frame())
+  # Evaluate tuning_method argument in parent.frame
+  tuning_method <- eval(tuning_method, envir = parent.frame())
   # Extract best tuning parameters and associated cv predictions
   if(validation == TRUE) {
-    predobs_cal <- plyr::ldply(list_models,
-      function(x) plyr::match_df(x$pred, x$bestTune),
-      .id = "model"
-    )
+    # !!! experimental: ignore predobs_cal
+    # predobs_cal <- plyr::ldply(list_models,
+    #  function(x) plyr::match_df(x$pred, x$bestTune),
+    #  .id = "model"
+    #)
     # Calculate training (calibration) and test (validation) data
     # predictions based on pls model with calibration data
     v <- eval(variable, x$validation, env)
@@ -503,48 +509,111 @@ evaluate_pls_q <- function(x, pls_model, variable,
     stats <- plyr::ddply(predobs_val, c("model", "dataType"),
       function(x) summary_df(x, "obs", "pred")
     )
-
-  } else {
+  # Check whether method = "none" argument is selected in train();
+  # this is the case when ncomp_fixed argument in pls_ken_stone() is
+  # evaluated
+  # Checking for the existence of a <pred> element in the train function output
+  # list can be dangerous and doesn't work in all cases when using
+  # e.g. is.element('pred', x) or is.null(x$pred);
+  # Problems can occur e.g. if a list element contains NULL element;
+  # see
+  # http://stackoverflow.com/questions/7719741/how-to-test-if-list-element-exists
+  } else if (validation == FALSE & tuning_method == "resampling") {
+    # Good discussion on which cross-validation results are returned from caret
     # Extract best tuning parameters and associated cv predictions
+    # http://stats.stackexchange.com/questions/219154/how-does-cross-validation-in-train-caret-precisely-work
     predobs_cv <- plyr::ldply(list_models,
       function(x) plyr::match_df(x$pred, x$bestTune),
       .id = "model"
     )
     # Extract auto-prediction
     predobs <- caret::extractPrediction(list_models)
+    # !!! new ---
+    # Replace levels "Training" dataType column
+    # by "Calibration" (rename levels of factor)
+    predobs$dataType <- plyr::revalue(predobs$dataType,
+      c("Training" = "Calibration")
+    )
+    # Append sample_id column to predobs data.frame
+    # extract sample_id from calibration set
+    predobs$sample_id <- x$calibration$sample_id
+    # Create rowIndex for calibration tibble
+    x$calibration$rowIndex <- 1:nrow(x$calibration)
+    # Generate sample_id column for rowIndex of pred list element of
+    # train object; select only rowIndex and sample_id of calibration tibble
+    cal_index <- x$calibration %>% dplyr::select(rowIndex, sample_id)
+    # Make a full join of cal_index and predobs_cv
+    predobs_cv <- dplyr::full_join(predobs_cv, cal_index) %>%
+      # average observed and predicted values by sample_id
+      dplyr::group_by(sample_id) %>%
+      dplyr::mutate(obs = mean(obs), pred = mean(pred)) %>%
+      # slice data set
+      dplyr::slice(1L)
+      # optinally: state number of observations per group
+      # The function n() in dlpyr gives you the number of observations
+    # predobs_cv$sample_id <- x$calibration[predobs_cv$rowIndex, ]
+    # ---
     predobs_cv$object <- predobs_cv$model
     predobs_cv$dataType <- "Cross-validation"
     predobs_cv <- dplyr::select(
+      # !!! sample_id newly added
       predobs_cv, obs, pred, model, dataType, object
     )
-    predobs_val <- rbind(predobs, predobs_cv)
+    # Desn't work because some columns are turned into numeric;
+    # resulting data frame has only two rows
+    # predobs_val <- rbind(predobs, predobs_cv) # !!! check columns
+    predobs_val <- dplyr::bind_rows(predobs, predobs_cv)
+    # Calculate model performance indexes by model and dataType
+    # uses package plyr and function summary.df of SPECmisc.R
     stats <- plyr::ddply(predobs_val, c("model", "dataType"),
       function(x) summary_df(x, "obs", "pred")
     )
   }
-
+  # Experimental: return predobs_cv
+  # !!! Experimental: return predicted values
+  # return(x$pred)
+  # return(predobs)
   # Add number of components to stats; from finalModel list item
   # from train() function output (function from caret package)
   stats$ncomp <- rep(pls_model$finalModel$ncomp, nrow(stats))
+  # !!! Experimental: return stats
+  # return(stats)
   # Add range of observed values for validation and calibraton
   # get range from predicted vs. observed data frame
   # stored in object predobs
   obs_cal <- subset(predobs_val, dataType == "Calibration")$obs
-  obs_val <- subset(predobs_val, dataType == "Validation")$obs
   # Get name of predicted variable; see p. 261 of book
   # "Advanced R" (Hadley Wickham)
   variable_name <- deparse(variable)
-  # before: deparse(substitute(variable))
-  df_range <- data.frame(
-    variable = rep(variable_name, 2),
-    dataType = c("Calibration", "Validation"),
-    min_obs = c(range(obs_cal)[1], range(obs_val)[1]),
-    median_obs = c(median(obs_cal), median(obs_val)),
-    max_obs = c(range(obs_cal)[2], range(obs_val)[2]),
-    mean_obs = c(mean(obs_cal), mean(obs_val)),
-    CV = c(sd(obs_cal) / mean(obs_cal) * 100,
-      sd(obs_val) / mean(obs_val) * 100)
-  )
+
+  if(validation == TRUE) {
+    # Assign validation set to separate data frame
+    obs_val <- subset(predobs_val, dataType == "Validation")$obs
+    # before: deparse(substitute(variable))
+    df_range <- data.frame(
+      variable = rep(variable_name, 2),
+      dataType = c("Calibration", "Validation"),
+      min_obs = c(range(obs_cal)[1], range(obs_val)[1]),
+      median_obs = c(median(obs_cal), median(obs_val)),
+      max_obs = c(range(obs_cal)[2], range(obs_val)[2]),
+      mean_obs = c(mean(obs_cal), mean(obs_val)),
+      CV = c(sd(obs_cal) / mean(obs_cal) * 100,
+        sd(obs_val) / mean(obs_val) * 100)
+    )
+  } else if (validation == FALSE & tuning_method == "resampling") {
+    # Assign cross-validation set to separate data frame
+    obs_val <- subset(predobs_val, dataType == "Cross-validation")$obs
+    df_range <- data.frame(
+      variable = rep(variable_name, 2),
+      dataType = c("Calibration", "Cross-validation"),
+      min_obs = c(range(obs_cal)[1], range(obs_val)[1]),
+      median_obs = c(median(obs_cal), median(obs_val)),
+      max_obs = c(range(obs_cal)[2], range(obs_val)[2]),
+      mean_obs = c(mean(obs_cal), mean(obs_val)),
+      CV = c(sd(obs_cal) / mean(obs_cal) * 100,
+        sd(obs_val) / mean(obs_val) * 100)
+    )
+  }
 
   # Join stats with range data frame (df_range)
   stats <- plyr::join(stats, df_range, type = "inner")
@@ -579,12 +648,12 @@ evaluate_pls_q <- function(x, pls_model, variable,
           x[x$dataType == "Validation", ]$n, ")"
         )
       )
-    } else{
+    } else {
       c(`Calibration` = paste0("Calibration", "~(",
         x[x$dataType == "Calibration", ]$n, ")"
       ),
-        `Cross-Validation` = paste0("Cross-Validation", "~(",
-          x[x$dataType == "Cross-Validation", ]$n, ")"
+        `Cross-validation` = paste0("Cross-validation", "~(",
+          x[x$dataType == "Cross-validation", ]$n, ")"
         )
       )
     }
@@ -627,7 +696,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
       ggplot2::aes(x = -Inf, y = Inf, label = rpd), size = 7,
       hjust = -0.1, vjust = 6.5, parse = TRUE) +
     ggplot2::facet_grid(~ dataType,
-      labeller =ggplot2::as_labeller(to_string)) +
+      labeller = ggplot2::as_labeller(to_string)) +
     # ggplot2::facet_grid(~ dataType,
     #   labeller = dataType_labeller) +
     ggplot2::theme_bw() +
@@ -705,15 +774,17 @@ evaluate_pls_q <- function(x, pls_model, variable,
 # Note: check non standard evaluation, argument passing...
 pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
   ratio_val, pc = 2,
-  print = TRUE, validation = TRUE, variable, invert = TRUE,
+  print = TRUE, variable,
+  validation = TRUE, invert = TRUE,
   center = TRUE, scale = TRUE,
-  env = parent.frame(), pls_ncomp_max = 20,
-  cv = "kfold_cv") {
+  env = parent.frame(), pls_ncomp_max = 20, ncomp_fixed = 5,
+  cv = "kfold_cv", tuning_method = "resampling") {
   calibration <- 0
-  # Calibration sampling
+
+  # Perform calibration sampling
   list_sampled <- ken_stone_q(
     spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
-    validation = TRUE,
+    validation = substitute(validation),
     invert = substitute(invert)
   )
   # Check on method for cross-validation to be used in caret model tuning ------
@@ -726,6 +797,9 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
     tr_control <- tune_model_rcv_q(list_sampled,
       substitute(variable), env)
   } else if (cv == "none") {
+    # no resampling; calls caret::train(..., method = "none");
+    # fixed number of PLS components; tuning_method argument has also
+    # to be set to "none"
     tr_control <- tune_model_none_q(list_sampled,
       substitute(variable), env)
   } else {
@@ -733,13 +807,26 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
     tr_control <- tune_model_q(list_sampled,
       substitute(variable), env)
   }
-  pls <- fit_pls_q(x = list_sampled, validation = TRUE,
-    variable = substitute(variable), tr_control = tr_control,
-    center = center, scale = scale,
-    pls_ncomp_max = substitute(pls_ncomp_max), env
-  )
+  # Fit a pls calibration model; pls object is output from caret::train()
+  # and has class train
+  if(tuning_method == "resampling") {
+    pls <- fit_pls_q(x = list_sampled, validation = TRUE,
+      variable = substitute(variable), tr_control = tr_control,
+      center = center, scale = scale,
+      pls_ncomp_max = substitute(pls_ncomp_max), env
+      )
+  } else if (tuning_method == "none") {
+    pls <- fit_pls_q(x = list_sampled, validation = TRUE,
+      variable = substitute(variable), tr_control = tr_control,
+      center = center, scale = scale, tuning_method = "none",
+      ncomp_fixed = substitute(ncomp_fixed), env
+      )
+  }
+  # Evaluate model accuracy (predicted vs. observed)
   stats <- evaluate_pls_q(x = list_sampled, pls_model = pls,
-    variable = substitute(variable), env = parent.frame()
+    variable = substitute(variable), validation = substitute(validation),
+    tuning_method = substitute(tuning_method),
+    env = parent.frame()
   )
   list(data = list_sampled, p_pc = list_sampled$p_pc,
     pls_model = pls, stats = stats$stats, p_model = stats$p_model,
@@ -764,9 +851,8 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
 #' @param env Environment where function is evaluated
 #' @export
 # Note: check non standard evaluation, argument passing...
-rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val, pc = 2,
-    print = TRUE, validation = TRUE, variable,
-    ntree_max = 500,
+rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
+    pc = 2, print = TRUE, validation = TRUE, variable, ntree_max = 500,
     env = parent.frame()) {
   calibration <- 0
   # Calibration sampling
