@@ -196,15 +196,15 @@ tune_model_loocv_q <- function(x, variable,
   # in Advanced R (Hadley Wickham)
   # !! p. 270
   r <- eval(variable, x$calibration, env)
-  idx <- caret::createFolds(y = r, k = 10, returnTrain = T) # update ***
-  idx
+  # idx <- caret::createFolds(y = r, k = 10, returnTrain = T) # update ***
+  # idx
   # inject the index in the trainControl object
-  tr_control <- caret::trainControl(method = "LOOCV", index = idx,
-  savePredictions = T)
+  tr_control <- caret::trainControl(method = "LOOCV", # index = idx,
+    savePredictions = T)
   if (validation == TRUE) {
-  tr_control
+    tr_control
   } else {
-  tr_control
+    tr_control
   }
 }
 
@@ -241,9 +241,9 @@ tune_model_rcv_q <- function(x, variable,
   tr_control <- caret::trainControl(method = "repeatedcv", index = idx,
     savePredictions = T)
   if (validation == TRUE) {
-  tr_control
+    tr_control
   } else {
-  tr_control
+    tr_control
   }
 }
 
@@ -522,6 +522,8 @@ evaluate_pls_q <- function(x, pls_model, variable,
     # Good discussion on which cross-validation results are returned from caret
     # Extract best tuning parameters and associated cv predictions
     # http://stats.stackexchange.com/questions/219154/how-does-cross-validation-in-train-caret-precisely-work
+    # Alternative solution for one model: conformal::GetCVPreds(model) function
+    # see https://github.com/cran/conformal/blob/master/R/misc.R
     predobs_cv <- plyr::ldply(list_models,
       function(x) plyr::match_df(x$pred, x$bestTune),
       .id = "model"
@@ -546,7 +548,8 @@ evaluate_pls_q <- function(x, pls_model, variable,
     predobs_cv <- dplyr::full_join(predobs_cv, cal_index) %>%
       # average observed and predicted values by sample_id
       dplyr::group_by(sample_id) %>%
-      dplyr::mutate(obs = mean(obs), pred = mean(pred)) %>%
+      # Average observed and predicted values
+      dplyr::mutate(obs = mean(obs), pred = mean(pred), pred_sd = sd(pred)) %>%
       # slice data set
       dplyr::slice(1L)
       # optinally: state number of observations per group
@@ -557,8 +560,11 @@ evaluate_pls_q <- function(x, pls_model, variable,
     predobs_cv$dataType <- "Cross-validation"
     predobs_cv <- dplyr::select(
       # !!! sample_id newly added
-      predobs_cv, obs, pred, model, dataType, object
+      predobs_cv, obs, pred, pred_sd, model, dataType, object
     )
+    # Add column pred_sd to predobs data frame (assign values to NA) so that
+    # column pred_sd is retained in predobs_cv after dplyr::bind_rows
+    predobs$pred_sd <- NA
     # Desn't work because some columns are turned into numeric;
     # resulting data frame has only two rows
     # predobs_val <- rbind(predobs, predobs_cv) # !!! check columns
