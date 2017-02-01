@@ -5,9 +5,9 @@
 \title{Calibration sampling, model tuning, and PLS regression}
 \usage{
 pls_ken_stone(spec_chem, split_method = "ken_stone", ratio_val, pc = 2,
-  print = TRUE, validation = TRUE, variable, invert = TRUE,
+  print = TRUE, variable, validation = TRUE, invert = TRUE,
   center = TRUE, scale = TRUE, env = parent.frame(), pls_ncomp_max = 20,
-  cv = "kfold_cv")
+  ncomp_fixed = 5, cv = "kfold_cv", tuning_method = "resampling")
 }
 \arguments{
 \item{spec_chem}{data.frame that contains IR spectroscopy
@@ -20,10 +20,10 @@ sampling (Kennard-Stones algorithm)}
 
 \item{print}{Logical expression weather graphs shall be printed}
 
+\item{variable}{Response variable (without quotes)}
+
 \item{validation}{Logical expression weather independent
 validation is performed}
-
-\item{variable}{Response variable (without quotes)}
 
 \item{env}{Environment where function is evaluated}
 

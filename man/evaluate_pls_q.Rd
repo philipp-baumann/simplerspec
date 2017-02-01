@@ -4,8 +4,8 @@
 \alias{evaluate_pls_q}
 \title{Evaluate PLS performance}
 \usage{
-evaluate_pls_q(x, pls_model, variable, validation = TRUE, print = TRUE,
-  env = parent.frame())
+evaluate_pls_q(x, pls_model, variable, validation, tuning_method,
+  print = TRUE, env = parent.frame())
 }
 \arguments{
 \item{x}{List that contains calibration and validation data
