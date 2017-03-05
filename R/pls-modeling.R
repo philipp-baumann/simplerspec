@@ -631,7 +631,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
     rpd = as.character(as.expression(paste("RPD == ",
       round(rpd, 2)))),
     n = as.character(as.expression(paste0("italic(n) == ", n))),
-    ncomp = as.character(as.expression(paste0("ncomp = ",
+    ncomp = as.character(as.expression(paste0("ncomp == ",
       ncomp)))
   )
 
@@ -727,6 +727,9 @@ evaluate_pls_q <- function(x, pls_model, variable,
   p_model <- ggplot2::ggplot(data = predobs_val) +
     ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
       shape = 1, size = 2, alpha = 1/2) +
+    ggplot2::geom_text(data = annotation,
+      ggplot2::aes(x = Inf, y = -Inf, label = ncomp), size = 3,
+      hjust = 1.15, vjust = -4.5, parse = TRUE) + # !!! additional label
     ggplot2::geom_text(data = annotation,
       ggplot2::aes(x = Inf, y = -Inf, label = r2), size = 3,
       hjust = 1.15, vjust = -3, parse = TRUE) +
@@ -858,7 +861,8 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
 #' @export
 # Note: check non standard evaluation, argument passing...
 rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
-    pc = 2, print = TRUE, validation = TRUE, variable, ntree_max = 500,
+    pc = 2, print = TRUE, validation = TRUE, variable,
+    tuning_method = "resampling", ntree_max = 500,
     env = parent.frame()) {
   calibration <- 0
   # Calibration sampling
@@ -874,7 +878,9 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
     ntree_max = substitute(ntree_max)
   )
   stats <- evaluate_pls_q(x = list_sampled, pls_model = rf,
-    variable = substitute(variable), env = parent.frame()
+    variable = substitute(variable), validation = substitute(validation),
+    tuning_method = substitute(tuning_method),
+    env = parent.frame()
   )
   list(data = list_sampled, p_pc = list_sampled$p_pc,
     rf_model = rf, stats = stats$stats, p_model = stats$p_model)
