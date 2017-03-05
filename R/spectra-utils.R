@@ -10,7 +10,8 @@ summary_df <- function(df, x, y){
   x <- df[, x]
   y <- df[, y]
   b <- lm(x ~ y)$coefficients[2]
-  data.frame(rmse = sqrt(sum((x - y)^2, na.rm = T) / (length(x)-1)),
+  data.frame(
+    rmse = sqrt(sum((x - y)^2, na.rm = T) / (length(x)-1)),
     rmsd = mean((y - x)^2)^.5,
     msd = mean((y - x)^2),
     sdev = sd(x, na.rm = T),
