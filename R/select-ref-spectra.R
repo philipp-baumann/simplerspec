@@ -20,10 +20,11 @@ select_ref_samples <- function(list_spectra, ratio_ref = 0.15, pc = 2,
   print = TRUE) {
   pc_number <- eval(pc, envir = parent.frame())
   sel <- prospectr::kenStone(X = list_spectra$MIR_pre,
-    k = round(ratio_ref * nrow(list_spectra$MIR_pre)), pc = substitute(pc_number))
+    k = round((1 - ratio_ref) * nrow(list_spectra$MIR_pre)),
+    pc = substitute(pc_number))
   # Select metadata and spectra of reference samples based on row indices
-  ref_metadata <- list_spectra$data_meta[sel$model, ]
-  ref_spectra <- list_spectra$MIR_pre[sel$model, ]
+  ref_metadata <- list_spectra$data_meta[- sel$model, ]
+  ref_spectra <- list_spectra$MIR_pre[- sel$model, ]
   # Select metadata and spectra of prediction samples based on row indices
   pred_metadata <- list_spectra$data_meta[sel$model, ]
   pred_spectra <- list_spectra$MIR_pre[sel$model, ]
@@ -38,11 +39,11 @@ select_ref_samples <- function(list_spectra, ratio_ref = 0.15, pc = 2,
     spectra = pred_spectra
   )
   # Plot samples selected for calibration in ggplot
-  sel_df_ref <- data.frame(sel$pc[sel$model, 1:2])
+  sel_df_ref <- data.frame(sel$pc[- sel$model, 1:2])
   sel_df_ref$type <- as.factor(
     rep("reference analysis", nrow(sel_df_ref))
   )
-  sel_df_pred <- data.frame(sel$pc[- sel$model, 1:2])
+  sel_df_pred <- data.frame(sel$pc[sel$model, 1:2])
   sel_df_pred$type <- as.factor(
     rep("model prediction", nrow(sel_df_pred)))
   sel_df <- rbind(sel_df_ref, sel_df_pred)
