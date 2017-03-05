@@ -20,6 +20,9 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean") {
   if(select == "sg_1_w5") {
     sg_1_w5 <- prospectr::savitzkyGolay(X = spc_raw,
       m = 1, p = 3, w = 5)}
+  if(select == "sg_1_w9") {
+    sg_1_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 1, p = 3, w = 9)}
   if(select == "sg_1_w11") {
     sg_1_w11 <- prospectr::savitzkyGolay(X = spc_raw,
       m = 1, p = 3, w = 11)}
@@ -128,6 +131,27 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean") {
   # 4th Gap-segment derivative
   if(select == "gsd_m4_w21_s21") {
     gsd_m4_w21_s21 <- prospectr::gapDer(X = spc_raw, m = 4, w = 21, s = 21)}
+
+  # Savitzky-Golay combined with multiple scatter correction (MSC --------------
+  # Savitzky-Golay with 3rd order polynomial, a window size of 21
+  # and first derivative + MSC
+  if(select == "sg_1_w21_msc") {
+    sg_1_w21 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 1, p = 3, w = 21)
+    # Use msc function from the pls package; use column means of X as reference
+    # spectrum
+    sg_1_w21_msc <- pls::msc(X = sg_1_w21, reference = NULL)
+  }
+  # Savitzky-Golay combined with multiple scatter correction (MSC --------------
+  # Savitzky-Golay with 4th order polynomial, a window size of 21
+  # and second derivative + MSC
+  if(select == "sg_2_w21_msc") {
+    sg_2_w21 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 2, p = 4, w = 21)
+    # Use msc function from the pls package; use column means of X as reference
+    # spectrum
+    sg_2_w21_msc <- pls::msc(X = sg_2_w21, reference = NULL)
+  }
 
   # Continuum-removal ----------------------------------------------------------
   if(select == "cr") {
