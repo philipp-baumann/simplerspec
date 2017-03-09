@@ -2,12 +2,30 @@
 #' @description Preprocesses spectra in tibble column by sample_id after
 #' averaging spectra by \code{simplerspec::average_spc()}.
 #' @export
-preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean") {
+preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
+  custom_function = NULL) {
 
   # Convert list of spectral data.tables to one data.table
   spc_raw <- data.table::rbindlist(spc_tbl[column_in][[column_in]])
 
-  # Perform preprocessing
+  ## Perform preprocessing =====================================================
+
+  # Use custom function when supplying option ----------------------------------
+  if(!is.null(custom_function) & select == "custom") {
+    # Create full character string for parsing
+    custom_fct <- paste0("custom <- ", custom_function)
+    # parse converts the character string into an expression
+    # eval evaluates the expression; as a result, custom object is computed
+    # and saved within the current workspace
+    eval(parse(text = custom_fct))
+    ## x <- spc_raw
+    ## custom <- eval(substitute(custom_function), envir = parent.frame())
+    # -> Error in is.data.frame(X) : object 'x' not found
+  }
+  # -> returns error:
+  # custom_function = prospectr::savitzkyGolay(X = x, m = 0, p = 3, w = 9)
+  # Error in is.data.frame(X) : object 'x' not found
+  # -> Maybe solution: http://stackoverflow.com/questions/30563745/non-standard-evaluation-from-another-function-in-r
 
   # Savitzky-Golay preprocessing
   # use different derivatives and window sizes ---------------------------------
