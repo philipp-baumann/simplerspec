@@ -249,7 +249,7 @@ read_opus_bin <- function(file.name){
       colnames(spc_m) <- round(wavenumbers, 1)
 
       out <- list(
-        metadata = data.frame(
+        metadata = tibble::data_frame(
           unique_id = unique_id,
           scan_id = file_name, # changed file_name to scan_id in output list
           sample_id = sample_id,
@@ -348,16 +348,16 @@ read_opus <- function(fnames, in_format = c("binary", "txt"),
     spc <- spc[test]
     if(in_format == "binary"){
       spc <- do.call(plyr::rbind.fill, lapply(spc, function(x){
-        x <- t(data.frame(
+        x <- t(tibble::data_frame(
           wav = x$wavenumbers, absorbance = x$absorbance))
         colnames(x) <- x[1,]
-        data.frame(x[2, , drop = F], check.names = F)}))
+        tibble::data_frame(x[2, , drop = F], check.names = F)}))
 
     } else {
       spc <- do.call(plyr::rbind.fill, lapply(spc, function(x) {
         x <- t(x)
         colnames(x) <- x[1,]
-        data.frame(x[2, , drop = F], check.names = F)}))
+        tibble::data_frame(x[2, , drop = F], check.names = F)}))
     }
     rownames(spc) <- sub(".+/(.+)(\\.txt)?$", "\\1", fnames)
 
