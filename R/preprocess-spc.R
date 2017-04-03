@@ -89,6 +89,8 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
   # Savitzky-Golay (order 0) smoothing and derivative with a window size of
   # 21 points
   if(select == "sg_0_1_w21") {
+    sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 0, p = 3, w = 9)
     sg_0_1_w21 <- prospectr::savitzkyGolay(X = sg_0_w9,
       m = 1, p = 3, w = 21)}
   # Savitzky-Golay second derivative
@@ -103,30 +105,62 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
 
   # Calculate standard normal variate (SNV) after Savitzky-Golay smoothing
   if(select == "sg_0_snv") {
+    sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 0, p = 3, w = 9)
     sg_0_snv <- prospectr::standardNormalVariate(sg_0_w9)}
   if(select == "sg_1_snv") {
     sg_1_snv <- prospectr::standardNormalVariate(sg_1_w5)}
   # Standard normal variate (SNV) and first gap-segment derivative
   if(select == "snv_gsd_m1_w11_s1") {
+    sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 0, p = 3, w = 9)
+    sg_0_snv <- prospectr::standardNormalVariate(sg_0_w9)
     snv_gsd_m1_w11_s1 <- prospectr::gapDer(X = sg_0_snv, m = 1, w = 11, s = 1)}
   if(select == "snv_gsd_m1_w21_s5") {
+    sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 0, p = 3, w = 9)
+    sg_0_snv <- prospectr::standardNormalVariate(sg_0_w9)
     snv_gsd_m1_w21_s5 <- prospectr::gapDer(X = sg_0_snv, m = 1, w = 21, s = 5)}
   if(select == "snv_gsd_m1_w31_s1") {
+    sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 0, p = 3, w = 9)
+    sg_0_snv <- prospectr::standardNormalVariate(sg_0_w9)
     snv_gsd_m1_w31_s1 <- prospectr::gapDer(X = sg_0_snv, m = 1, w = 31, s = 5)}
   if(select == "snv_gsd_m1_w31_s5") {
+    sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 0, p = 3, w = 9)
+    sg_0_snv <- prospectr::standardNormalVariate(sg_0_w9)
     snv_gsd_m1_w31_s5 <- prospectr::gapDer(X = sg_0_snv, m = 1, w = 31, s = 5)}
   # Standard normal variate (SNV) and second gap-segment derivative
   if(select == "snv_gsd_m2_w5_s1") {
+    sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 0, p = 3, w = 9)
+    sg_0_snv <- prospectr::standardNormalVariate(sg_0_w9)
     snv_gsd_m2_w5_s1 <- prospectr::gapDer(X = sg_0_snv, m = 2, w = 5, s = 1)}
   if(select == "snv_gsd_m2_w21_s1") {
+    sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 0, p = 3, w = 9)
+    sg_0_snv <- prospectr::standardNormalVariate(sg_0_w9)
     snv_gsd_m2_w21_s1 <- prospectr::gapDer(X = sg_0_snv, m = 2, w = 21, s = 1)}
   if(select == "snv_gsd_m2_w31_s1") {
+    sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 0, p = 3, w = 9)
+    sg_0_snv <- prospectr::standardNormalVariate(sg_0_w9)
     snv_gsd_m2_w31_s1 <- prospectr::gapDer(X = sg_0_snv, m = 2, w = 31, s = 5)}
   if(select == "snv_gsd_m2_w31_s5") {
+    sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 0, p = 3, w = 9)
+    sg_0_snv <- prospectr::standardNormalVariate(sg_0_w9)
     snv_gsd_m2_w31_s5 <- prospectr::gapDer(X = sg_0_snv, m = 2, w = 31, s = 1)}
   if(select == "snv_gsd_m2_w51_s1") {
+    sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 0, p = 3, w = 9)
+    sg_0_snv <- prospectr::standardNormalVariate(sg_0_w9)
     snv_gsd_m2_w51_s1 <- prospectr::gapDer(X = sg_0_snv, m = 2, w = 51, s = 1)}
   if(select == "snv_gsd_m2_w51_s5") {
+    sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 0, p = 3, w = 9)
+    sg_0_snv <- prospectr::standardNormalVariate(sg_0_w9)
     snv_gsd_m2_w51_s5 <- prospectr::gapDer(X = sg_0_snv, m = 2, w = 51, s = 5)}
   # 1rst Gap-segement derivative
   if(select == "gsd_m1_w5_s4") {
@@ -136,7 +170,7 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
   if(select == "gsd_m1_w11_s21") {
     gsd_m1_w11_s21 <- prospectr::gapDer(X = spc_raw, m = 1, w = 11, s = 21)}
   if(select == "gsd_m1_w21_s1") {
-    gsd_m1_w21_s21 <- prospectr::gapDer(X = spc_raw, m = 1, w = 21, s = 1)}
+    gsd_m1_w21_s1 <- prospectr::gapDer(X = spc_raw, m = 1, w = 21, s = 1)}
   if(select == "gsd_m1_w21_s21") {
     gsd_m1_w21_s21 <- prospectr::gapDer(X = spc_raw, m = 1, w = 21, s = 21)}
   if(select == "gsd_m1_w35_s21") {
