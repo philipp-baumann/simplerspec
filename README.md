@@ -147,7 +147,7 @@ pls_C <- pls_ken_stone(
 
 I would like to thank the following people for the inspiration by concepts, code and packages:
 
-* Antoine Stevens Leonardo Ramirez-Lopez for their contributions to the [prospectr package](https://cran.r-project.org/web/packages/prospectr/index.html) and the
+* Antoine Stevens and Leonardo Ramirez-Lopez for their contributions to the [prospectr package](https://cran.r-project.org/web/packages/prospectr/index.html) and the
 *Guide to Diffuse Reflectance Spectroscopy & Multivariate Calibration*
 * Andrew Sila, Tomislav Hengl, and Thomas Terhoeven-Urselmans for the `read.opus()`
 function from the [soil.spec](https://cran.r-project.org/web/packages/soil.spec/index.html) package developed at ICRAF.
