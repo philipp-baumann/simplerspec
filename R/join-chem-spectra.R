@@ -45,7 +45,7 @@ join_chem_spec <- function(
 #' @return Tibble joined by sample_id
 #' @export
 join_spc_chem <- function(spc_tbl, chem_tbl, by = "sample_id") {
-  if(!is.data.frame(spc_tbl)) {
+  if(!tibble::is_tibble(spc_tbl)) {
     stop(dat_chem, "needs to be a Tibble", call. = FALSE)
   } else {
     # Rename column sample_ID to sample_id if sample_ID exists
