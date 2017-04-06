@@ -23,7 +23,7 @@ gather_spc <- function(data) {
   map_wavenumbers <- data %>% purrr::map("wavenumbers")
 
   ## Create list-column tibble
-  data_tibble <- as_tibble(
+  data_tibble <- tibble::as_tibble(
     map_metadata_df[c("unique_id", "scan_id", "sample_id")]
   )
 
