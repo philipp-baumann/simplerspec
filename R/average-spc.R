@@ -8,7 +8,7 @@ average_spc <- function(spc_tbl) {
   spc <- data.table::rbindlist(spc_tbl$spc_rs)
 
   # Add sample_id column to resampled spectra
-  spc <- spc[, sample_id:=spc_tbl$sample_id]
+  spc[, sample_id:=spc_tbl$sample_id]
 
   # Average spectra, use sample_id as index for grouping
   data.table::setkey(spc, sample_id)
