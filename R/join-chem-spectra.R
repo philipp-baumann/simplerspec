@@ -50,7 +50,9 @@ join_spc_chem <- function(spc_tbl, chem_tbl, by = "sample_id") {
   } else {
     # Rename column sample_ID to sample_id if sample_ID exists
     if("sample_ID" %in% colnames(chem_tbl)) {
-    chem_tbl <- dplyr::rename(chem_tbl, sample_id = sample_ID)
+      # Create a list with new column name; use standard evaluation
+      rename_list <- list(sample_id = "sample_ID")
+      chem_tbl <- dplyr::rename_(chem_tbl, .dots = rename_list)
     }
     spc_tbl <- dplyr::inner_join(spc_tbl, chem_tbl)
   }
