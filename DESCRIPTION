@@ -1,7 +1,7 @@
 Package: simplerspec
 Type: Package
 Title: Soil and plant spectroscopic model building and prediction
-Depends: R (>= 3.2)
+Depends: R (>= 3.0)
 Imports:
     ggplot2 (>= 2.0.0),
     plyr,
