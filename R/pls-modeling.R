@@ -724,6 +724,9 @@ evaluate_pls_q <- function(x, pls_model, variable,
     as.character(variable_name))
   y_label <- paste0("Predicted ",
     as.character(variable_name))
+
+  # Create model evaluation plot -----------------------------------------------
+  if(pls_model$method == "pls") {
   p_model <- ggplot2::ggplot(data = predobs_val) +
     ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
       shape = 1, size = 2, alpha = 1/2) +
@@ -755,6 +758,38 @@ evaluate_pls_q <- function(x, pls_model, variable,
       max(predobs_val$obs) +
         0.05 * diff(range(predobs_val$obs)))) +
     ggplot2::coord_fixed()
+  } else {
+
+  p_model <- ggplot2::ggplot(data = predobs_val) +
+    ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
+      shape = 1, size = 2, alpha = 1/2) + # without ncomp label
+    ggplot2::geom_text(data = annotation,
+      ggplot2::aes(x = Inf, y = -Inf, label = r2), size = 3,
+      hjust = 1.15, vjust = -3, parse = TRUE) +
+    ggplot2::geom_text(data = annotation,
+      ggplot2::aes(x = Inf, y = -Inf, label = rmse), size = 3,
+      hjust = 1.12, vjust = -2.5, parse = TRUE) +
+    ggplot2::geom_text(data = annotation,
+      ggplot2::aes(x = Inf, y = -Inf, label = rpd), size = 3,
+      hjust = 1.15, vjust = -1.25, parse = TRUE) +
+    ggplot2::facet_grid(~ dataType,
+      labeller = ggplot2::as_labeller(to_string)) +
+    # ggplot2::facet_grid(~ dataType,
+    #   labeller = dataType_labeller) +
+    ggplot2::theme_bw() +
+    ggplot2::geom_abline(col = "red") +
+    ggplot2::labs(x = x_label, y = y_label) +
+    ggplot2::xlim(c(min(predobs_val$obs) -
+        0.05 * diff(range(predobs_val$obs)),
+      max(predobs_val$obs) +
+        0.05 * diff(range(predobs_val$obs)))) +
+    ggplot2::ylim(c(min(predobs_val$obs) -
+        0.05 * diff(range(predobs_val$obs)),
+      max(predobs_val$obs) +
+        0.05 * diff(range(predobs_val$obs)))) +
+    ggplot2::coord_fixed()
+  }
+
   if(print == TRUE) {
     print(p_model)
   }
