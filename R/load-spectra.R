@@ -251,7 +251,7 @@ read_opus_bin <- function(file.name){
       out <- list(
         metadata = tibble::data_frame(
           unique_id = unique_id,
-          scan_id = file_name, # changed file_name to scan_id in output list
+          file_id = file_name,
           sample_id = sample_id,
           rep_no = rep_no,
           date_time = date_time,

@@ -24,7 +24,7 @@ gather_spc <- function(data) {
 
   ## Create list-column tibble
   data_tibble <- tibble::as_tibble(
-    map_metadata_df[c("unique_id", "scan_id", "sample_id")]
+    map_metadata_df[c("unique_id", "file_id", "sample_id")]
   )
 
   ## Add spectra and wavenumbers
