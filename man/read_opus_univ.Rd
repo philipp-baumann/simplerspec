@@ -22,8 +22,13 @@ files are read in parallel (multiple processors or multiple cores)).
 Default is \code{parallel = FALSE}. If \code{TRUE} a parallel backend needs
 to be registered, e.g. by using the \code{doParallel} package.}
 }
+\value{
+out List spectra and metadata (parameters) extracted from
+Bruker OPUS spectrometer files. List names are the names of the OPUS
+files whose spectral data were extracted.
+}
 \description{
 Read multiple spectral files measured with a Bruker FTIR Instrument. Files
 containing spectra are in OPUS binary format.
-\code{read_opus_bin} is a wrapper for \code{read_opus_bin_univ()})
+\code{read_opus_univ} is a wrapper for \code{read_opus_bin_univ()})
 }
