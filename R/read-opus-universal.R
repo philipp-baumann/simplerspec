@@ -4,7 +4,11 @@
 #' Bruker Vertex FTIR Instrument
 #' @param file_path Character vector with path to file
 #' @usage read_opus_bin_univ(file_path)
+#' @importFrom foreach `%do%`
+#' @importFrom foreach `%dopar%`
 #' @export
+# Import foreach::`%do%` and foreach::`%dopar%`:
+# http://stackoverflow.com/questions/30216613/how-to-use-dopar-when-only-import-foreach-in-description-of-a-package
 read_opus_bin_univ <- function(file_path, extract = c("spc"),
   print_progress = TRUE) {
 
