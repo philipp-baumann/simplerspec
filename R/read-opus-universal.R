@@ -560,7 +560,8 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
 read_opus_univ <- function(fnames, extract = c("spc"), parallel = FALSE) {
 
   if(parallel == TRUE) {
-    foreach::foreach(i = 1:length(fnames), .export = "read_opus_bin",
+    foreach::foreach(i = 1:length(fnames),
+      .export = "simplerspec::read_opus_bin_univ",
       # export the foreach package to the individual workers
       .packages = c("foreach"),
       .final = function(i) setNames(i, sub(".+/(.+)", "\\1", fnames))) %dopar% {
@@ -570,7 +571,7 @@ read_opus_univ <- function(fnames, extract = c("spc"), parallel = FALSE) {
     }
   } else if (parallel == FALSE) {
     spc_list <- lapply(fnames,
-      function(x) try(read_opus_bin(file_path = x, extract = extract)))
+      function(x) try(read_opus_bin_univ(file_path = x, extract = extract)))
     names(spc_list) <- sub(".+/(.+)", "\\1", fnames)
     spc_list
   }
