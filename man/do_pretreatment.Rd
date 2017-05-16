@@ -28,4 +28,3 @@ spectra in element \code{MIR_pre}
 Use commonly used preprocessing algorithms on
 the spectra.
 }
-

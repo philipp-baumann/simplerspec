@@ -14,4 +14,3 @@ Read single text file acquired with
 an Bruker Vertex FTIR Instrument
 (as exported from OPUS software)
 }
-

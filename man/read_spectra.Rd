@@ -45,4 +45,3 @@ The function should also work for other OPUS files (eg alpha),
 see \code{read.opus}. The function readOPUS() was
 written by Antoine Stevens.
 }
-

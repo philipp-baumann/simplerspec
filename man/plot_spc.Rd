@@ -12,4 +12,3 @@ graph_id_2 = "Validation", slice = TRUE, alpha = 1)
 \description{
 Plot spectra from tibble spectra objects.
 }
-

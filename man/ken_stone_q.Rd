@@ -25,4 +25,3 @@ calibration sampling is performed
 Perform calibration sampling based on
 the Kennard-Stones algorithm.
 }
-

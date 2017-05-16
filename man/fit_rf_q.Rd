@@ -27,4 +27,3 @@ Uses the caret package to perform random forest
 modeling.
 Spectra are centered and scaled prior to modeling.
 }
-

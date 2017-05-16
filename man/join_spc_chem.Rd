@@ -21,4 +21,3 @@ Tibble joined by sample_id
 Combines spectral data (tibble class) and chemical
 data (tibble class).
 }
-

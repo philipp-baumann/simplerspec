@@ -10,4 +10,3 @@ resample_spc(spc_tbl, wn_lower = 510, wn_upper = 3988, wn_interval = 2)
 Resamples spectra stored in tibble column after
 gathering spectra by \code{simplerspec::gather_spc()}.
 }
-

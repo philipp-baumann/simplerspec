@@ -10,4 +10,3 @@ average_spc(spc_tbl)
 Averages spectra in tibble column by sample_id after
 resampling spectra by \code{simplerspec::resample_spc()}.
 }
-

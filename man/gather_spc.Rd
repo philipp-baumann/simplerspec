@@ -13,4 +13,3 @@ after reading binary OPUS files with \code{simplerspec::read_opus()}}
 \value{
 Spectral data and metadata in object of class tible
 }
-

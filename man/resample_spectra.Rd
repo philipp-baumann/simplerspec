@@ -14,4 +14,3 @@ resample_spectra(list_spectra, wn_lower = 510, wn_upper = 3988,
 
 \item{wn_upper}{Numerical value for highest wavenumber in sampling interval}
 }
-

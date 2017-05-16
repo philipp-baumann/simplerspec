@@ -21,4 +21,3 @@ validation is performed}
 Uses the caret package to perform PLS modeling.
 Spectra are centered and scaled prior to modeling.
 }
-

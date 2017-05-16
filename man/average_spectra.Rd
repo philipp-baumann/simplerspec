@@ -38,4 +38,3 @@ abbreviation.}
 Calculate the mean of each spectral repetitions
 (absorbance average per wavenumber)
 }
-

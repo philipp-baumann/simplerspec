@@ -21,4 +21,3 @@ validation is performed.}
 Uses function from caret to set model tuning to none
 for PLS regression.
 }
-

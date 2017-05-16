@@ -50,4 +50,3 @@ see \code{read.opus}.
 \author{
 Antoine Stevens and Andrew Sila (soil.spec package)
 }
-

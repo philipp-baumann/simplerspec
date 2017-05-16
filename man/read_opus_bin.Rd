@@ -13,4 +13,3 @@ read_opus_bin(file.name)
 Read single binary file acquired with an
 Bruker Vertex FTIR Instrument
 }
-

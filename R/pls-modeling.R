@@ -321,8 +321,8 @@ fit_pls_q <- function(x, validation = TRUE,
   variable, tr_control, env = parent.frame(),
   pls_ncomp_max = 20, ncomp_fixed = 5,
   center, scale, tuning_method = "resampling") {
-# Fit a partial least square regression (pls) model
-# center and scale MIR (you can try without)
+  # Fit a partial least square regression (pls) model
+  # center and scale MIR (you can try without)
   calibration <- MIR <- NULL
   v <- eval(variable, x$calibration, env)
   # ? Is it really necessary to evaluate this in the parent frame?

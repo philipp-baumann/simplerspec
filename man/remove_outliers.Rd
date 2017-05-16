@@ -43,4 +43,3 @@ Remove outlier spectra based on the
 This is an optional function if one wants to remove
 outliers.
 }
-

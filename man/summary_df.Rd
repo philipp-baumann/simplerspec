@@ -17,4 +17,3 @@ summary_df(df, x, y)
 Calculates model statistics for predicted (y)
 vs. observed (y) values
 }
-

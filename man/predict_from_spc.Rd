@@ -19,4 +19,3 @@ predict_from_spc(spc_tbl, model_list, slice = TRUE)
 tibble with new columns \code{model}, and predicted values with
 column names of model list.
 }
-

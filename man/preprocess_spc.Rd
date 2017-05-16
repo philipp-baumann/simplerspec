@@ -4,10 +4,10 @@
 \alias{preprocess_spc}
 \title{Preprocess spectra from spectral data object (tibble)}
 \usage{
-preprocess_spc(spc_tbl, select, column_in = "spc_mean")
+preprocess_spc(spc_tbl, select, column_in = "spc_mean",
+  custom_function = NULL)
 }
 \description{
 Preprocesses spectra in tibble column by sample_id after
 averaging spectra by \code{simplerspec::average_spc()}.
 }
-

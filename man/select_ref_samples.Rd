@@ -28,4 +28,3 @@ calibration sampling is performed
 Select a set of calibration spectra to develop spectral models.
 Samples in this list will be analyzed using laboratory reference methods.
 }
-

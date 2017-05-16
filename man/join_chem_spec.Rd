@@ -21,4 +21,3 @@ List: xxx
 Combines spectral data (data.frame) and chemical
 data (data.frame).
 }
-

@@ -3,7 +3,7 @@
 #' Read single binary file acquired with an
 #' Bruker Vertex FTIR Instrument
 #' @param file_path Character vector with path to file
-#' @usage read_opus_univ(file_path)
+#' @usage read_opus_bin_univ(file_path)
 #' @export
 read_opus_bin_univ <- function(file_path, extract = c("spc"),
   print_progress = TRUE) {
@@ -533,4 +533,44 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
   out
   }) # closes try() function
 
+}
+
+#' @title Read a list of Bruker OPUS spectrum binary files (wrapper for
+#' \code{read_opus_bin_univ()})
+#' @description
+#' Read single binary file acquired with an
+#' Bruker Vertex FTIR Instrument
+#' @param fnames List of character vectors containing full path names of spectra
+#' @param extract Character vector of spectra types to extract from file.
+#' Possible values are: "spc" (AB block in Bruker Opus software), "spc_nocomp"
+#' (Spectra before final atmospheric compensation; only present if background
+#' correction has been set in Opus), "ScSm" (Single channel spectrum of the
+#' sample), "ScRf" (Single channel spectrum of the sample), "IgSm" (Interferogram
+#' of the sample), "IgRf" (Interferogram of the reference). Default is
+#'  \code{extract = c("spc")}.
+#' @param parallel Logical (\code{TRUE} or \code{FALSE} indicating whether
+#' files are read in parallel (multiple processors or multiple cores)).
+#' Default is \code{parallel = FALSE}. If \code{TRUE} a parallel backend needs
+#' to be registered, e.g. by using the \code{doParallel} package.
+#' @usage read_opus_univ(fnames, extract = c("spc"), parallel = FALSE)
+#' @export out List spectra and metadata (parameters) extracted from
+#' Bruker OPUS spectrometer files. List names are the names of the OPUS
+#' files whose spectral data were extracted.
+read_opus_univ <- function(fnames, extract = c("spc"), parallel = FALSE) {
+
+  if(parallel == TRUE) {
+    foreach::foreach(i = 1:length(fnames), .export = "read_opus_bin",
+      # export the foreach package to the individual workers
+      .packages = c("foreach"),
+      .final = function(i) setNames(i, sub(".+/(.+)", "\\1", fnames))) %dopar% {
+        try(
+          read_opus_bin(file_path = fnames[[i]], extract = extract)
+        )
+    }
+  } else if (parallel == FALSE) {
+    spc_list <- lapply(fnames,
+      function(x) try(read_opus_bin(file_path = x, extract = extract)))
+    names(spc_list) <- sub(".+/(.+)", "\\1", fnames)
+    spc_list
+  }
 }

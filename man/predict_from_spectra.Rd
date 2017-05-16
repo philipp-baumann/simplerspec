@@ -19,4 +19,3 @@ Function that uses pre-processed spectra, additional metadata of new
 samples, and caret model output for the different soil property models
 to create predicted values.
 }
-
