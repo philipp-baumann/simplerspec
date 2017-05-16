@@ -539,7 +539,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
 #' @description
 #' Read multiple spectral files measured with a Bruker FTIR Instrument. Files
 #' containing spectra are in OPUS binary format.
-#' \code{read_opus_bin} is a wrapper for \code{read_opus_bin_univ()})
+#' \code{read_opus_univ} is a wrapper for \code{read_opus_bin_univ()})
 #' @param fnames List of character vectors containing full path names of spectra
 #' @param extract Character vector of spectra types to extract from file.
 #' Possible values are: "spc" (AB block in Bruker Opus software), "spc_nocomp"
@@ -553,9 +553,10 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
 #' Default is \code{parallel = FALSE}. If \code{TRUE} a parallel backend needs
 #' to be registered, e.g. by using the \code{doParallel} package.
 #' @usage read_opus_univ(fnames, extract = c("spc"), parallel = FALSE)
-#' @export out List spectra and metadata (parameters) extracted from
+#' @return out List spectra and metadata (parameters) extracted from
 #' Bruker OPUS spectrometer files. List names are the names of the OPUS
 #' files whose spectral data were extracted.
+#' @export
 read_opus_univ <- function(fnames, extract = c("spc"), parallel = FALSE) {
 
   if(parallel == TRUE) {
