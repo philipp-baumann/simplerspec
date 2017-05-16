@@ -2,8 +2,7 @@
 % Please edit documentation in R/read-opus-universal.R
 \name{read_opus_univ}
 \alias{read_opus_univ}
-\title{Read a list of Bruker OPUS spectrum binary files (wrapper for
-\code{read_opus_bin_univ()})}
+\title{Read a list of Bruker OPUS spectrum binary files.}
 \usage{
 read_opus_univ(fnames, extract = c("spc"), parallel = FALSE)
 }
@@ -24,6 +23,7 @@ Default is \code{parallel = FALSE}. If \code{TRUE} a parallel backend needs
 to be registered, e.g. by using the \code{doParallel} package.}
 }
 \description{
-Read single binary file acquired with an
-Bruker Vertex FTIR Instrument
+Read multiple spectral files measured with a Bruker FTIR Instrument. Files
+containing spectra are in OPUS binary format.
+\code{read_opus_bin} is a wrapper for \code{read_opus_bin_univ()})
 }
