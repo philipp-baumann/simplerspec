@@ -56,7 +56,6 @@ added to the input spectra tibble (`spc_tbl`): \code{wavenumbers_rs} or
 \code{wavelengths_rs} as list-columns containing the resampled wavenumbers
 or wavelengths, \code{spc_rs} list-column of resampled spectra returned
 as list of data.tables (class "data.table" and "data.frame").
-\code
 }
 \description{
 Resamples spectra stored in tibble column after

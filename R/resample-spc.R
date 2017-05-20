@@ -39,7 +39,6 @@
 #' \code{wavelengths_rs} as list-columns containing the resampled wavenumbers
 #' or wavelengths, \code{spc_rs} list-column of resampled spectra returned
 #' as list of data.tables (class "data.table" and "data.frame").
-#' \code
 #' @export
 resample_spc <- function(spc_tbl, x_unit = "wavenumber",
     wn_lower = 510, wn_upper = 3988, wn_interval = 2,
