@@ -11,7 +11,7 @@
 read_asd <- function(file) {
 
   # Read fixed with file into a tibble
-  asd_tbl <- readr::read_tsv(file = "data/asd/170214_all.txt")
+  asd_tbl <- readr::read_tsv(file = file)
   # Transpose tibble and add Wavelengths as column names
   asd_tbl_t <- tibble::as_tibble(
     t(dplyr::select(asd_tbl, - Wavelength))
