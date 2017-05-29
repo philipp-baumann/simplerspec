@@ -17,7 +17,8 @@ Imports:
     caret,
     tidyr,
     tidyverse,
-    foreach
+    foreach,
+    cowplot
 Version: 0.1.0
 Authors@R: person("Philipp", "Baumann",
   email = "baumanph@student.ethz.ch", role = c("aut", "cre"))
