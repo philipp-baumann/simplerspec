@@ -98,7 +98,7 @@ create_vip_rects <- function(df_vip) {
 plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
                          by = "sample_id",
                          xlab = expression(paste("Wavenumber [", cm^-1, "]")),
-                         ylabs = c("Absorbance", "Preprocessed Abs."),
+                         ylab1 = "Absorbance", ylab2 = "Preprocessed Abs.",
                          alpha = 0.2) {
 
   # Extract spectra tibble for calibration
@@ -153,7 +153,7 @@ plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
         ymax = max(dt1_long$value), group = group), color = "transparent",
         fill = "orange", alpha = 0.3) +
     ggplot2::geom_line(ggplot2::aes(group = id), alpha = alpha, size = 0.2) +
-    ggplot2::labs(x = xlab, y = ylabs[1]) +
+    ggplot2::labs(x = xlab, y = ylab1) +
     ggplot2::theme_bw() +
     ggplot2::theme(plot.margin = ggplot2::unit(c(0, 5, 1, 1),
       units = "points")) +
@@ -165,7 +165,7 @@ plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
         ymax = max(dt2_long$value), group = group), color = "transparent",
         fill = "orange", alpha = 0.3) +
     ggplot2::geom_line(ggplot2::aes(group = id), alpha = alpha, size = 0.2) +
-    ggplot2::labs(x = xlab, y = ylabs[2]) +
+    ggplot2::labs(x = xlab, y = ylab2) +
     ggplot2::theme_bw() +
     ggplot2::theme(plot.margin = ggplot2::unit(c(0, 5, 1, 1),
       units = "points")) +
