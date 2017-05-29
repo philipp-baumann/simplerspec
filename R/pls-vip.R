@@ -72,6 +72,29 @@ extract_pls_vip <- function(mout) {
 
 
 #' @export
+create_vip_rects <- function(df_vip) {
+
+  # Highlight region data
+  # https://stackoverflow.com/questions/32543176/highlight-areas-within-certain-x-range-in-ggplot2
+  v <- rep(0, nrow(df_vip))
+  v[df_vip$vip > 1] <- 1
+  # Get the start and end points for highlighted regions
+  inds <- diff(c(0, v))
+  start <- df_vip$wavenumber[inds == 1]
+  end <- df_vip$wavenumber[inds == -1]
+  if (length(start) > length(end)) {
+    end <- c(end, tail(df_vip$wavenumber, 1))
+  }
+  # Create data frame for rectangle layer (geom_rects)
+  data.frame(start = start, end = end, group = seq_along(start))
+}
+
+#' @title Plot stacked ggplot2 graphs with the Variable Importance for the
+#' Projection (VIP) scores, mean replicate spectra (absorbance) per sample_id, and the preprocessed spectra.
+#' @description Plot stacked ggplot2 graphs of VIP for the final
+#' PLS regression model of the calibration (training) data set for the final
+#' number of components, raw (replicate mean) spectra, and preprocessed spectra.
+#' @export
 plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
                          by = "sample_id",
                          xlab = expression(paste("Wavenumber [", cm^-1, "]")),
@@ -180,23 +203,5 @@ plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
   cowplot::plot_grid(
     p_vip, p_spc_pre, p_spc, rel_heights = c(0.3, 0.3, 0.4),
     ncol = 1, align = "v")
-}
-
-#' @export
-create_vip_rects <- function(df_vip) {
-
-  # Highlight region data
-  # https://stackoverflow.com/questions/32543176/highlight-areas-within-certain-x-range-in-ggplot2
-  v <- rep(0, nrow(df_vip))
-  v[df_vip$vip > 1] <- 1
-  # Get the start and end points for highlighted regions
-  inds <- diff(c(0, v))
-  start <- df_vip$wavenumber[inds == 1]
-  end <- df_vip$wavenumber[inds == -1]
-  if (length(start) > length(end)) {
-    end <- c(end, tail(df_vip$wavenumber, 1))
-  }
-  # Create data frame for rectangle layer (geom_rects)
-  data.frame(start = start, end = end, group = seq_along(start))
 }
 
