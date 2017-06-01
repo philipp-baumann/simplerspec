@@ -511,14 +511,14 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     out <- list(
       'metadata' = metadata,
       'spc' = spc_m[["spc"]],
-      'sc_sm' = if("ScSm" %in% extract & "ScSm" %in% names(spc_m)) {
-        spc_m[["ScSm"]]} else {NULL},
-      'sc_rf' = if("ScRf" %in% extract & "ScRf" %in% names(spc_m)) {
-        spc_m[["ScRf"]]} else {NULL},
-      'ig_sm' = if("IgSm" %in% extract & "IgSm" %in% names(spc_m)) {
-        spc_m[["IgSm"]]} else {NULL},
-      'ig_rf' = if("IgRf" %in% extract & "IgRf" %in% names(spc_m)) {
-        spc_m[["IgRf"]]} else {NULL},
+      'sc_sm' = ifelse("ScSm" %in% extract & "ScSm" %in% names(spc_m),
+        spc_m[["ScSm"]], NULL),
+      'sc_rf' = ifelse("ScRf" %in% extract & "ScRf" %in% names(spc_m),
+        spc_m[["ScRf"]], NULL),
+      'ig_sm' = ifelse("IgSm" %in% extract & "IgSm" %in% names(spc_m),
+        spc_m[["IgSm"]], NULL),
+      'ig_rf' = ifelse("IgRf" %in% extract & "IgRf" %in% names(spc_m),
+        spc_m[["IgRf"]], NULL),
       # Wavenumbers of final AB spectra
       wavenumbers = wavenumbers[["spc"]],
       wavenumbers_sc_sm = if("ScSm" %in% extract) {
