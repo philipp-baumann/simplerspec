@@ -57,8 +57,8 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL, y, by,
   # Add a graph identity column to distiguish graphical layers for spectra
   # tibble comparisons
   graph_id_1 <- as.factor(rep(graph_id_1, nrow(spc_tbl)))
-  dt_1 <- dt_1[, graph_id:=graph_id_1]
-  dt_1 <- dt_1[, id:=id_1]
+  dt_1[, graph_id:=graph_id_1]
+  dt_1[, id:=id_1]
 
   # Only if spc_tbl_2 exists
   if(!is.null(spc_tbl_2)) {
@@ -67,8 +67,8 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL, y, by,
     # Add a graph identity column to distiguish graphical layers for spectra
     # tibble comparisons
     graph_id_2 <- as.factor(rep(graph_id_2, nrow(spc_tbl_2)))
-    dt_2 <- dt_2[, graph_id:=graph_id_2]
-    dt_2 <- dt_2[, id:=id_2]
+    dt_2[, graph_id:=graph_id_2]
+    dt_2[, id:=id_2]
     dt_list <- list(
       dt_1 = dt_1,
       dt_2 = dt_2
@@ -82,7 +82,7 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL, y, by,
     dt, measure=names(dt)[!names(dt) %in% c("id", "graph_id")]
   )
   # Convert variable column from factor to numeric
-  dt_long <- dt_long[, variable := as.numeric(as.character(variable))]
+  dt_long[, variable := as.numeric(as.character(variable))]
   # (4) Plot spectra
   # Define nice breaks for x axis
   brk  <- pretty(as.numeric(names(dt)[!names(dt) %in% c("id", "graph_id")]), n = 10)
