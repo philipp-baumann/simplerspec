@@ -149,7 +149,7 @@ ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
 #' @param env Environment where function is evaluated
 #' @export
 tune_model_q <- function(x, variable,
-  env = parent.frame(), validation = TRUE, evaluation_method = "test_set") {
+  env = parent.frame(), evaluation_method = "resampling") {
   calibration <- NULL
   # List of calibration and validation samples
   # set up a cross-validation scheme
@@ -193,7 +193,7 @@ tune_model_q <- function(x, variable,
 #' @export
 tune_model_loocv_q <- function(x, variable,
   env = parent.frame(),
-  validation = TRUE, evaluation_method = "test_set") {
+  evaluation_method = "resampling") {
   calibration <- NULL
   # List of calibration and validation samples
   # set up a cross-validation scheme
@@ -236,8 +236,7 @@ tune_model_loocv_q <- function(x, variable,
 #' @param env Environment where function is evaluated
 #' @export
 tune_model_rcv_q <- function(x, variable,
-  env = parent.frame(),
-  validation = TRUE, evaluation_method = "test_set") {
+  env = parent.frame(), evaluation_method = "test_set") {
   calibration <- NULL
   # List of calibration and validation samples
   # set up a cross-validation scheme
@@ -281,7 +280,7 @@ tune_model_rcv_q <- function(x, variable,
 #' @export
 tune_model_none_q <- function(x, variable,
   env = parent.frame(),
-  validation = TRUE, evaluation_method = "test_set") {
+  evaluation_method = "test_set") {
   calibration <- NULL
   # List of calibration and validation samples
   # set up a cross-validation scheme
@@ -322,7 +321,7 @@ tune_model_none_q <- function(x, variable,
 #' @export
 tune_model <- function(x, variable,
   env = parent.frame(),
-  validation = TRUE, evaluation_method = "test_set") {
+  evaluation_method = "resampling") {
   tune_model_q(x, substitute(variable), env)
 }
 
@@ -342,7 +341,7 @@ tune_model <- function(x, variable,
 #' @param env Environment where function is evaluated
 #' @export
 fit_pls_q <- function(x,
-  validation = TRUE, evaluation_method = "test_set",
+  evaluation_method = "test_resampling",
   variable, tr_control, env = parent.frame(),
   pls_ncomp_max = 20, ncomp_fixed = 5,
   center, scale, tuning_method = "resampling") {
@@ -409,7 +408,7 @@ fit_pls_q <- function(x,
 #' @export
 fit_pls <- function(x, validation = TRUE,
   variable, env = parent.frame()) {
-  q(x = x, validation = TRUE, evaluation_method = "test_set",
+  q(x = x, validation = TRUE, evaluation_method = "resampling",
     variable = substitute(variable), env
   )
 }
@@ -431,7 +430,7 @@ fit_pls <- function(x, validation = TRUE,
 #' @param env Environment where function is evaluated
 #' @export
 fit_rf_q <- function(x,
-  validation = TRUE, evaluation_method = "test_set",
+  validation = TRUE, evaluation_method = "resampling",
   variable, tr_control, ntree_max = 500, env = parent.frame()) {
   # Fit a partial least square regression (pls) model
   # center and scale MIR (you can try without)
@@ -483,7 +482,7 @@ fit_rf_q <- function(x,
 #' \code{parent.frame()}
 #' @export
 evaluate_pls_q <- function(x, pls_model, variable,
-  validation, evaluation_method,
+  evaluation_method,
   tuning_method, print = TRUE, env = parent.frame()) {
   # Set global variables to NULL to avoid R CMD check notes
   MIR <- object <- model <- dataType <- obs <- pred <- NULL
