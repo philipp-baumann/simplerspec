@@ -15,7 +15,7 @@
 #' @export
 ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
   print = TRUE,
-  validation = TRUE, evaluation_method = "test_set",
+  validation = TRUE, evaluation_method = "resampling",
   invert = FALSE, env = parent.frame()) {
   MIR <- model <- type <- PC1 <- PC2 <- NULL
 
@@ -852,7 +852,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
 pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
   ratio_val, pc = 2,
   print = TRUE, variable,
-  validation = TRUE, evaluation_method = "test_set",
+  validation = TRUE, evaluation_method = "resampling",
   invert = TRUE,
   center = TRUE, scale = TRUE,
   env = parent.frame(), pls_ncomp_max = 20, ncomp_fixed = 5,
