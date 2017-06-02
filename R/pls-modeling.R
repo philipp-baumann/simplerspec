@@ -548,7 +548,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
   # Problems can occur e.g. if a list element contains NULL element;
   # see
   # http://stackoverflow.com/questions/7719741/how-to-test-if-list-element-exists
-  } else if (evaluation_method == "test_set" & tuning_method == "resampling") {
+  } else if (evaluation_method == "resampling" & tuning_method == "resampling") {
     # Good discussion on which cross-validation results are returned from caret
     # Extract best tuning parameters and associated cv predictions
     # http://stats.stackexchange.com/questions/219154/how-does-cross-validation-in-train-caret-precisely-work
