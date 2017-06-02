@@ -342,7 +342,7 @@ tune_model <- function(x, variable,
 #' @param env Environment where function is evaluated
 #' @export
 fit_pls_q <- function(x,
-  validation = TRUE, evaluation_method = "test_set"
+  validation = TRUE, evaluation_method = "test_set",
   variable, tr_control, env = parent.frame(),
   pls_ncomp_max = 20, ncomp_fixed = 5,
   center, scale, tuning_method = "resampling") {
