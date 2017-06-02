@@ -14,13 +14,21 @@
 #' validation = TRUE)
 #' @export
 ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
-  print = TRUE, validation = TRUE, invert = FALSE, env = parent.frame()) {
+  print = TRUE,
+  validation = TRUE, evaluation_method = "test_set",
+  invert = FALSE, env = parent.frame()) {
   MIR <- model <- type <- PC1 <- PC2 <- NULL
 
   # Evaluate the invert argument in the parent function (pls_ken_stone)
   invert <- eval(invert, envir = parent.frame())
   # Evaluate the validation argument in the parent function (pls_ken_stone)
-  validation <- eval(validation, envir = parent.frame())
+  # 20170602: revise argument name and values of validation;
+  # Suggestion: replace validation = TRUE or FALSE with
+  # new argument evaluation_method = “test_set” or “resampling”
+  if (!missing(validation)) {
+    evaluation_method <- validation
+  }
+  evaluation_method <- eval(evaluation_method, envir = parent.frame())
 
   # Slice based on sample_id if spectral data is in tibble class
   if(tibble::is_tibble(spec_chem)) {
@@ -28,7 +36,7 @@ ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
       slice(1L)
   }
 
-  if(validation == TRUE) {
+  if(evaluation_method == "test_set") {
     # pc = 0.99 before !!!
     pc_number <- eval(pc, envir = parent.frame())
 
@@ -141,7 +149,7 @@ ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
 #' @param env Environment where function is evaluated
 #' @export
 tune_model_q <- function(x, variable,
-  env = parent.frame(), validation = TRUE) {
+  env = parent.frame(), validation = TRUE, evaluation_method = "test_set") {
   calibration <- NULL
   # List of calibration and validation samples
   # set up a cross-validation scheme
@@ -161,7 +169,10 @@ tune_model_q <- function(x, variable,
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "cv", index = idx,
     savePredictions = T)
-  if (validation == TRUE) {
+  if (!missing(validation)) {
+    evaluation_method <- validation
+  }
+  if (evaluation_method == "test_set") {
   tr_control
   } else {
   tr_control
@@ -181,7 +192,8 @@ tune_model_q <- function(x, variable,
 #' @param env Environment where function is evaluated
 #' @export
 tune_model_loocv_q <- function(x, variable,
-  env = parent.frame(), validation = TRUE) {
+  env = parent.frame(),
+  validation = TRUE, evaluation_method = "test_set") {
   calibration <- NULL
   # List of calibration and validation samples
   # set up a cross-validation scheme
@@ -201,7 +213,10 @@ tune_model_loocv_q <- function(x, variable,
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "LOOCV", # index = idx,
     savePredictions = T)
-  if (validation == TRUE) {
+  if (!missing(validation)) {
+    evaluation_method <- validation
+  }
+  if (evaluation_method == "test_set") {
     tr_control
   } else {
     tr_control
@@ -221,7 +236,8 @@ tune_model_loocv_q <- function(x, variable,
 #' @param env Environment where function is evaluated
 #' @export
 tune_model_rcv_q <- function(x, variable,
-  env = parent.frame(), validation = TRUE) {
+  env = parent.frame(),
+  validation = TRUE, evaluation_method = "test_set") {
   calibration <- NULL
   # List of calibration and validation samples
   # set up a cross-validation scheme
@@ -240,7 +256,10 @@ tune_model_rcv_q <- function(x, variable,
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "repeatedcv", index = idx,
     savePredictions = T)
-  if (validation == TRUE) {
+  if (!missing(validation)) {
+    evaluation_method <- validation
+  }
+  if (evaluation_method == "test_set") {
     tr_control
   } else {
     tr_control
@@ -261,7 +280,8 @@ tune_model_rcv_q <- function(x, variable,
 #' @param env Environment where function is evaluated
 #' @export
 tune_model_none_q <- function(x, variable,
-  env = parent.frame(), validation = TRUE) {
+  env = parent.frame(),
+  validation = TRUE, evaluation_method = "test_set") {
   calibration <- NULL
   # List of calibration and validation samples
   # set up a cross-validation scheme
@@ -280,7 +300,10 @@ tune_model_none_q <- function(x, variable,
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "none", index = idx,
     savePredictions = T)
-  if (validation == TRUE) {
+  if (!missing(validation)) {
+    evaluation_method <- validation
+  }
+  if (evaluation_method == "test_set") {
     tr_control
   } else {
     tr_control
@@ -298,7 +321,8 @@ tune_model_none_q <- function(x, variable,
 #' @param env Environment where function is evaluated
 #' @export
 tune_model <- function(x, variable,
-  env = parent.frame(), validation = TRUE) {
+  env = parent.frame(),
+  validation = TRUE, evaluation_method = "test_set") {
   tune_model_q(x, substitute(variable), env)
 }
 
@@ -317,7 +341,8 @@ tune_model <- function(x, variable,
 #' of the desired internal validation framework
 #' @param env Environment where function is evaluated
 #' @export
-fit_pls_q <- function(x, validation = TRUE,
+fit_pls_q <- function(x,
+  validation = TRUE, evaluation_method = "test_set"
   variable, tr_control, env = parent.frame(),
   pls_ncomp_max = 20, ncomp_fixed = 5,
   center, scale, tuning_method = "resampling") {
@@ -384,7 +409,7 @@ fit_pls_q <- function(x, validation = TRUE,
 #' @export
 fit_pls <- function(x, validation = TRUE,
   variable, env = parent.frame()) {
-  q(x = x, validation = TRUE,
+  q(x = x, validation = TRUE, evaluation_method = "test_set",
     variable = substitute(variable), env
   )
 }
@@ -405,7 +430,8 @@ fit_pls <- function(x, validation = TRUE,
 #' of the desired internal validation framework
 #' @param env Environment where function is evaluated
 #' @export
-fit_rf_q <- function(x, validation = TRUE,
+fit_rf_q <- function(x,
+  validation = TRUE, evaluation_method = "test_set",
   variable, tr_control, ntree_max = 500, env = parent.frame()) {
   # Fit a partial least square regression (pls) model
   # center and scale MIR (you can try without)
@@ -457,7 +483,8 @@ fit_rf_q <- function(x, validation = TRUE,
 #' \code{parent.frame()}
 #' @export
 evaluate_pls_q <- function(x, pls_model, variable,
-  validation, tuning_method, print = TRUE, env = parent.frame()) {
+  validation, evaluation_method,
+  tuning_method, print = TRUE, env = parent.frame()) {
   # Set global variables to NULL to avoid R CMD check notes
   MIR <- object <- model <- dataType <- obs <- pred <- NULL
   ncomp <- finalModel <- rmsd <- r2 <- r2 <- rpd <- n <- NULL
@@ -465,11 +492,14 @@ evaluate_pls_q <- function(x, pls_model, variable,
   # Collect fitted object into a list
   list_models <- list(pls = pls_model)
   # Evaluate validation argument in parent.frame !!!
-  validation <- eval(validation, envir = parent.frame())
+  if (!missing(validation)) {
+    evaluation_method <- validation
+  }
+  evaluation_method <- eval(evaluation_method, envir = parent.frame())
   # Evaluate tuning_method argument in parent.frame
   tuning_method <- eval(tuning_method, envir = parent.frame())
   # Extract best tuning parameters and associated cv predictions
-  if(validation == TRUE) {
+  if(evaluation_method == "test_set") {
     # !!! experimental: ignore predobs_cal
     # predobs_cal <- plyr::ldply(list_models,
     #  function(x) plyr::match_df(x$pred, x$bestTune),
@@ -518,7 +548,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
   # Problems can occur e.g. if a list element contains NULL element;
   # see
   # http://stackoverflow.com/questions/7719741/how-to-test-if-list-element-exists
-  } else if (validation == FALSE & tuning_method == "resampling") {
+  } else if (evaluation_method == "test_set" & tuning_method == "resampling") {
     # Good discussion on which cross-validation results are returned from caret
     # Extract best tuning parameters and associated cv predictions
     # http://stats.stackexchange.com/questions/219154/how-does-cross-validation-in-train-caret-precisely-work
@@ -592,7 +622,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
   # "Advanced R" (Hadley Wickham)
   variable_name <- deparse(variable)
 
-  if(validation == TRUE) {
+  if(evaluation_method == "test_set") {
     # Assign validation set to separate data frame
     obs_val <- subset(predobs_val, dataType == "Validation")$obs
     # before: deparse(substitute(variable))
@@ -606,7 +636,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
       CV = c(sd(obs_cal) / mean(obs_cal) * 100,
         sd(obs_val) / mean(obs_val) * 100)
     )
-  } else if (validation == FALSE & tuning_method == "resampling") {
+  } else if (evaluation_method == "resampling" & tuning_method == "resampling") {
     # Assign cross-validation set to separate data frame
     obs_val <- subset(predobs_val, dataType == "Cross-validation")$obs
     df_range <- data.frame(
@@ -644,9 +674,12 @@ evaluate_pls_q <- function(x, pls_model, variable,
   # http://sahirbhatnagar.com/facet_wrap_labels
 
   # Prepare lookup character vector
-  make_label <- function(x, validation = TRUE) {
+  make_label <- function(x, validation = TRUE, evaluation_method = "test_set") {
     dataType <- n <- NULL
-    if (validation == TRUE) {
+    if (!missing(validation)) {
+      evaluation_method <- validation
+    }
+    if (evaluation_method == "test_set") {
       c(`Calibration` = paste0("Calibration", "~(",
         x[x$dataType == "Calibration", ]$n, ")"
       ),
@@ -664,13 +697,13 @@ evaluate_pls_q <- function(x, pls_model, variable,
       )
     }
   }
-  if (validation == TRUE) {
+  if (evaluation_method == "test_set") {
     label_validation <- make_label(x = annotation,
-      validation = TRUE
+      evaluation_method = "test_set"
     )
   } else {
     label_validation <- make_label(x = annotation,
-      validation = FALSE
+      evaluation_method = "resampling"
     )
   }
 
@@ -819,16 +852,23 @@ evaluate_pls_q <- function(x, pls_model, variable,
 pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
   ratio_val, pc = 2,
   print = TRUE, variable,
-  validation = TRUE, invert = TRUE,
+  validation = TRUE, evaluation_method = "test_set",
+  invert = TRUE,
   center = TRUE, scale = TRUE,
   env = parent.frame(), pls_ncomp_max = 20, ncomp_fixed = 5,
-  cv = "kfold_cv", tuning_method = "resampling") {
+  cv = "kfold_cv", resampling_method = "kfold_cv",
+  tuning_method = "resampling") {
   calibration <- 0
 
   # Perform calibration sampling
+  if (!missing(y)) {
+    warning("argument validation is deprecated; please use evaluation_method instead.",
+      call. = FALSE)
+    evaluation_method <- validation
+  }
   list_sampled <- ken_stone_q(
     spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
-    validation = substitute(validation),
+    evaluation_method = substitute(evaluation_method),
     invert = substitute(invert)
   )
   # Check on method for cross-validation to be used in caret model tuning ------
@@ -854,13 +894,15 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
   # Fit a pls calibration model; pls object is output from caret::train()
   # and has class train
   if(tuning_method == "resampling") {
-    pls <- fit_pls_q(x = list_sampled, validation = TRUE,
+    pls <- fit_pls_q(x = list_sampled,
+      validation = TRUE, evaluation_method = "test_set",
       variable = substitute(variable), tr_control = tr_control,
       center = center, scale = scale,
       pls_ncomp_max = substitute(pls_ncomp_max), env
       )
   } else if (tuning_method == "none") {
-    pls <- fit_pls_q(x = list_sampled, validation = TRUE,
+    pls <- fit_pls_q(x = list_sampled,
+      validation = TRUE, evaluation_method = "test_set",
       variable = substitute(variable), tr_control = tr_control,
       center = center, scale = scale, tuning_method = "none",
       ncomp_fixed = substitute(ncomp_fixed), env
@@ -868,7 +910,9 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
   }
   # Evaluate model accuracy (predicted vs. observed)
   stats <- evaluate_pls_q(x = list_sampled, pls_model = pls,
-    variable = substitute(variable), validation = substitute(validation),
+    variable = substitute(variable),
+    validation = substitute(validation),
+    evaluation_method = substitute(evaluation_method),
     tuning_method = substitute(tuning_method),
     env = parent.frame()
   )
@@ -896,7 +940,9 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
 #' @export
 # Note: check non standard evaluation, argument passing...
 rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
-    pc = 2, print = TRUE, validation = TRUE, variable,
+    pc = 2, print = TRUE,
+    validation = TRUE, evaluation_method = "test_set",
+    variable,
     tuning_method = "resampling", ntree_max = 500,
     env = parent.frame()) {
   calibration <- 0
@@ -908,7 +954,8 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
   tr_control <- tune_model_q(list_sampled,
     substitute(variable), env
   )
-  rf <- fit_rf_q(x = list_sampled, validation = TRUE,
+  rf <- fit_rf_q(x = list_sampled,
+    validation = TRUE, evaluation_method = "test_set",
     variable = substitute(variable), tr_control = tr_control, env,
     ntree_max = substitute(ntree_max)
   )
