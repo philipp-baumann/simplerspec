@@ -861,7 +861,7 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
   calibration <- 0
 
   # Perform calibration sampling
-  if (!missing(y)) {
+  if (!missing(validation)) {
     warning("argument validation is deprecated; please use evaluation_method instead.",
       call. = FALSE)
     evaluation_method <- validation
