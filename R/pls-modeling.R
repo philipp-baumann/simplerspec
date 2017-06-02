@@ -163,11 +163,7 @@ tune_model_q <- function(x, variable,
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "cv", index = idx,
     savePredictions = T)
-  if (evaluation_method == "test_set") {
   tr_control
-  } else {
-  tr_control
-  }
 }
 
 ## Adapt model tuning to leave-one-out cross-validation ========================
@@ -204,12 +200,7 @@ tune_model_loocv_q <- function(x, variable,
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "LOOCV", # index = idx,
     savePredictions = T)
-
-  if (evaluation_method == "test_set") {
-    tr_control
-  } else {
-    tr_control
-  }
+  tr_control
 }
 
 ## Adapt model tuning to repeated k-fold cross-validation ======================
@@ -244,11 +235,7 @@ tune_model_rcv_q <- function(x, variable,
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "repeatedcv", index = idx,
     savePredictions = T)
-  if (evaluation_method == "test_set") {
-    tr_control
-  } else {
-    tr_control
-  }
+  tr_control
 }
 
 ## Fitting models without parameter tuning =====================================
@@ -285,11 +272,7 @@ tune_model_none_q <- function(x, variable,
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "none", index = idx,
     savePredictions = T)
-  if (evaluation_method == "test_set") {
-    tr_control
-  } else {
-    tr_control
-  }
+  tr_control
 }
 
 #' @title Perform model tuning
