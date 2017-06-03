@@ -777,15 +777,25 @@ evaluate_pls_q <- function(x, pls_model, variable,
 #' @param env Environment where function is evaluated
 #' @export
 # Note: check non standard evaluation, argument passing...
-pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
-  ratio_val, pc = 2,
-  print = TRUE, variable,
-  validation = TRUE, evaluation_method = "test_set",
-  invert = TRUE,
-  center = TRUE, scale = TRUE,
-  env = parent.frame(), pls_ncomp_max = 20, ncomp_fixed = 5,
-  cv = "kfold_cv", resampling_method = "kfold_cv",
-  tuning_method = "resampling") {
+pls_ken_stone <- function(
+  spec_chem,
+  variable,
+  evaluation_method = "test_set", validation = TRUE, # validation depreciated
+  split_method = "ken_stone",
+  tuning_method = "resampling",
+  resampling_method = "kfold_cv", cv = "kfold_cv", # cv depreciated
+  ratio_val = 1/3, # is only used if evaluation_method = "test_set"
+  invert = TRUE, # only if split_method = "ken_stone"
+  pls_ncomp_max = 20, # Maximal number of PLS components used by model tuning
+  ncomp_fixed = 5, # only fit and evaluate one model, if tuning_method = "none"
+  pc = 2, # only if split_method = "ken_stone"; number of component used
+  # for calculating mahalanobsis distance on PCA scores
+  print = TRUE, # print model output graphs
+  center = TRUE, scale = TRUE, # center and scale all predictors (wavenumbers)
+  # resulting from preprocessed spectra
+  env = parent.frame(),)
+
+{
   calibration <- 0
 
   # Perform calibration sampling
