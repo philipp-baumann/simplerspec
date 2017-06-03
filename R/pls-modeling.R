@@ -793,7 +793,7 @@ pls_ken_stone <- function(
   print = TRUE, # print model output graphs
   center = TRUE, scale = TRUE, # center and scale all predictors (wavenumbers)
   # resulting from preprocessed spectra
-  env = parent.frame(),)
+  env = parent.frame())
 
 {
   calibration <- 0
