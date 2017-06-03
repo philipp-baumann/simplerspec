@@ -182,22 +182,9 @@ tune_model_loocv_q <- function(x, variable,
   env = parent.frame(),
   evaluation_method = "resampling") {
   calibration <- NULL
-  # List of calibration and validation samples
-  # set up a cross-validation scheme
-  # create 10 folds that we will keep for the different
-  # modeling approaches to allow comparison
-  # randomly break the data into 10 partitions
-  # note that k is the total number of samples for leave-one-out
-  # use substitute function to make non-standard evaluation
-  # of variable argument (looks at a function as argument,
-  # sees code used to compute value;
-  # see chapter 13.1 Capturing expressions
-  # in Advanced R (Hadley Wickham)
-  # !! p. 270
+  # r: response
   r <- eval(variable, x$calibration, env)
-  # idx <- caret::createFolds(y = r, k = 10, returnTrain = T) # update ***
-  # idx
-  # inject the index in the trainControl object
+  # Set up leave-one-out cross-validation
   tr_control <- caret::trainControl(method = "LOOCV", # index = idx,
     savePredictions = T)
   tr_control
@@ -218,19 +205,9 @@ tune_model_loocv_q <- function(x, variable,
 tune_model_rcv_q <- function(x, variable,
   env = parent.frame(), evaluation_method = "test_set") {
   calibration <- NULL
-  # List of calibration and validation samples
-  # set up a cross-validation scheme
-  # create 10 folds that we will keep for the different
-  # modeling approaches to allow comparison
-  # randomly break the data into 10 partitions
-  # note that k is the total number of samples for leave-one-out
-  # use substitute function to make non-standard evaluation
-  # of variable argument (looks at a function as argument,
-  # sees code used to compute value;
-  # see chapter 13.1 Capturing expressions
-  # in Advanced R (Hadley Wickham)
-  # !! p. 270
+  # r: response
   r <- eval(variable, x$calibration, env)
+  # set up 5 times repeated 10-fold cross-validation
   idx <- caret::createMultiFolds(y = r, k = 10, times = 5) # update ***
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "repeatedcv", index = idx,
@@ -255,19 +232,11 @@ tune_model_none_q <- function(x, variable,
   env = parent.frame(),
   evaluation_method = "test_set") {
   calibration <- NULL
-  # List of calibration and validation samples
-  # set up a cross-validation scheme
-  # create 10 folds that we will keep for the different
-  # modeling approaches to allow comparison
-  # randomly break the data into 10 partitions
-  # note that k is the total number of samples for leave-one-out
-  # use substitute function to make non-standard evaluation
-  # of variable argument (looks at a function as argument,
-  # sees code used to compute value;
-  # see chapter 13.1 Capturing expressions
-  # in Advanced R (Hadley Wickham)
-  # !! p. 270
+  # r: response
   r <- eval(variable, x$calibration, env)
+  # Set trainControl argument to "none" so that caret::train will only fit
+  # one model to the entire training set;
+  # use a fixed number of PLS components instead
   idx <- caret::createFolds(y = r, k = 10, returnTrain = T) # update ***
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "none", index = idx,
