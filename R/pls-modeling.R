@@ -836,6 +836,15 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
       call. = FALSE)
     resampling_method <- cv
   }
+  # Change values for resampling_method argument
+  if(resampling_method == "LOOCV") {
+    warning("value 'LOOCV' (leave one out cross-validation) for argument resampling_method is deprecated; please use value 'loocv' instead.")
+    resampling_method <- "loocv"
+  }
+  if(resampling_method == "repeatedcv") {
+     warning("value 'repeatedcv' (repeated k-fold cross-validation) for argument resampling_method is deprecated; please use value 'rep_kfold_cv' instead.")
+    resampling_method <- "rep_kfold_cv"
+  }
 
   list_sampled <- ken_stone_q(
     spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
