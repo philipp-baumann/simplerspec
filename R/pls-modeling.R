@@ -852,11 +852,11 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
     invert = substitute(invert)
   )
   # Check on method for cross-validation to be used in caret model tuning ------
-  if(resampling_method == "LOOCV") {
+  if(resampling_method == "loocv") {
     # leave-one-out cross-validation
     tr_control <- tune_model_loocv_q(list_sampled,
       substitute(variable), env)
-  } else if (resampling_method == "repeatedcv") {
+  } else if (resampling_method == "rep_kfold_cv") {
     # repeated k-fold cross-validation
     tr_control <- tune_model_rcv_q(list_sampled,
       substitute(variable), env)
