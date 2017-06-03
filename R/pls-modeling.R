@@ -136,13 +136,13 @@ ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
 #' @description Uses function from caret to to model tuning
 #' for PLS regression.
 #' @param x list from calibration sampling
-#' @param variable response variable for PLS regression, supplied
+#' @param response response variable for PLS regression, supplied
 #' as character expression
 #' @param validation Logical expression weather an independent
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model_q <- function(x, variable,
+tune_model_q <- function(x, response,
   env = parent.frame(), evaluation_method = "resampling") {
   calibration <- NULL
   # List of calibration and validation samples
@@ -157,7 +157,7 @@ tune_model_q <- function(x, variable,
   # see chapter 13.1 Capturing expressions
   # in Advanced R (Hadley Wickham)
   # !! p. 270
-  r <- eval(variable, x$calibration, env)
+  r <- eval(response, x$calibration, env)
   idx <- caret::createFolds(y = r, k = 10, returnTrain = TRUE) # update ***
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "cv", index = idx,
@@ -171,18 +171,18 @@ tune_model_q <- function(x, variable,
 #' @description Uses function from caret to to model tuning
 #' for PLS regression.
 #' @param x list from calibration sampling
-#' @param variable response variable for PLS regression, supplied
+#' @param response response variable for PLS regression, supplied
 #' as character expression
 #' @param validation Logical expression weather an independent
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model_loocv_q <- function(x, variable,
+tune_model_loocv_q <- function(x, response,
   env = parent.frame(),
   evaluation_method = "resampling") {
   calibration <- NULL
   # r: response
-  r <- eval(variable, x$calibration, env)
+  r <- eval(response, x$calibration, env)
   # Set up leave-one-out cross-validation
   tr_control <- caret::trainControl(method = "LOOCV", # index = idx,
     savePredictions = TRUE)
@@ -195,17 +195,17 @@ tune_model_loocv_q <- function(x, variable,
 #' @description Uses function from caret to to model tuning
 #' for PLS regression.
 #' @param x list from calibration sampling
-#' @param variable response variable for PLS regression, supplied
+#' @param response response variable for PLS regression, supplied
 #' as character expression
 #' @param validation Logical expression weather an independent
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model_rcv_q <- function(x, variable,
+tune_model_rcv_q <- function(x, response,
   env = parent.frame(), evaluation_method = "test_set") {
   calibration <- NULL
   # r: response
-  r <- eval(variable, x$calibration, env)
+  r <- eval(response, x$calibration, env)
   # set up 5 times repeated 10-fold cross-validation
   idx <- caret::createMultiFolds(y = r, k = 10, times = 5) # update ***
   # inject the index in the trainControl object
@@ -221,18 +221,18 @@ tune_model_rcv_q <- function(x, variable,
 #' @description Uses function from caret to set model tuning to none
 #' for PLS regression.
 #' @param x list from calibration sampling
-#' @param variable response variable for PLS regression, supplied
+#' @param response response variable for PLS regression, supplied
 #' as character expression
 #' @param validation Logical expression weather an independent
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model_none_q <- function(x, variable,
+tune_model_none_q <- function(x, response,
   env = parent.frame(),
   evaluation_method = "test_set") {
   calibration <- NULL
   # r: response
-  r <- eval(variable, x$calibration, env)
+  r <- eval(response, x$calibration, env)
   # Set trainControl argument to "none" so that caret::train will only fit
   # one model to the entire training set;
   # use a fixed number of PLS components instead
@@ -247,16 +247,16 @@ tune_model_none_q <- function(x, variable,
 #' @description Uses function from caret to to model tuning
 #' for PLS regression.
 #' @param x list from calibration sampling
-#' @param variable response variable for PLS regression, supplied
+#' @param response response variable for PLS regression, supplied
 #' as character expression
 #' @param validation Logical expression weather an independent
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model <- function(x, variable,
+tune_model <- function(x, response,
   env = parent.frame(),
   evaluation_method = "resampling") {
-  tune_model_q(x, substitute(variable), env)
+  tune_model_q(x, substitute(response), env)
 }
 
 # Fit a PLS regression model using the caret package ------------
@@ -269,20 +269,20 @@ tune_model <- function(x, variable,
 #' set, validation set, and model tuning options
 #' @param validation Logical expression weather independent
 #' validation is performed
-#' @param variable Response variable to be modeled
+#' @param response Response variable to be modeled
 #' @param tr_control Object that defines controlling parameters
 #' of the desired internal validation framework
 #' @param env Environment where function is evaluated
 #' @export
 fit_pls_q <- function(x,
   evaluation_method = "test_resampling",
-  variable, tr_control, env = parent.frame(),
+  response, tr_control, env = parent.frame(),
   pls_ncomp_max = 20, ncomp_fixed = 5,
   center, scale, tuning_method = "resampling") {
   # Fit a partial least square regression (pls) model
   # center and scale MIR (you can try without)
   calibration <- MIR <- NULL
-  v <- eval(variable, x$calibration, env)
+  v <- eval(response, x$calibration, env)
   # ? Is it really necessary to evaluate this in the parent frame?
   pls_ncomp_max <- eval(pls_ncomp_max, envir = parent.frame())
   # Evaluate fixed number of PLS regression components
@@ -337,13 +337,13 @@ fit_pls_q <- function(x,
 #' set, validation set, and model tuning options
 #' @param validation Logical expression weather independent
 #' validation is performed
-#' @param variable Response variable to be modeled
+#' @param response Response variable to be modeled
 #' @param env Environment where function is evaluated
 #' @export
 fit_pls <- function(x, validation = TRUE,
-  variable, env = parent.frame()) {
+  response, env = parent.frame()) {
   q(x = x, validation = TRUE, evaluation_method = "resampling",
-    variable = substitute(variable), env
+    response = substitute(response), env
   )
 }
 
@@ -358,18 +358,18 @@ fit_pls <- function(x, validation = TRUE,
 #' set, validation set, and model tuning options
 #' @param validation Logical expression weather independent
 #' validation is performed
-#' @param variable Response variable to be modeled
+#' @param response Response variable to be modeled
 #' @param tr_control Object that defines controlling parameters
 #' of the desired internal validation framework
 #' @param env Environment where function is evaluated
 #' @export
 fit_rf_q <- function(x,
   validation = TRUE, evaluation_method = "resampling",
-  variable, tr_control, ntree_max = 500, env = parent.frame()) {
+  response, tr_control, ntree_max = 500, env = parent.frame()) {
   # Fit a partial least square regression (pls) model
   # center and scale MIR (you can try without)
   calibration <- MIR <- NULL
-  v <- eval(variable, x$calibration, env)
+  v <- eval(response, x$calibration, env)
   ntree_max <- eval(ntree_max, envir = parent.frame())
   if (tibble::is_tibble(x$calibration)) {
     spc_pre <- data.table::rbindlist(x$calibration$spc_pre)
@@ -402,8 +402,8 @@ fit_rf_q <- function(x,
 #' frame with combined spectral and chemical data
 #' @param pls_model List with PLS regression model output from
 #' the caret package
-#' @param variable Response variable (e.g. chemical property) to be
-#' modelled (needs to be non-quoted expression). \code{variable}
+#' @param response Response variable (e.g. chemical property) to be
+#' modelled (needs to be non-quoted expression). \code{response}
 #' needs to be a column name in the \code{validation} data.frame
 #' (element of \code{x})
 #' @param validation Logical expression if independent validation
@@ -415,7 +415,7 @@ fit_rf_q <- function(x,
 #' called. Default argument of \code{env} is
 #' \code{parent.frame()}
 #' @export
-evaluate_pls_q <- function(x, pls_model, variable,
+evaluate_pls_q <- function(x, pls_model, response,
   evaluation_method,
   tuning_method, print = TRUE, env = parent.frame()) {
   # Set global variables to NULL to avoid R CMD check notes
@@ -437,11 +437,11 @@ evaluate_pls_q <- function(x, pls_model, variable,
     #)
     # Calculate training (calibration) and test (validation) data
     # predictions based on pls model with calibration data
-    v <- eval(variable, x$validation, env)
+    r <- eval(response, x$validation, env)
     if (tibble::is_tibble(x$validation)) {
       spc_pre <- data.table::rbindlist(x$validation$spc_pre)
       predobs_val <- caret::extractPrediction(list_models,
-        testX = spc_pre, testY = v) # update ***
+        testX = spc_pre, testY = r) # update ***
       # Append sample_id column to predobs_val data.frame
       # extract sample_id from validation set
       predobs_val$sample_id <- c(
@@ -449,7 +449,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
     } else {
       # depreciated
       predobs_val <- caret::extractPrediction(list_models,
-        testX = x$validation$MIR, testY = v) # update ***
+        testX = x$validation$MIR, testY = r) # update ***
     }
     # Create new data frame column <object>
     predobs_val$object <- predobs_val$model
@@ -550,14 +550,14 @@ evaluate_pls_q <- function(x, pls_model, variable,
   obs_cal <- subset(predobs_val, dataType == "Calibration")$obs
   # Get name of predicted variable; see p. 261 of book
   # "Advanced R" (Hadley Wickham)
-  variable_name <- deparse(variable)
+  response_name <- deparse(response)
 
   if (evaluation_method == "test_set") {
     # Assign validation set to separate data frame
     obs_val <- subset(predobs_val, dataType == "Validation")$obs
     # before: deparse(substitute(variable))
     df_range <- data.frame(
-      variable = rep(variable_name, 2),
+      response = rep(response_name, 2),
       dataType = c("Calibration", "Validation"),
       min_obs = c(range(obs_cal)[1], range(obs_val)[1]),
       median_obs = c(median(obs_cal), median(obs_val)),
@@ -570,7 +570,7 @@ evaluate_pls_q <- function(x, pls_model, variable,
     # Assign cross-validation set to separate data frame
     obs_val <- subset(predobs_val, dataType == "Cross-validation")$obs
     df_range <- data.frame(
-      variable = rep(variable_name, 2),
+      response = rep(response_name, 2),
       dataType = c("Calibration", "Cross-validation"),
       min_obs = c(range(obs_cal)[1], range(obs_val)[1]),
       median_obs = c(median(obs_cal), median(obs_val)),
@@ -682,9 +682,9 @@ evaluate_pls_q <- function(x, pls_model, variable,
   ## ggplot graph for model comparison
   ## (arranged later in panels)
   x_label <- paste0("Observed ",
-    as.character(variable_name))
+    as.character(response_name))
   y_label <- paste0("Predicted ",
-    as.character(variable_name))
+    as.character(response_name))
 
   # Create model evaluation plot -----------------------------------------------
   if(pls_model$method == "pls") {
@@ -773,13 +773,13 @@ evaluate_pls_q <- function(x, pls_model, variable,
 #' @param print Logical expression weather graphs shall be printed
 #' @param validation Logical expression weather independent
 #' validation is performed
-#' @param variable Response variable (without quotes)
+#' @param response Response variable (without quotes)
 #' @param env Environment where function is evaluated
 #' @export
 # Note: check non standard evaluation, argument passing...
 pls_ken_stone <- function(
   spec_chem,
-  variable,
+  variable, response, # response depreciated
   evaluation_method = "test_set", validation = TRUE, # validation depreciated
   split_method = "ken_stone",
   tuning_method = "resampling",
@@ -800,7 +800,7 @@ pls_ken_stone <- function(
 
   # Perform calibration sampling
   # 20170602: revise argument name and values of validation;
-  # Suggestion: replace validation = TRUE or FALSE with
+  # Replace validation = TRUE or FALSE with
   # new argument evaluation_method = “test_set” or “resampling”
   if (!missing(validation)) {
     warning("argument validation is deprecated; please use evaluation_method instead.",
@@ -823,6 +823,12 @@ pls_ken_stone <- function(
      warning("value 'repeatedcv' (repeated k-fold cross-validation) for argument resampling_method is deprecated; please use value 'rep_kfold_cv' instead.")
     resampling_method <- "rep_kfold_cv"
   }
+  # Depreciate variable argument and use respose instead
+  if (!missing(variable)) {
+    warning("argument variable is deprecated; please use response instead.",
+      call. = FALSE)
+    response <- variable
+  }
 
   list_sampled <- ken_stone_q(
     spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
@@ -833,42 +839,42 @@ pls_ken_stone <- function(
   if(resampling_method == "loocv") {
     # leave-one-out cross-validation
     tr_control <- tune_model_loocv_q(list_sampled,
-      substitute(variable), env)
+      substitute(response), env)
   } else if (resampling_method == "rep_kfold_cv") {
     # repeated k-fold cross-validation
     tr_control <- tune_model_rcv_q(list_sampled,
-      substitute(variable), env)
+      substitute(response), env)
   } else if (resampling_method == "none") {
     # no resampling; calls caret::train(..., method = "none");
     # fixed number of PLS components; tuning_method argument has also
     # to be set to "none"
     tr_control <- tune_model_none_q(list_sampled,
-      substitute(variable), env)
+      substitute(response), env)
   } else if (resampling_method == "kfold_cv") {
     # k-fold cross validation
     tr_control <- tune_model_q(list_sampled,
-      substitute(variable), env)
+      substitute(response), env)
   }
   # Fit a pls calibration model; pls object is output from caret::train()
   # and has class train
   if(tuning_method == "resampling") {
     pls <- fit_pls_q(x = list_sampled,
       evaluation_method = "test_set",
-      variable = substitute(variable), tr_control = tr_control,
+      response = substitute(response), tr_control = tr_control,
       center = center, scale = scale,
       pls_ncomp_max = substitute(pls_ncomp_max), env
       )
   } else if (tuning_method == "none") {
     pls <- fit_pls_q(x = list_sampled,
       evaluation_method = "test_set",
-      variable = substitute(variable), tr_control = tr_control,
+      response = substitute(response), tr_control = tr_control,
       center = center, scale = scale, tuning_method = "none",
       ncomp_fixed = substitute(ncomp_fixed), env
       )
   }
   # Evaluate model accuracy (predicted vs. observed)
   stats <- evaluate_pls_q(x = list_sampled, pls_model = pls,
-    variable = substitute(variable),
+    response = substitute(response),
     evaluation_method = substitute(evaluation_method),
     tuning_method = substitute(tuning_method),
     env = parent.frame()
@@ -892,32 +898,46 @@ pls_ken_stone <- function(
 #' @param print Logical expression weather graphs shall be printed
 #' @param validation Logical expression weather independent
 #' validation is performed
-#' @param variable Response variable (without quotes)
+#' @param response Response variable (without quotes)
 #' @param env Environment where function is evaluated
 #' @export
 # Note: check non standard evaluation, argument passing...
 rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
     pc = 2, print = TRUE,
-    validation = TRUE, evaluation_method = "test_set",
-    variable,
+    evaluation_method = "test_set", validation, # Validation is depreciated
+    response, variable, # variable depreciated
     tuning_method = "resampling", ntree_max = 500,
     env = parent.frame()) {
   calibration <- 0
+
+  # Replace validation = TRUE or FALSE with
+  # new argument evaluation_method = “test_set” or “resampling”
+  if (!missing(validation)) {
+    warning("argument validation is deprecated; please use evaluation_method instead.",
+      call. = FALSE)
+    evaluation_method <- validation
+  }
+  if (!missing(variable)) {
+    warning("argument variable is deprecated; please use response instead.",
+      call. = FALSE)
+    response <- variable
+  }
+
   # Calibration sampling
   list_sampled <- ken_stone_q(
     spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
     validation = TRUE
   )
   tr_control <- tune_model_q(list_sampled,
-    substitute(variable), env
+    substitute(response), env
   )
   rf <- fit_rf_q(x = list_sampled,
     validation = TRUE, evaluation_method = "test_set",
-    variable = substitute(variable), tr_control = tr_control, env,
+    response = substitute(response), tr_control = tr_control, env,
     ntree_max = substitute(ntree_max)
   )
   stats <- evaluate_pls_q(x = list_sampled, pls_model = rf,
-    variable = substitute(variable), validation = substitute(validation),
+    response = substitute(response), validation = substitute(validation),
     tuning_method = substitute(tuning_method),
     env = parent.frame()
   )
