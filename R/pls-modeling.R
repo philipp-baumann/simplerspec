@@ -158,11 +158,11 @@ tune_model_q <- function(x, variable,
   # in Advanced R (Hadley Wickham)
   # !! p. 270
   r <- eval(variable, x$calibration, env)
-  idx <- caret::createFolds(y = r, k = 10, returnTrain = T) # update ***
+  idx <- caret::createFolds(y = r, k = 10, returnTrain = TRUE) # update ***
   idx
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "cv", index = idx,
-    savePredictions = T)
+    savePredictions = TRUE)
   tr_control
 }
 
@@ -186,7 +186,7 @@ tune_model_loocv_q <- function(x, variable,
   r <- eval(variable, x$calibration, env)
   # Set up leave-one-out cross-validation
   tr_control <- caret::trainControl(method = "LOOCV", # index = idx,
-    savePredictions = T)
+    savePredictions = TRUE)
   tr_control
 }
 
@@ -211,7 +211,7 @@ tune_model_rcv_q <- function(x, variable,
   idx <- caret::createMultiFolds(y = r, k = 10, times = 5) # update ***
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "repeatedcv", index = idx,
-    savePredictions = T)
+    savePredictions = TRUE)
   tr_control
 }
 
@@ -237,10 +237,10 @@ tune_model_none_q <- function(x, variable,
   # Set trainControl argument to "none" so that caret::train will only fit
   # one model to the entire training set;
   # use a fixed number of PLS components instead
-  idx <- caret::createFolds(y = r, k = 10, returnTrain = T) # update ***
+  idx <- caret::createFolds(y = r, k = 10, returnTrain = TRUE) # update ***
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "none", index = idx,
-    savePredictions = T)
+    savePredictions = TRUE)
   tr_control
 }
 
@@ -292,7 +292,7 @@ fit_pls_q <- function(x,
   # Test whether the spectral object has the class "tibble"
   if (tibble::is_tibble(x$calibration)) {
     spc_pre <- data.table::rbindlist(x$calibration$spc_pre)
-    if(scale == TRUE & center == TRUE) {
+    if(scale == TRUE && center == TRUE) {
       if(tuning_method == "resampling") {
         # Fit model with parameter tuning
         pls_model <- caret::train(x = spc_pre, y = v,
