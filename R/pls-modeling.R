@@ -159,7 +159,6 @@ tune_model_q <- function(x, variable,
   # !! p. 270
   r <- eval(variable, x$calibration, env)
   idx <- caret::createFolds(y = r, k = 10, returnTrain = TRUE) # update ***
-  idx
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "cv", index = idx,
     savePredictions = TRUE)
