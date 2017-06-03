@@ -829,27 +829,35 @@ pls_ken_stone <- function(spec_chem, split_method = "ken_stone",
       call. = FALSE)
     evaluation_method <- validation
   }
+  # Depreciate argument cv, use more consistent and verbose argument
+  # resampling_method
+  if (!missing(cv)) {
+    warning("argument cv is deprecated; please use resampling_method instead.",
+      call. = FALSE)
+    resampling_method <- cv
+  }
+
   list_sampled <- ken_stone_q(
     spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
     evaluation_method = substitute(evaluation_method),
     invert = substitute(invert)
   )
   # Check on method for cross-validation to be used in caret model tuning ------
-  if(cv == "LOOCV") {
+  if(resampling_method == "LOOCV") {
     # leave-one-out cross-validation
     tr_control <- tune_model_loocv_q(list_sampled,
       substitute(variable), env)
-  } else if (cv == "repeatedcv") {
+  } else if (resampling_method == "repeatedcv") {
     # repeated k-fold cross-validation
     tr_control <- tune_model_rcv_q(list_sampled,
       substitute(variable), env)
-  } else if (cv == "none") {
+  } else if (resampling_method == "none") {
     # no resampling; calls caret::train(..., method = "none");
     # fixed number of PLS components; tuning_method argument has also
     # to be set to "none"
     tr_control <- tune_model_none_q(list_sampled,
       substitute(variable), env)
-  } else {
+  } else if (resampling_method == "kfold_cv") {
     # k-fold cross validation
     tr_control <- tune_model_q(list_sampled,
       substitute(variable), env)
