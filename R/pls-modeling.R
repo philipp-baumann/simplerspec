@@ -468,7 +468,7 @@ evaluate_pls_q <- function(x, pls_model, response,
   # Problems can occur e.g. if a list element contains NULL element;
   # see
   # http://stackoverflow.com/questions/7719741/how-to-test-if-list-element-exists
-  } else if (evaluation_method == "resampling" & tuning_method == "resampling") {
+  } else if (evaluation_method == "resampling" && tuning_method == "resampling") {
     # Good discussion on which cross-validation results are returned from caret
     # Extract best tuning parameters and associated cv predictions
     # http://stats.stackexchange.com/questions/219154/how-does-cross-validation-in-train-caret-precisely-work
@@ -556,7 +556,7 @@ evaluate_pls_q <- function(x, pls_model, response,
       CV = c(sd(obs_cal) / mean(obs_cal) * 100,
         sd(obs_val) / mean(obs_val) * 100)
     )
-  } else if (evaluation_method == "resampling" & tuning_method == "resampling") {
+  } else if (evaluation_method == "resampling" && tuning_method == "resampling") {
     # Assign cross-validation set to separate data frame
     obs_val <- subset(predobs_val, dataType == "Cross-validation")$obs
     df_range <- data.frame(
