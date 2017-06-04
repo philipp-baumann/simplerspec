@@ -944,7 +944,8 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
     ntree_max = substitute(ntree_max)
   )
   stats <- evaluate_pls_q(x = list_sampled, pls_model = rf,
-    response = substitute(response), validation = substitute(validation),
+    response = substitute(response),
+    evaluation_method = substitute(evaluation_method),
     tuning_method = substitute(tuning_method),
     env = parent.frame()
   )
