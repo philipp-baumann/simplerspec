@@ -10,12 +10,16 @@
 #' @param validation Logical expression weather
 #' calibration sampling is performed
 #' (\code{TRUE} or \code{FALSE}).
-#' @usage ken_stone(spec_chem, ratio_val, pc, print = TRUE,
+#' @usage split_data(spec_chem, ratio_val, pc, print = TRUE,
 #' validation = TRUE)
 #' @export
-ken_stone_q <- function(spec_chem, ratio_val, split_method, pc = 2,
-  print = TRUE,
+split_data_q <- function(
+  spec_chem,
+  split_method,
   evaluation_method = "test_set",
+  ratio_val,
+  pc = 2,
+  print = TRUE,
   invert = FALSE, env = parent.frame()) {
   MIR <- model <- type <- PC1 <- PC2 <- NULL
 
@@ -779,7 +783,7 @@ evaluate_pls_q <- function(x, pls_model, response,
 # Note: check non standard evaluation, argument passing...
 pls_ken_stone <- function(
   spec_chem,
-  response, variable, # variable depreciated
+  response, # variable not valid anymore
   evaluation_method = "test_set", validation = TRUE, # validation depreciated
   split_method = "ken_stone",
   tuning_method = "resampling",
@@ -801,9 +805,7 @@ pls_ken_stone <- function(
   # Depreciate argument variable, use more specific term for the response
   # to be predicted by spectral modeling
   if (!missing(variable)) {
-    warning("argument variable is deprecated; please use response instead.",
-      call. = FALSE)
-    response <- variable
+    stop("argument variable has been replaced by response for simplerspec_0.1.0")
   }
   # 20170602: revise argument name and values of validation;
   # Replace validation = TRUE or FALSE with
@@ -829,15 +831,9 @@ pls_ken_stone <- function(
      warning("value 'repeatedcv' (repeated k-fold cross-validation) for argument resampling_method is deprecated; please use value 'rep_kfold_cv' instead.")
     resampling_method <- "rep_kfold_cv"
   }
-  # Depreciate variable argument and use respose instead
-  if (!missing(variable)) {
-    warning("argument variable is deprecated; please use response instead.",
-      call. = FALSE)
-    response <- variable
-  }
 
   # Perform calibration sampling
-  list_sampled <- ken_stone_q(
+  list_sampled <- split_data_q(
     spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
     evaluation_method = substitute(evaluation_method),
     invert = substitute(invert)
@@ -931,7 +927,7 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
   }
 
   # Calibration sampling
-  list_sampled <- ken_stone_q(
+  list_sampled <- split_data_q(
     spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
     validation = TRUE
   )
