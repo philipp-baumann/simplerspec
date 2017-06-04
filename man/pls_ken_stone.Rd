@@ -4,12 +4,12 @@
 \alias{pls_ken_stone}
 \title{Calibration sampling, model tuning, and PLS regression}
 \usage{
-pls_ken_stone(spec_chem, response, evaluation_method = "test_set",
-  validation = TRUE, split_method = "ken_stone",
-  tuning_method = "resampling", resampling_method = "kfold_cv",
-  cv = "kfold_cv", ratio_val = 1/3, invert = TRUE, pls_ncomp_max = 20,
-  ncomp_fixed = 5, pc = 2, print = TRUE, center = TRUE, scale = TRUE,
-  env = parent.frame())
+pls_ken_stone(spec_chem, response, variable = NULL,
+  evaluation_method = "test_set", validation = TRUE,
+  split_method = "ken_stone", tuning_method = "resampling",
+  resampling_method = "kfold_cv", cv = "kfold_cv", ratio_val = 1/3,
+  invert = TRUE, pls_ncomp_max = 20, ncomp_fixed = 5, pc = 2,
+  print = TRUE, center = TRUE, scale = TRUE, env = parent.frame())
 }
 \arguments{
 \item{spec_chem}{data.frame that contains IR spectroscopy
