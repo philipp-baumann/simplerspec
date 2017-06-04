@@ -146,7 +146,7 @@ split_data_q <- function(
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model_q <- function(x, response, env = parent.frame()) {
+control_train_q <- function(x, response, env = parent.frame()) {
   calibration <- NULL
   # List of calibration and validation samples
   # set up a cross-validation scheme
@@ -179,7 +179,7 @@ tune_model_q <- function(x, response, env = parent.frame()) {
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model_loocv_q <- function(x, response, env = parent.frame()) {
+control_train_loocv_q <- function(x, response, env = parent.frame()) {
   calibration <- NULL
   # r: response
   response <- eval(response, x$calibration, env)
@@ -199,7 +199,7 @@ tune_model_loocv_q <- function(x, response, env = parent.frame()) {
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model_rcv_q <- function(x, response, env = parent.frame()) {
+control_train_rcv_q <- function(x, response, env = parent.frame()) {
   calibration <- NULL
   # r: response
   response <- eval(response, x$calibration, env)
@@ -223,7 +223,7 @@ tune_model_rcv_q <- function(x, response, env = parent.frame()) {
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model_none_q <- function(x, response, env = parent.frame()) {
+control_train_none_q <- function(x, response, env = parent.frame()) {
   calibration <- NULL
   # r: response
   response <- eval(response, x$calibration, env)
@@ -245,8 +245,8 @@ tune_model_none_q <- function(x, response, env = parent.frame()) {
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model <- function(x, response, env = parent.frame()) {
-  tune_model_q(x, substitute(response), env)
+control_train <- function(x, response, env = parent.frame()) {
+  control_train_q(x, substitute(response), env)
 }
 
 # Fit a PLS regression model using the caret package ------------
@@ -828,21 +828,21 @@ pls_ken_stone <- function(
   # Check on method for cross-validation to be used in caret model tuning ------
   if(resampling_method == "loocv") {
     # leave-one-out cross-validation
-    tr_control <- tune_model_loocv_q(list_sampled,
+    tr_control <- controL_train_loocv_q(list_sampled,
       substitute(response), env)
   } else if (resampling_method == "rep_kfold_cv") {
     # repeated k-fold cross-validation
-    tr_control <- tune_model_rcv_q(list_sampled,
+    tr_control <- control_train_rcv_q(list_sampled,
       substitute(response), env)
   } else if (resampling_method == "none") {
     # no resampling; calls caret::train(..., method = "none");
     # fixed number of PLS components; tuning_method argument has also
     # to be set to "none"
-    tr_control <- tune_model_none_q(list_sampled,
+    tr_control <- control_train_none_q(list_sampled,
       substitute(response), env)
   } else if (resampling_method == "kfold_cv") {
     # k-fold cross validation
-    tr_control <- tune_model_q(list_sampled,
+    tr_control <- control_train_q(list_sampled,
       substitute(response), env)
   }
   # Fit a pls calibration model; pls object is output from caret::train()
@@ -918,7 +918,7 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
     spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
     validation = TRUE
   )
-  tr_control <- tune_model_q(list_sampled,
+  tr_control <- control_train_q(list_sampled,
     substitute(response), env
   )
   rf <- fit_rf_q(x = list_sampled,
