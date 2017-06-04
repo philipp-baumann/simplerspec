@@ -278,42 +278,36 @@ train_pls_q <- function(x,
   # Evaluate fixed number of PLS regression components
   # from ncomp_fixed object in parent frame (pls_ken_stone function)
   ncomp_fixed <- eval(ncomp_fixed, envir = parent.frame())
+
   # Test whether the spectral object has the class "tibble"
-  if (tibble::is_tibble(x$calibration)) {
-    spc_pre <- data.table::rbindlist(x$calibration$spc_pre)
-    if(scale == TRUE && center == TRUE) {
-      if(tuning_method == "resampling") {
-        # Fit model with parameter tuning
-        pls_model <- caret::train(x = spc_pre, y = r,
-          method = "pls",
-          tuneLength = pls_ncomp_max,
-          trControl = tr_control,
-          preProcess = c("center", "scale"))
-      } else if (tuning_method == "none") {
-        # Fit model without parameter tuning
-        pls_model <- caret::train(x = spc_pre, y = r,
-          method = "pls",
-          trControl = tr_control,
-          preProcess = c("center", "scale"),
-          tuneGrid = data.frame(ncomp = ncomp_fixed))
-      }
-    } else {
-      # No centering and scaling!
+  if(!tibble::is_tibble(x$calibration)) {
+    stop("spec_chem needs to be of class tibble")
+  }
+
+  spc_pre <- data.table::rbindlist(x$calibration$spc_pre)
+  if(scale == TRUE && center == TRUE) {
+    if(tuning_method == "resampling") {
+      # Fit model with parameter tuning
       pls_model <- caret::train(x = spc_pre, y = r,
         method = "pls",
         tuneLength = pls_ncomp_max,
-        trControl = tr_control)
+        trControl = tr_control,
+        preProcess = c("center", "scale"))
+    } else if (tuning_method == "none") {
+      # Fit model without parameter tuning
+      pls_model <- caret::train(x = spc_pre, y = r,
+        method = "pls",
+        trControl = tr_control,
+        preProcess = c("center", "scale"),
+        tuneGrid = data.frame(ncomp = ncomp_fixed))
     }
   } else {
-    # depreciated list interface
-    pls_model <- caret::train(x = x$calibration$MIR, y = r,
+    # No centering and scaling!
+    pls_model <- caret::train(x = spc_pre, y = r,
       method = "pls",
       tuneLength = pls_ncomp_max,
-      trControl = tr_control,
-      preProcess = c("center", "scale")
-    )
+      trControl = tr_control)
   }
-  pls_model
 }
 
 
