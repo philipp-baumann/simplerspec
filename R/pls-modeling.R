@@ -828,7 +828,7 @@ pls_ken_stone <- function(
   # Check on method for cross-validation to be used in caret model tuning ------
   if(resampling_method == "loocv") {
     # leave-one-out cross-validation
-    tr_control <- controL_train_loocv_q(list_sampled,
+    tr_control <- control_train_loocv_q(list_sampled,
       substitute(response), env)
   } else if (resampling_method == "rep_kfold_cv") {
     # repeated k-fold cross-validation
