@@ -10,8 +10,7 @@
 #' @param validation Logical expression weather
 #' calibration sampling is performed
 #' (\code{TRUE} or \code{FALSE}).
-#' @usage split_data(spec_chem, ratio_val, pc, print = TRUE,
-#' validation = TRUE)
+#' @usage split_data(spec_chem, evaluation_method, ratio_val, pc, print = TRUE)
 #' @export
 split_data_q <- function(
   spec_chem,
@@ -23,9 +22,9 @@ split_data_q <- function(
   invert = FALSE, env = parent.frame()) {
   MIR <- model <- type <- PC1 <- PC2 <- NULL
 
-  # Evaluate the invert argument in the parent function (pls_ken_stone)
+  # Evaluate the invert argument in the parent function (fit_pls)
   invert <- eval(invert, envir = parent.frame())
-  # Evaluate the validation argument in the parent function (pls_ken_stone)
+  # Evaluate the validation argument in the parent function (fit_pls)
   evaluation_method <- eval(evaluation_method, envir = parent.frame())
 
   # Slice based on sample_id if spectral data is in tibble class
@@ -276,7 +275,7 @@ train_pls_q <- function(x,
   # ? Is it really necessary to evaluate this in the parent frame?
   pls_ncomp_max <- eval(pls_ncomp_max, envir = parent.frame())
   # Evaluate fixed number of PLS regression components
-  # from ncomp_fixed object in parent frame (pls_ken_stone function)
+  # from ncomp_fixed object in parent frame (fit_pls function)
   ncomp_fixed <- eval(ncomp_fixed, envir = parent.frame())
 
   # Test whether the spectral object has the class "tibble"
@@ -451,7 +450,7 @@ evaluate_pls_q <- function(x, pls_model, response,
       function(x) summary_df(x, "obs", "pred")
     )
   # Check whether method = "none" argument is selected in train();
-  # this is the case when ncomp_fixed argument in pls_ken_stone() is
+  # this is the case when ncomp_fixed argument in fit_pls() is
   # evaluated
   # Checking for the existence of a <pred> element in the train function output
   # list can be dangerous and doesn't work in all cases when using
@@ -758,7 +757,7 @@ evaluate_pls_q <- function(x, pls_model, response,
 #' @param env Environment where function is evaluated
 #' @export
 # Note: check non standard evaluation, argument passing...
-pls_ken_stone <- function(
+fit_pls <- function(
   spec_chem,
   response, variable = NULL, # variable not valid anymore
   evaluation_method = "test_set", validation = TRUE, # validation depreciated
@@ -864,6 +863,11 @@ pls_ken_stone <- function(
     pls_model = pls, stats = stats$stats, p_model = stats$p_model,
     predobs_val = stats$predobs_val)
 }
+
+## Old function name of `fit_pls`: `pls_ken_stone`
+
+#' @export
+pls_ken_stone <- fit_pls
 
 ## Random forest modeling in one function =======================
 

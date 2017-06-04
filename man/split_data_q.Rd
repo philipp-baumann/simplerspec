@@ -4,8 +4,7 @@
 \alias{split_data_q}
 \title{Split spectra into calibration and validation sets}
 \usage{
-split_data(spec_chem, ratio_val, pc, print = TRUE,
-validation = TRUE)
+split_data(spec_chem, evaluation_method, ratio_val, pc, print = TRUE)
 }
 \arguments{
 \item{spec_chem}{data.frame that contains chemical
