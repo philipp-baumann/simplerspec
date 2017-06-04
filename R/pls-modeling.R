@@ -146,8 +146,7 @@ split_data_q <- function(
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model_q <- function(x, response,
-  env = parent.frame(), evaluation_method = "resampling") {
+tune_model_q <- function(x, response, env = parent.frame()) {
   calibration <- NULL
   # List of calibration and validation samples
   # set up a cross-validation scheme
@@ -164,9 +163,8 @@ tune_model_q <- function(x, response,
   response <- eval(response, x$calibration, env)
   idx <- caret::createFolds(y = response, k = 10, returnTrain = TRUE)
   # inject the index in the trainControl object
-  tr_control <- caret::trainControl(method = "cv", index = idx,
+  caret::trainControl(method = "cv", index = idx,
     savePredictions = TRUE)
-  tr_control
 }
 
 ## Adapt model tuning to leave-one-out cross-validation ========================
@@ -181,16 +179,12 @@ tune_model_q <- function(x, response,
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model_loocv_q <- function(x, response,
-  env = parent.frame(),
-  evaluation_method = "resampling") {
+tune_model_loocv_q <- function(x, response, env = parent.frame()) {
   calibration <- NULL
   # r: response
   response <- eval(response, x$calibration, env)
   # Set up leave-one-out cross-validation
-  tr_control <- caret::trainControl(method = "LOOCV", # index = idx,
-    savePredictions = TRUE)
-  tr_control
+  caret::trainControl(method = "LOOCV", savePredictions = TRUE)
 }
 
 ## Adapt model tuning to repeated k-fold cross-validation ======================
@@ -205,17 +199,15 @@ tune_model_loocv_q <- function(x, response,
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model_rcv_q <- function(x, response,
-  env = parent.frame(), evaluation_method = "test_set") {
+tune_model_rcv_q <- function(x, response, env = parent.frame()) {
   calibration <- NULL
   # r: response
   response <- eval(response, x$calibration, env)
   # set up 5 times repeated 10-fold cross-validation
   idx <- caret::createMultiFolds(y = response, k = 10, times = 5) # update ***
   # inject the index in the trainControl object
-  tr_control <- caret::trainControl(method = "repeatedcv", index = idx,
+  caret::trainControl(method = "repeatedcv", index = idx,
     savePredictions = TRUE)
-  tr_control
 }
 
 ## Fitting models without parameter tuning =====================================
@@ -231,9 +223,7 @@ tune_model_rcv_q <- function(x, response,
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model_none_q <- function(x, response,
-  env = parent.frame(),
-  evaluation_method = "test_set") {
+tune_model_none_q <- function(x, response, env = parent.frame()) {
   calibration <- NULL
   # r: response
   response <- eval(response, x$calibration, env)
@@ -242,9 +232,7 @@ tune_model_none_q <- function(x, response,
   # use a fixed number of PLS components instead
   idx <- caret::createFolds(y = response, k = 10, returnTrain = TRUE) # update ***
   # inject the index in the trainControl object
-  tr_control <- caret::trainControl(method = "none", index = idx,
-    savePredictions = TRUE)
-  tr_control
+  caret::trainControl(method = "none", index = idx, savePredictions = TRUE)
 }
 
 #' @title Perform model tuning
@@ -257,9 +245,7 @@ tune_model_none_q <- function(x, response,
 #' validation is performed.
 #' @param env Environment where function is evaluated
 #' @export
-tune_model <- function(x, response,
-  env = parent.frame(),
-  evaluation_method = "resampling") {
+tune_model <- function(x, response, env = parent.frame()) {
   tune_model_q(x, substitute(response), env)
 }
 
@@ -286,7 +272,7 @@ fit_pls_q <- function(x,
   # Fit a partial least square regression (pls) model
   # center and scale MIR (you can try without)
   calibration <- MIR <- NULL
-  response <- eval(response, x$calibration, env)
+  r <- eval(response, x$calibration, env)
   # ? Is it really necessary to evaluate this in the parent frame?
   pls_ncomp_max <- eval(pls_ncomp_max, envir = parent.frame())
   # Evaluate fixed number of PLS regression components
@@ -298,14 +284,14 @@ fit_pls_q <- function(x,
     if(scale == TRUE && center == TRUE) {
       if(tuning_method == "resampling") {
         # Fit model with parameter tuning
-        pls_model <- caret::train(x = spc_pre, y = response,
+        pls_model <- caret::train(x = spc_pre, y = r,
           method = "pls",
           tuneLength = pls_ncomp_max,
           trControl = tr_control,
           preProcess = c("center", "scale"))
       } else if (tuning_method == "none") {
         # Fit model without parameter tuning
-        pls_model <- caret::train(x = spc_pre, y = response,
+        pls_model <- caret::train(x = spc_pre, y = r,
           method = "pls",
           trControl = tr_control,
           preProcess = c("center", "scale"),
@@ -313,14 +299,14 @@ fit_pls_q <- function(x,
       }
     } else {
       # No centering and scaling!
-      pls_model <- caret::train(x = spc_pre, y = response,
+      pls_model <- caret::train(x = spc_pre, y = r,
         method = "pls",
         tuneLength = pls_ncomp_max,
         trControl = tr_control)
     }
   } else {
     # depreciated list interface
-    pls_model <- caret::train(x = x$calibration$MIR, y = response,
+    pls_model <- caret::train(x = x$calibration$MIR, y = r,
       method = "pls",
       tuneLength = pls_ncomp_max,
       trControl = tr_control,
@@ -838,6 +824,7 @@ pls_ken_stone <- function(
     evaluation_method = substitute(evaluation_method),
     invert = substitute(invert)
   )
+
   # Check on method for cross-validation to be used in caret model tuning ------
   if(resampling_method == "loocv") {
     # leave-one-out cross-validation
