@@ -779,7 +779,7 @@ evaluate_pls_q <- function(x, pls_model, response,
 # Note: check non standard evaluation, argument passing...
 pls_ken_stone <- function(
   spec_chem,
-  response = NULL, variable, # variable depreciated
+  response = NULL, variable = NULL, # variable depreciated
   evaluation_method = "test_set", validation = TRUE, # validation depreciated
   split_method = "ken_stone",
   tuning_method = "resampling",
