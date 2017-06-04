@@ -783,7 +783,7 @@ evaluate_pls_q <- function(x, pls_model, response,
 # Note: check non standard evaluation, argument passing...
 pls_ken_stone <- function(
   spec_chem,
-  response, # variable not valid anymore
+  response, variable = NULL, # variable not valid anymore
   evaluation_method = "test_set", validation = TRUE, # validation depreciated
   split_method = "ken_stone",
   tuning_method = "resampling",
@@ -804,7 +804,7 @@ pls_ken_stone <- function(
 
   # Depreciate argument variable, use more specific term for the response
   # to be predicted by spectral modeling
-  if (!missing(variable)) {
+  if (!is.null(variable)) {
     stop("argument variable has been replaced by response for simplerspec_0.1.0")
   }
   # 20170602: revise argument name and values of validation;
