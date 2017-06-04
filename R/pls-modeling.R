@@ -916,13 +916,13 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
   # Calibration sampling
   list_sampled <- split_data_q(
     spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
-    validation = TRUE
+    evaluation_method = substitute(evaluation_method)
   )
   tr_control <- control_train_q(list_sampled,
     substitute(response), env
   )
   rf <- fit_rf_q(x = list_sampled,
-    validation = TRUE, evaluation_method = "test_set",
+    evaluation_method = "test_set",
     response = substitute(response), tr_control = tr_control, env,
     ntree_max = substitute(ntree_max)
   )
