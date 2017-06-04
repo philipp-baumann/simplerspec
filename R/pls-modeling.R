@@ -251,7 +251,7 @@ control_train <- function(x, response, env = parent.frame()) {
 
 # Fit a PLS regression model using the caret package ------------
 
-#' @title Fit a PLS regression model
+#' @title Train a PLS regression model
 #' (quoted version of the function)
 #' @description Uses the caret package to perform PLS modeling.
 #' Spectra are centered and scaled prior to modeling.
@@ -264,7 +264,7 @@ control_train <- function(x, response, env = parent.frame()) {
 #' of the desired internal validation framework
 #' @param env Environment where function is evaluated
 #' @export
-fit_pls_q <- function(x,
+train_pls_q <- function(x,
   evaluation_method = "test_resampling",
   response, tr_control, env = parent.frame(),
   pls_ncomp_max = 20, ncomp_fixed = 5,
@@ -313,9 +313,6 @@ fit_pls_q <- function(x,
       preProcess = c("center", "scale")
     )
   }
-  # Collect fitted object into a list
-  # fitList_cal <- list(pls = fit_pls)
-  # fitList_cal
   pls_model
 }
 
@@ -330,9 +327,9 @@ fit_pls_q <- function(x,
 #' @param response Response variable to be modeled
 #' @param env Environment where function is evaluated
 #' @export
-fit_pls <- function(x, validation = TRUE,
-  response, env = parent.frame()) {
-  q(x = x, validation = TRUE, evaluation_method = "resampling",
+train_pls <- function(x, response, evaluation_method = "resampling",
+  env = parent.frame()) {
+  train_pls_q(x = x, evaluation_method = substitute(evaluation_method),
     response = substitute(response), env
   )
 }
@@ -848,14 +845,14 @@ pls_ken_stone <- function(
   # Fit a pls calibration model; pls object is output from caret::train()
   # and has class train
   if(tuning_method == "resampling") {
-    pls <- fit_pls_q(x = list_sampled,
+    pls <- train_pls_q(x = list_sampled,
       evaluation_method = "test_set",
       response = substitute(response), tr_control = tr_control,
       center = center, scale = scale,
       pls_ncomp_max = substitute(pls_ncomp_max), env
       )
   } else if (tuning_method == "none") {
-    pls <- fit_pls_q(x = list_sampled,
+    pls <- train_pls_q(x = list_sampled,
       evaluation_method = "test_set",
       response = substitute(response), tr_control = tr_control,
       center = center, scale = scale, tuning_method = "none",
