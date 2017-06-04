@@ -420,33 +420,33 @@ evaluate_pls_q <- function(x, pls_model, response,
     response <- eval(response, x$validation, env)
     if (tibble::is_tibble(x$validation)) {
       spc_pre <- data.table::rbindlist(x$validation$spc_pre)
-      predobs_val <- caret::extractPrediction(list_models,
+      predobs <- caret::extractPrediction(list_models,
         testX = spc_pre, testY = response) # update ***
-      # Append sample_id column to predobs_val data.frame
+      # Append sample_id column to predobs data.frame
       # extract sample_id from validation set
-      predobs_val$sample_id <- c(
+      predobs$sample_id <- c(
         x$calibration$sample_id, x$validation$sample_id)
     } else {
       # depreciated
-      predobs_val <- caret::extractPrediction(list_models,
+      predobs <- caret::extractPrediction(list_models,
         testX = x$validation$MIR, testY = response) # update ***
     }
     # Create new data frame column <object>
-    predobs_val$object <- predobs_val$model
+    predobs$object <- predobs$model
 
     # Replace levels "Training" and "Test" in dataType column
     # by "Calibration" and "Validation" (rename levels of factor)
-    predobs_val$dataType <- plyr::revalue(predobs_val$dataType,
+    predobs$dataType <- plyr::revalue(predobs$dataType,
       c("Test" = "Validation", "Training" = "Calibration")
     )
     # Change the order of rows in the data frame
     # Calibration as first level (show Calibration in ggplot graph
     # on left panel)
-    predobs_val$dataType <- factor(predobs_val$dataType,
+    predobs$dataType <- factor(predobs$dataType,
       levels = c("Calibration", "Validation"))
     # Calculate model performance indexes by model and dataType
     # uses package plyr and function summary.df of SPECmisc.R
-    stats <- plyr::ddply(predobs_val, c("model", "dataType"),
+    stats <- plyr::ddply(predobs, c("model", "dataType"),
       function(x) summary_df(x, "obs", "pred")
     )
   # Check whether method = "none" argument is selected in train();
@@ -507,18 +507,13 @@ evaluate_pls_q <- function(x, pls_model, response,
     predobs$pred_sd <- NA
     # Desn't work because some columns are turned into numeric;
     # resulting data frame has only two rows
-    # predobs_val <- rbind(predobs, predobs_cv) # !!! check columns
-    predobs_val <- dplyr::bind_rows(predobs, predobs_cv)
+    predobs <- dplyr::bind_rows(predobs, predobs_cv)
     # Calculate model performance indexes by model and dataType
     # uses package plyr and function summary.df of SPECmisc.R
-    stats <- plyr::ddply(predobs_val, c("model", "dataType"),
+    stats <- plyr::ddply(predobs, c("model", "dataType"),
       function(x) summary_df(x, "obs", "pred")
     )
   }
-  # Experimental: return predobs_cv
-  # !!! Experimental: return predicted values
-  # return(x$pred)
-  # return(predobs)
   # Add number of components to stats; from finalModel list item
   # from train() function output (function from caret package)
   stats$ncomp <- rep(pls_model$finalModel$ncomp, nrow(stats))
@@ -527,14 +522,14 @@ evaluate_pls_q <- function(x, pls_model, response,
   # Add range of observed values for validation and calibraton
   # get range from predicted vs. observed data frame
   # stored in object predobs
-  obs_cal <- subset(predobs_val, dataType == "Calibration")$obs
+  obs_cal <- subset(predobs, dataType == "Calibration")$obs
   # Get name of predicted variable; see p. 261 of book
   # "Advanced R" (Hadley Wickham)
   response_name <- deparse(response)
 
   if (evaluation_method == "test_set") {
     # Assign validation set to separate data frame
-    obs_val <- subset(predobs_val, dataType == "Validation")$obs
+    obs_val <- subset(predobs, dataType == "Validation")$obs
     # before: deparse(substitute(variable))
     df_range <- data.frame(
       response = rep(response_name, 2),
@@ -548,7 +543,7 @@ evaluate_pls_q <- function(x, pls_model, response,
     )
   } else if (evaluation_method == "resampling" && tuning_method == "resampling") {
     # Assign cross-validation set to separate data frame
-    obs_val <- subset(predobs_val, dataType == "Cross-validation")$obs
+    obs_val <- subset(predobs, dataType == "Cross-validation")$obs
     df_range <- data.frame(
       response = rep(response_name, 2),
       dataType = c("Calibration", "Cross-validation"),
@@ -630,7 +625,7 @@ evaluate_pls_q <- function(x, pls_model, response,
   #   new <- paste0(dataType_names[value], "~(", annotation$n, ")")
   #   plyr::llply(as.character(new), function(x) parse(text = x))
   # }
-  p_pred_obs <- ggplot2::ggplot(data = predobs_val) +
+  p_pred_obs <- ggplot2::ggplot(data = predobs) +
     ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
       shape = 1, size = 4) +
     ggplot2::geom_text(data = annotation,
@@ -649,14 +644,14 @@ evaluate_pls_q <- function(x, pls_model, response,
     ggplot2::theme_bw() +
     ggplot2::geom_abline(col = "red") +
     ggplot2::labs(x = "Observed", y = "Predicted") +
-    ggplot2::xlim(c(min(predobs_val$obs) -
-        0.05 * diff(range(predobs_val$obs)),
-      max(predobs_val$obs) +
-        0.05 * diff(range(predobs_val$obs)))) +
-    ggplot2::ylim(c(min(predobs_val$obs) -
-        0.05 * diff(range(predobs_val$obs)),
-      max(predobs_val$obs) +
-        0.05 * diff(range(predobs_val$obs)))) # +
+    ggplot2::xlim(c(min(predobs$obs) -
+        0.05 * diff(range(predobs$obs)),
+      max(predobs$obs) +
+        0.05 * diff(range(predobs$obs)))) +
+    ggplot2::ylim(c(min(predobs$obs) -
+        0.05 * diff(range(predobs$obs)),
+      max(predobs$obs) +
+        0.05 * diff(range(predobs$obs)))) # +
     # theme.user
 
   ## ggplot graph for model comparison
@@ -668,7 +663,7 @@ evaluate_pls_q <- function(x, pls_model, response,
 
   # Create model evaluation plot -----------------------------------------------
   if(pls_model$method == "pls") {
-  p_model <- ggplot2::ggplot(data = predobs_val) +
+  p_model <- ggplot2::ggplot(data = predobs) +
     ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
       shape = 1, size = 2, alpha = 1/2) +
     ggplot2::geom_text(data = annotation,
@@ -690,18 +685,19 @@ evaluate_pls_q <- function(x, pls_model, response,
     ggplot2::theme_bw() +
     ggplot2::geom_abline(col = "red") +
     ggplot2::labs(x = x_label, y = y_label) +
-    ggplot2::xlim(c(min(predobs_val$obs) -
-        0.05 * diff(range(predobs_val$obs)),
-      max(predobs_val$obs) +
-        0.05 * diff(range(predobs_val$obs)))) +
-    ggplot2::ylim(c(min(predobs_val$obs) -
-        0.05 * diff(range(predobs_val$obs)),
-      max(predobs_val$obs) +
-        0.05 * diff(range(predobs_val$obs)))) +
+    ggplot2::xlim(c(min(predobs$obs) -
+        0.05 * diff(range(predobs$obs)),
+      max(predobs$obs) +
+        0.05 * diff(range(predobs$obs)))) +
+    ggplot2::ylim(c(min(predobs$obs) -
+        0.05 * diff(range(predobs$obs)),
+      max(predobs$obs) +
+        0.05 * diff(range(predobs$obs)))) +
     ggplot2::coord_fixed()
+
   } else {
 
-  p_model <- ggplot2::ggplot(data = predobs_val) +
+  p_model <- ggplot2::ggplot(data = predobs) +
     ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
       shape = 1, size = 2, alpha = 1/2) + # without ncomp label
     ggplot2::geom_text(data = annotation,
@@ -720,14 +716,14 @@ evaluate_pls_q <- function(x, pls_model, response,
     ggplot2::theme_bw() +
     ggplot2::geom_abline(col = "red") +
     ggplot2::labs(x = x_label, y = y_label) +
-    ggplot2::xlim(c(min(predobs_val$obs) -
-        0.05 * diff(range(predobs_val$obs)),
-      max(predobs_val$obs) +
-        0.05 * diff(range(predobs_val$obs)))) +
-    ggplot2::ylim(c(min(predobs_val$obs) -
-        0.05 * diff(range(predobs_val$obs)),
-      max(predobs_val$obs) +
-        0.05 * diff(range(predobs_val$obs)))) +
+    ggplot2::xlim(c(min(predobs$obs) -
+        0.05 * diff(range(predobs$obs)),
+      max(predobs$obs) +
+        0.05 * diff(range(predobs$obs)))) +
+    ggplot2::ylim(c(min(predobs$obs) -
+        0.05 * diff(range(predobs$obs)),
+      max(predobs$obs) +
+        0.05 * diff(range(predobs$obs)))) +
     ggplot2::coord_fixed()
   }
 
@@ -735,7 +731,7 @@ evaluate_pls_q <- function(x, pls_model, response,
     print(p_model)
   }
 
-  list(stats = stats, p_model = p_model, predobs_val = predobs_val)
+  list(stats = stats, p_model = p_model, predobs = predobs)
 }
 
 
@@ -861,7 +857,7 @@ fit_pls <- function(
   )
   list(data = list_sampled, p_pc = list_sampled$p_pc,
     pls_model = pls, stats = stats$stats, p_model = stats$p_model,
-    predobs_val = stats$predobs_val)
+    predobs = stats$predobs)
 }
 
 ## Old function name of `fit_pls`: `pls_ken_stone`
