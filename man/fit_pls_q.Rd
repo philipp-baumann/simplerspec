@@ -5,23 +5,23 @@
 \title{Fit a PLS regression model
 (quoted version of the function)}
 \usage{
-fit_pls_q(x, validation = TRUE, variable, tr_control, env = parent.frame(),
-  pls_ncomp_max = 20, ncomp_fixed = 5, center, scale,
-  tuning_method = "resampling")
+fit_pls_q(x, evaluation_method = "test_resampling", response, tr_control,
+  env = parent.frame(), pls_ncomp_max = 20, ncomp_fixed = 5, center,
+  scale, tuning_method = "resampling")
 }
 \arguments{
 \item{x}{List that contains calibration
 set, validation set, and model tuning options}
 
-\item{validation}{Logical expression weather independent
-validation is performed}
-
-\item{variable}{Response variable to be modeled}
+\item{response}{Response variable to be modeled}
 
 \item{tr_control}{Object that defines controlling parameters
 of the desired internal validation framework}
 
 \item{env}{Environment where function is evaluated}
+
+\item{validation}{Logical expression weather independent
+validation is performed}
 }
 \description{
 Uses the caret package to perform PLS modeling.

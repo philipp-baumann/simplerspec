@@ -4,7 +4,7 @@
 \alias{fit_pls}
 \title{Fit a PLS regression model}
 \usage{
-fit_pls(x, validation = TRUE, variable, env = parent.frame())
+fit_pls(x, validation = TRUE, response, env = parent.frame())
 }
 \arguments{
 \item{x}{List that contains calibration
@@ -13,7 +13,7 @@ set, validation set, and model tuning options}
 \item{validation}{Logical expression weather independent
 validation is performed}
 
-\item{variable}{Response variable to be modeled}
+\item{response}{Response variable to be modeled}
 
 \item{env}{Environment where function is evaluated}
 }

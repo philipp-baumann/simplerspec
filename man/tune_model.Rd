@@ -4,12 +4,13 @@
 \alias{tune_model}
 \title{Perform model tuning}
 \usage{
-tune_model(x, variable, env = parent.frame(), validation = TRUE)
+tune_model(x, response, env = parent.frame(),
+  evaluation_method = "resampling")
 }
 \arguments{
 \item{x}{list from calibration sampling}
 
-\item{variable}{response variable for PLS regression, supplied
+\item{response}{response variable for PLS regression, supplied
 as character expression}
 
 \item{env}{Environment where function is evaluated}

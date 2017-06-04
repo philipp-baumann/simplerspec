@@ -5,8 +5,8 @@
 \title{Fit a random forest model
 (quoted version of the function)}
 \usage{
-fit_rf_q(x, validation = TRUE, variable, tr_control, ntree_max = 500,
-  env = parent.frame())
+fit_rf_q(x, validation = TRUE, evaluation_method = "resampling", response,
+  tr_control, ntree_max = 500, env = parent.frame())
 }
 \arguments{
 \item{x}{List that contains calibration
@@ -15,7 +15,7 @@ set, validation set, and model tuning options}
 \item{validation}{Logical expression weather independent
 validation is performed}
 
-\item{variable}{Response variable to be modeled}
+\item{response}{Response variable to be modeled}
 
 \item{tr_control}{Object that defines controlling parameters
 of the desired internal validation framework}

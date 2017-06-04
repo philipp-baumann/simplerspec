@@ -4,12 +4,13 @@
 \alias{tune_model_none_q}
 \title{Perform model fitting without parameter tuning}
 \usage{
-tune_model_none_q(x, variable, env = parent.frame(), validation = TRUE)
+tune_model_none_q(x, response, env = parent.frame(),
+  evaluation_method = "test_set")
 }
 \arguments{
 \item{x}{list from calibration sampling}
 
-\item{variable}{response variable for PLS regression, supplied
+\item{response}{response variable for PLS regression, supplied
 as character expression}
 
 \item{env}{Environment where function is evaluated}

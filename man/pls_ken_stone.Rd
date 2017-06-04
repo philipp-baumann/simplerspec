@@ -4,14 +4,21 @@
 \alias{pls_ken_stone}
 \title{Calibration sampling, model tuning, and PLS regression}
 \usage{
-pls_ken_stone(spec_chem, split_method = "ken_stone", ratio_val, pc = 2,
-  print = TRUE, variable, validation = TRUE, invert = TRUE,
-  center = TRUE, scale = TRUE, env = parent.frame(), pls_ncomp_max = 20,
-  ncomp_fixed = 5, cv = "kfold_cv", tuning_method = "resampling")
+pls_ken_stone(spec_chem, response, evaluation_method = "test_set",
+  validation = TRUE, split_method = "ken_stone",
+  tuning_method = "resampling", resampling_method = "kfold_cv",
+  cv = "kfold_cv", ratio_val = 1/3, invert = TRUE, pls_ncomp_max = 20,
+  ncomp_fixed = 5, pc = 2, print = TRUE, center = TRUE, scale = TRUE,
+  env = parent.frame())
 }
 \arguments{
 \item{spec_chem}{data.frame that contains IR spectroscopy
 and chemical data}
+
+\item{response}{Response variable (without quotes)}
+
+\item{validation}{Logical expression weather independent
+validation is performed}
 
 \item{ratio_val}{Ratio of number of validation and all samples.}
 
@@ -19,11 +26,6 @@ and chemical data}
 sampling (Kennard-Stones algorithm)}
 
 \item{print}{Logical expression weather graphs shall be printed}
-
-\item{variable}{Response variable (without quotes)}
-
-\item{validation}{Logical expression weather independent
-validation is performed}
 
 \item{env}{Environment where function is evaluated}
 

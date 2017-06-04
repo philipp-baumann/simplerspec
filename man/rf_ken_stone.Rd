@@ -5,8 +5,9 @@
 \title{Calibration sampling, model tuning, and random forest modeling}
 \usage{
 rf_ken_stone(spec_chem, split_method = "ken_stone", ratio_val, pc = 2,
-  print = TRUE, validation = TRUE, variable, tuning_method = "resampling",
-  ntree_max = 500, env = parent.frame())
+  print = TRUE, evaluation_method = "test_set", validation, response,
+  variable, tuning_method = "resampling", ntree_max = 500,
+  env = parent.frame())
 }
 \arguments{
 \item{spec_chem}{data.frame that contains IR spectroscopy
@@ -22,7 +23,7 @@ sampling (Kennard-Stones algorithm)}
 \item{validation}{Logical expression weather independent
 validation is performed}
 
-\item{variable}{Response variable (without quotes)}
+\item{response}{Response variable (without quotes)}
 
 \item{env}{Environment where function is evaluated}
 

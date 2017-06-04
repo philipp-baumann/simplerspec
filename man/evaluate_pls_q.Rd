@@ -4,7 +4,7 @@
 \alias{evaluate_pls_q}
 \title{Evaluate PLS performance}
 \usage{
-evaluate_pls_q(x, pls_model, variable, validation, tuning_method,
+evaluate_pls_q(x, pls_model, response, evaluation_method, tuning_method,
   print = TRUE, env = parent.frame())
 }
 \arguments{
@@ -14,14 +14,10 @@ frame with combined spectral and chemical data}
 \item{pls_model}{List with PLS regression model output from
 the caret package}
 
-\item{variable}{Response variable (e.g. chemical property) to be
-modelled (needs to be non-quoted expression). \code{variable}
+\item{response}{Response variable (e.g. chemical property) to be
+modelled (needs to be non-quoted expression). \code{response}
 needs to be a column name in the \code{validation} data.frame
 (element of \code{x})}
-
-\item{validation}{Logical expression if independent validation
-is performed (split data set into calibration set and
-validation set)}
 
 \item{print}{Print observed vs. predicted for calibration
 and validation. Default is \code{TRUE}.}
@@ -29,6 +25,10 @@ and validation. Default is \code{TRUE}.}
 \item{env}{Specifiy the environment in which the function is
 called. Default argument of \code{env} is
 \code{parent.frame()}}
+
+\item{validation}{Logical expression if independent validation
+is performed (split data set into calibration set and
+validation set)}
 }
 \description{
 Calculate model performance indices based

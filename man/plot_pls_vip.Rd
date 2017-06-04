@@ -7,7 +7,7 @@ Projection (VIP) scores, mean replicate spectra (absorbance) per sample_id, and 
 \usage{
 plot_pls_vip(mout, y1 = "spc_mean", y2 = "spc_pre", by = "sample_id",
   xlab = expression(paste("Wavenumber [", cm^-1, "]")),
-  ylabs = c("Absorbance", "Preprocessed Abs."), alpha = 0.2)
+  ylab1 = "Absorbance", ylab2 = "Preprocessed Abs.", alpha = 0.2)
 }
 \description{
 Plot stacked ggplot2 graphs of VIP for the final
