@@ -157,8 +157,8 @@ tune_model_q <- function(x, response,
   # see chapter 13.1 Capturing expressions
   # in Advanced R (Hadley Wickham)
   # !! p. 270
-  r <- eval(response, x$calibration, env)
-  idx <- caret::createFolds(y = r, k = 10, returnTrain = TRUE) # update ***
+  response <- eval(response, x$calibration, env)
+  idx <- caret::createFolds(y = response, k = 10, returnTrain = TRUE)
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "cv", index = idx,
     savePredictions = TRUE)
@@ -182,7 +182,7 @@ tune_model_loocv_q <- function(x, response,
   evaluation_method = "resampling") {
   calibration <- NULL
   # r: response
-  r <- eval(response, x$calibration, env)
+  response <- eval(response, x$calibration, env)
   # Set up leave-one-out cross-validation
   tr_control <- caret::trainControl(method = "LOOCV", # index = idx,
     savePredictions = TRUE)
@@ -205,9 +205,9 @@ tune_model_rcv_q <- function(x, response,
   env = parent.frame(), evaluation_method = "test_set") {
   calibration <- NULL
   # r: response
-  r <- eval(response, x$calibration, env)
+  response <- eval(response, x$calibration, env)
   # set up 5 times repeated 10-fold cross-validation
-  idx <- caret::createMultiFolds(y = r, k = 10, times = 5) # update ***
+  idx <- caret::createMultiFolds(y = response, k = 10, times = 5) # update ***
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "repeatedcv", index = idx,
     savePredictions = TRUE)
@@ -232,11 +232,11 @@ tune_model_none_q <- function(x, response,
   evaluation_method = "test_set") {
   calibration <- NULL
   # r: response
-  r <- eval(response, x$calibration, env)
+  response <- eval(response, x$calibration, env)
   # Set trainControl argument to "none" so that caret::train will only fit
   # one model to the entire training set;
   # use a fixed number of PLS components instead
-  idx <- caret::createFolds(y = r, k = 10, returnTrain = TRUE) # update ***
+  idx <- caret::createFolds(y = response, k = 10, returnTrain = TRUE) # update ***
   # inject the index in the trainControl object
   tr_control <- caret::trainControl(method = "none", index = idx,
     savePredictions = TRUE)
@@ -282,7 +282,7 @@ fit_pls_q <- function(x,
   # Fit a partial least square regression (pls) model
   # center and scale MIR (you can try without)
   calibration <- MIR <- NULL
-  v <- eval(response, x$calibration, env)
+  response <- eval(response, x$calibration, env)
   # ? Is it really necessary to evaluate this in the parent frame?
   pls_ncomp_max <- eval(pls_ncomp_max, envir = parent.frame())
   # Evaluate fixed number of PLS regression components
@@ -294,14 +294,14 @@ fit_pls_q <- function(x,
     if(scale == TRUE && center == TRUE) {
       if(tuning_method == "resampling") {
         # Fit model with parameter tuning
-        pls_model <- caret::train(x = spc_pre, y = v,
+        pls_model <- caret::train(x = spc_pre, y = response,
           method = "pls",
           tuneLength = pls_ncomp_max,
           trControl = tr_control,
           preProcess = c("center", "scale"))
       } else if (tuning_method == "none") {
         # Fit model without parameter tuning
-        pls_model <- caret::train(x = spc_pre, y = v,
+        pls_model <- caret::train(x = spc_pre, y = response,
           method = "pls",
           trControl = tr_control,
           preProcess = c("center", "scale"),
@@ -309,14 +309,14 @@ fit_pls_q <- function(x,
       }
     } else {
       # No centering and scaling!
-      pls_model <- caret::train(x = spc_pre, y = v,
+      pls_model <- caret::train(x = spc_pre, y = response,
         method = "pls",
         tuneLength = pls_ncomp_max,
         trControl = tr_control)
     }
   } else {
     # depreciated list interface
-    pls_model <- caret::train(x = x$calibration$MIR, y = v,
+    pls_model <- caret::train(x = x$calibration$MIR, y = response,
       method = "pls",
       tuneLength = pls_ncomp_max,
       trControl = tr_control,
@@ -369,11 +369,11 @@ fit_rf_q <- function(x,
   # Fit a partial least square regression (pls) model
   # center and scale MIR (you can try without)
   calibration <- MIR <- NULL
-  v <- eval(response, x$calibration, env)
+  response <- eval(response, x$calibration, env)
   ntree_max <- eval(ntree_max, envir = parent.frame())
   if (tibble::is_tibble(x$calibration)) {
     spc_pre <- data.table::rbindlist(x$calibration$spc_pre)
-    rf_model <- caret::train( x = spc_pre, y = v,
+    rf_model <- caret::train( x = spc_pre, y = response,
       method = "rf",
       ntree = ntree_max,
       trControl = tr_control,
@@ -381,7 +381,7 @@ fit_rf_q <- function(x,
     )
 
   } else {
-    rf_model <- caret::train(x = x$calibration$MIR, y = v,
+    rf_model <- caret::train(x = x$calibration$MIR, y = response,
       method = "rf",
       ntree = ntree_max,
       trControl = tr_control,
@@ -437,11 +437,11 @@ evaluate_pls_q <- function(x, pls_model, response,
     #)
     # Calculate training (calibration) and test (validation) data
     # predictions based on pls model with calibration data
-    r <- eval(response, x$validation, env)
+    response <- eval(response, x$validation, env)
     if (tibble::is_tibble(x$validation)) {
       spc_pre <- data.table::rbindlist(x$validation$spc_pre)
       predobs_val <- caret::extractPrediction(list_models,
-        testX = spc_pre, testY = r) # update ***
+        testX = spc_pre, testY = response) # update ***
       # Append sample_id column to predobs_val data.frame
       # extract sample_id from validation set
       predobs_val$sample_id <- c(
@@ -449,7 +449,7 @@ evaluate_pls_q <- function(x, pls_model, response,
     } else {
       # depreciated
       predobs_val <- caret::extractPrediction(list_models,
-        testX = x$validation$MIR, testY = r) # update ***
+        testX = x$validation$MIR, testY = response) # update ***
     }
     # Create new data frame column <object>
     predobs_val$object <- predobs_val$model
