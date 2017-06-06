@@ -15,10 +15,6 @@ gather_spc <- function(data) {
   map_spc <- purrr::map(data, "spc")
   # Extract rownames of spectra; remove names of rownames vector
   rownames_spc <- unname(unlist(lapply(map_spc, rownames)))
-  # Use rbind.fill.matrix function from plyr package to combine rows
-  spc <- plyr::rbind.fill.matrix(map_spc)
-  # Add rownames to resampled spectra list
-  rownames(spc) <- rownames_spc
   # Extract wavenumbers
   map_wavenumbers <- purrr::map(data, "wavenumbers")
 
