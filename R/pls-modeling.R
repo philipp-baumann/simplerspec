@@ -5,19 +5,20 @@
 #' @param spec_chem data.frame that contains chemical
 #' and IR spectroscopy data
 #' @param ratio_val Ratio of number of validation and all samples.
-#' @param pc Number of principal components (numeric)
+#' @param ken_sto_pc Number of principal components (numeric)
 #' @param print logical expression weather calibration
 #' @param validation Logical expression weather
 #' calibration sampling is performed
 #' (\code{TRUE} or \code{FALSE}).
-#' @usage split_data(spec_chem, evaluation_method, ratio_val, pc, print = TRUE)
+#' @usage split_data(spec_chem, evaluation_method, ratio_val, ken_sto_pc,
+#' print = TRUE)
 #' @export
 split_data_q <- function(
   spec_chem,
   split_method,
   evaluation_method = "test_set",
   ratio_val,
-  pc = 2,
+  ken_sto_pc = 2,
   print = TRUE,
   invert = FALSE, env = parent.frame()) {
   MIR <- model <- type <- PC1 <- PC2 <- NULL
@@ -35,7 +36,7 @@ split_data_q <- function(
 
   if(evaluation_method == "test_set") {
     # pc = 0.99 before !!!
-    pc_number <- eval(pc, envir = parent.frame())
+    ken_sto_pc <- eval(ken_sto_pc, envir = parent.frame())
 
     if(invert == FALSE) {
     ## Select calibration set by Kennard-Stones algorithm
@@ -44,13 +45,15 @@ split_data_q <- function(
       if(tibble::is_tibble(spec_chem)) {
         spc_pre <- as.matrix(data.table::rbindlist(spec_chem$spc_pre))
         # k = number of samples to select
-        # pc = if provided, the number of principal components
+        # ken_sto_pc = if provided, the number of principal components
         # (see ?kenStone)
         sel <- prospectr::kenStone(X = spc_pre,
-          k = round((1 - ratio_val) * nrow(spec_chem)), pc = substitute(pc_number))
+          k = round((1 - ratio_val) * nrow(spec_chem)),
+          pc = substitute(ken_sto_pc))
       } else {
       sel <- prospectr::kenStone(X = spec_chem$MIR,
-        k = round((1 - ratio_val) * nrow(spec_chem)), pc = substitute(pc_number))
+        k = round((1 - ratio_val) * nrow(spec_chem)),
+        pc = substitute(ken_sto_pc))
       }
       # Split MIR data into calibration and validation set using
       # the results of Kennard-Stone Calibration Sampling
@@ -81,11 +84,13 @@ split_data_q <- function(
         if(tibble::is_tibble(spec_chem)) {
           spc_pre <- as.matrix(data.table::rbindlist(spec_chem$spc_pre))
           sel <- prospectr::kenStone(X = spc_pre,
-            k = round(ratio_val * nrow(spec_chem)), pc = substitute(pc_number))
+            k = round(ratio_val * nrow(spec_chem)),
+            pc = substitute(ken_sto_pc))
         } else {
         ## Select validation set by Kennard-Stones algorithm
         sel <- prospectr::kenStone(X = spec_chem$MIR,
-          k = round(ratio_val * nrow(spec_chem)), pc = substitute(pc_number))
+          k = round(ratio_val * nrow(spec_chem)),
+          pc = substitute(ken_sto_pc))
         }
     sel_df_cal <- data.frame(sel$pc[- sel$model, 1:2])
     sel_df_val <- data.frame(sel$pc[sel$model, 1:2])
@@ -302,7 +307,7 @@ train_pls_q <- function(x,
     }
   } else {
     # No centering and scaling!
-    pls_model <- caret::train(x = spc_pre, y = r,
+    pls_model <- caret::train(x = spc_pre, y = response,
       method = "pls",
       tuneLength = pls_ncomp_max,
       trControl = tr_control)
@@ -417,11 +422,11 @@ evaluate_pls_q <- function(x, pls_model, response,
     #)
     # Calculate training (calibration) and test (validation) data
     # predictions based on pls model with calibration data
-    response <- eval(response, x$validation, env)
+    r <- eval(response, x$validation, env)
     if (tibble::is_tibble(x$validation)) {
       spc_pre <- data.table::rbindlist(x$validation$spc_pre)
       predobs <- caret::extractPrediction(list_models,
-        testX = spc_pre, testY = response) # update ***
+        testX = spc_pre, testY = r) # update ***
       # Append sample_id column to predobs data.frame
       # extract sample_id from validation set
       predobs$sample_id <- c(
@@ -429,7 +434,7 @@ evaluate_pls_q <- function(x, pls_model, response,
     } else {
       # depreciated
       predobs <- caret::extractPrediction(list_models,
-        testX = x$validation$MIR, testY = response) # update ***
+        testX = x$validation$MIR, testY = r) # update ***
     }
     # Create new data frame column <object>
     predobs$object <- predobs$model
@@ -743,7 +748,7 @@ evaluate_pls_q <- function(x, pls_model, response,
 #' @param spec_chem data.frame that contains IR spectroscopy
 #' and chemical data
 #' @param k Number of validation samples
-#' @param pc Number of Principal Components used for Calibration
+#' @param ken_sto_pc Number of Principal Components used for Calibration
 #' sampling (Kennard-Stones algorithm)
 #' @param ratio_val Ratio of number of validation and all samples.
 #' @param print Logical expression weather graphs shall be printed
@@ -755,6 +760,7 @@ evaluate_pls_q <- function(x, pls_model, response,
 # Note: check non standard evaluation, argument passing...
 fit_pls <- function(
   spec_chem,
+  center = TRUE, scale = TRUE, # center and scale all predictors (wavenumbers)
   response, variable = NULL, # variable not valid anymore
   evaluation_method = "test_set", validation = TRUE, # validation depreciated
   split_method = "ken_stone",
@@ -764,10 +770,9 @@ fit_pls <- function(
   invert = TRUE, # only if split_method = "ken_stone"
   pls_ncomp_max = 20, # Maximal number of PLS components used by model tuning
   ncomp_fixed = 5, # only fit and evaluate one model, if tuning_method = "none"
-  pc = 2, # only if split_method = "ken_stone"; number of component used
+  ken_sto_pc = 2, pc, # only if split_method = "ken_stone"; number of component used
   # for calculating mahalanobsis distance on PCA scores
   print = TRUE, # print model output graphs
-  center = TRUE, scale = TRUE, # center and scale all predictors (wavenumbers)
   # resulting from preprocessed spectra
   env = parent.frame())
 
@@ -786,6 +791,12 @@ fit_pls <- function(
     warning("argument validation is deprecated; please use evaluation_method instead.",
       call. = FALSE)
     evaluation_method <- validation
+  }
+  # Depreciate argument pc, use more consistent and verbose argument ken_sto_pc
+  if (!missing(pc)) {
+    warning("argument cv is deprecated; please use resampling_method instead.",
+      call. = FALSE)
+    ken_sto_pc <- pc
   }
   # Depreciate argument cv, use more consistent and verbose argument
   # resampling_method
@@ -806,7 +817,8 @@ fit_pls <- function(
 
   # Perform calibration sampling
   list_sampled <- split_data_q(
-    spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
+    spec_chem, split_method, ratio_val = ratio_val,
+    ken_sto_pc = substitute(ken_sto_pc),
     evaluation_method = substitute(evaluation_method),
     invert = substitute(invert)
   )
@@ -873,7 +885,7 @@ pls_ken_stone <- fit_pls
 #' @param spec_chem data.frame that contains IR spectroscopy
 #' and chemical data
 #' @param k Number of validation samples
-#' @param pc Number of Principal Components used for Calibration
+#' @param ken_sto_pc Number of Principal Components used for Calibration
 #' sampling (Kennard-Stones algorithm)
 #' @param ratio_val Ratio of number of validation and all samples.
 #' @param print Logical expression weather graphs shall be printed
@@ -884,7 +896,7 @@ pls_ken_stone <- fit_pls
 #' @export
 # Note: check non standard evaluation, argument passing...
 rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
-    pc = 2, print = TRUE,
+    ken_sto_pc = 2, print = TRUE,
     evaluation_method = "test_set", validation, # Validation is depreciated
     response, variable, # variable depreciated
     tuning_method = "resampling", ntree_max = 500,
@@ -906,7 +918,8 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
 
   # Calibration sampling
   list_sampled <- split_data_q(
-    spec_chem, split_method, ratio_val = ratio_val, pc = substitute(pc),
+    spec_chem, split_method, ratio_val = ratio_val,
+    ken_sto_pc = substitute(ken_sto_pc),
     evaluation_method = substitute(evaluation_method)
   )
   tr_control <- control_train_q(list_sampled,
