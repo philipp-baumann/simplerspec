@@ -18,7 +18,8 @@
 #' y = "spc_pre", by = "sample_id", graph_id_1 = "Calibration",
 #' graph_id_2 = "Validation", slice = TRUE, alpha = 1)
 #' @export
-plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL, y, by,
+plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL,
+                     y = "spc", by = "unique_id",
                      graph_id_1 = "graph_1", graph_id_2 = NULL,
                      graph_id_1_col = "black", graph_id_2_col = "red",
                      xlab = expression(paste("Wavenumber [", cm^-1, "]")),
