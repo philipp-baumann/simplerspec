@@ -88,20 +88,22 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL,
   # (4) Plot spectra
   # Define nice breaks for x axis
   brk  <- pretty(as.numeric(names(dt)[!names(dt) %in% c("id", "graph_id")]), n = 10)
-  p <- ggplot(dt_long, aes(variable, value)) +  # group = group)) +
-    labs(x = xlab, y = ylab) +
-    theme_bw() +
-    scale_x_reverse(breaks = brk) +
+  p <- ggplot(dt_long, ggplot2::aes(variable, value)) +  # group = group)) +
+    ggplot2::labs(x = xlab, y = ylab) +
+    ggplot2::theme_bw() +
+    ggplot2::scale_x_reverse(breaks = brk) +
     # Bring graph_id_2 spectra to front
     # http://stackoverflow.com/questions/21120088/ggplot2-bring-one-line-to-the-front-but-save-the-colors
-    geom_line(aes(colour = graph_id, group = id),
+    ggplot2::geom_line(ggplot2::aes(colour = graph_id, group = id),
       alpha = alpha, size = 0.2) +
     # scale_color_manual(values = rep("black", nrow(dt)))
-    scale_color_manual(values = c(graph_id_1_col, graph_id_2_col))
+    ggplot2::scale_color_manual(values = c(graph_id_1_col, graph_id_2_col))
 
   if("wavelengths_rs" %in% names(spc_tbl) && x_unit == "wavelength") {
     p <- p +
-      ggplot2::scale_x_continuous()
+      ggplot2::scale_x_continuous() +
+      xlab("Wavelength [nm]") +
+      ylab("Reflectance")
   }
 
   if(legend == FALSE) {
