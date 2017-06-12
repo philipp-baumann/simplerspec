@@ -80,7 +80,7 @@ resample_spc <- function(spc_tbl, x_unit = "wavenumber",
     names(wavelengths_rs) <- names(spc_tbl$spc)
 
     # Resample all spectra in list column spc using prospectr
-    spc_rs <- lapply(seq_along(spc_tbl$spc), function(nm) {
+    spc_rs <- lapply(seq_along(spc_tbl$spc), function(i) {
       data.table::data.table(
         prospectr::resample(
           X = spc_tbl$spc[[i]], # spectral matrix to resample
