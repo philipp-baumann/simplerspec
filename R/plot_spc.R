@@ -99,7 +99,7 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL,
     # scale_color_manual(values = rep("black", nrow(dt)))
     scale_color_manual(values = c(graph_id_1_col, graph_id_2_col))
 
-  if("wavelengths_rs" %in% names(spc_tbl) && x_unit = "wavelength") {
+  if("wavelengths_rs" %in% names(spc_tbl) && x_unit == "wavelength") {
     p <- p +
       ggplot2::scale_x_continuous()
   }
