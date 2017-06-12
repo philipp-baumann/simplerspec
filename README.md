@@ -14,17 +14,7 @@ data and modeling workflow. Data inputs and outputs are stored in `R` objects wi
 
 # Installation
 
-The newest version of the package is available on this GitHub repository. Note that the package is still under development. If you find bugs you are highly welcome to report your issues (write me an [email](mailto:philipp.baumann@gmx.ch) or create an [issue](https://github.com/philipp-baumann/simplerspec/issues)). You can install `simplerspec` using the devtools package. Currently, there seems to be still an issue that `install_github()` does not automatically install all packages that are listed under "imports" (see [here](https://github.com/hadley/devtools/issues/1265)). In case you obtain error messages that packages can't be found, install the following packages:
-
-```R
-# List of packages to be installed
-list_packages <- c("ggplot2", "plyr", "data.table", "reshape2",
-  "mvoutlier", "hexView", "Rcpp", "hyperSpec", "prospectr",
-  "dplyr", "caret", "tidyverse")
-# Install packages from CRAN
-install.packages(list_packages, dependencies = TRUE)
-```
-Then run:
+The newest version of the package is available on this GitHub repository. Note that the package is still under development. If you find bugs you are highly welcome to report your issues (write me an [email](mailto:philipp.baumann@usys.ethz.ch) or create an [issue](https://github.com/philipp-baumann/simplerspec/issues)). You can install `simplerspec` using the devtools package.
 
 ```R
 # Uncomment and run the below line if you have not yet installed
@@ -32,6 +22,26 @@ Then run:
 # install.packages("devtools")
 # Install the simplerspec package from the github repository
 # (https://github.com/philipp-baumann/simplerspec)
+devtools::install_github("philipp-baumann/simplerspec")
+```
+
+## Special installation note for Windows 8 and R version 3.3 and 3.4
+
+For some Windows versions with recent R versions (3.3 and 3.4), there 
+might be an error message that the `Rcpp` package can not be installed because
+there is no precompiled binary (packaging up) of the `Rcpp` package available on CRAN. Because the `Rcpp` package contains C++ code, the package needs compilation.
+The compiler is supplied in the R tools (contains GCC 4.9.3 and Mingw-W64 V3).
+First, you need to download and install the latest R tools version from [here](https://cran.r-project.org/bin/windows/Rtools/). Then, you need to 
+install `Rcpp` from source provided on CRAN by 
+
+```R
+install.packages("Rcpp", type = "source")
+```
+
+After successful compilation and installation, you can install simplerspec
+and by:
+
+```R
 devtools::install_github("philipp-baumann/simplerspec")
 ```
 
@@ -78,14 +88,10 @@ require(tidyverse)
 ## Read spectra in list ========================================================
 
 # List of OPUS binary spectra files
-lf <- list.files("data/spectra/soilspec_eth_bin/", full.names = T)
+lf <- list.files("data/spectra/soilspec_eth_bin/", full.names = TRUE)
 
 # Read spectra from files into R list
-spc_list <- read_opus(
-  fnames = lf_eth,
-  in_format = c("binary"),
-  out_format = "list"
-)
+spc_list <- read_opus_univ(fnames = lf, extract = c("spc"))
 ```
 
 Pipes can make R code more readable and fit to the stepwise data processing
@@ -104,11 +110,11 @@ The model development process can be quickly coded as the example below illustra
 ## Spectral data processing pipe ===============================================
 
 soilspec_tbl <- spc_list %>%
-  # Gather list into tibble data frame
+  # Gather list of spectra data into tibble data frame
   gather_spc() %>% 
   # Resample spectra to new wavenumber interval
   resample_spc(wn_lower = 500, wn_upper = 3996, wn_interval = 2) %>%
-  # Average replicate scans per sample
+  # Average replicate scans per sample_id
   average_spc() %>%
   # Preprocess spectra using Savitzky-Golay first derivative with a window size
   # of 21 points
