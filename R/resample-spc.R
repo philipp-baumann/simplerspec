@@ -74,10 +74,14 @@ resample_spc <- function(spc_tbl, x_unit = "wavenumber",
   } else if (x_unit == "wavelength" && "wavelengths" %in% names(spc_tbl)) {
     # Create sequence of new wavelengths
     wl_seq <- seq(from = wl_lower, wl_upper, by = wl_interval)
+    # Convert from wavelength (in nm) to wavenumbers (in cm^-1)
+    wn_seq <- 10000000 / wl_seq
 
-    # Collect sequence of wavelengths in list
+    # Collect sequence of wavelengths and wavenumbers in list
     wavelengths_rs <- rep(list(wl_seq), nrow(spc_tbl))
+    wavenumbers_rs <- rep(list(wn_seq), nrow(spc_tbl))
     names(wavelengths_rs) <- names(spc_tbl$spc)
+    names(wavenumbers_rs) <- names(spc_tbl$spc)
 
     # Resample all spectra in list column spc using prospectr
     spc_rs <- lapply(seq_along(spc_tbl$spc), function(i) {
@@ -95,7 +99,8 @@ resample_spc <- function(spc_tbl, x_unit = "wavenumber",
     # Add list of resampled spectra matrices to tibble spc_tbl
     spc_tbl %>% tibble::add_column(
       spc_rs = spc_rs,
-      wavelengths_rs = wavelengths_rs
+      wavelengths_rs = wavelengths_rs,
+      wavenumbers_rs = wavenumbers_rs
     )
   } else {
     stop("Either columns 'wavenumbers' and 'wavelengths' are missing in the
