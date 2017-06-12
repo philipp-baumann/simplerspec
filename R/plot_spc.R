@@ -19,6 +19,7 @@
 #' graph_id_2 = "Validation", slice = TRUE, alpha = 1)
 #' @export
 plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL,
+                     x_unit = "wavenumber",
                      y = "spc", by = "unique_id",
                      graph_id_1 = "graph_1", graph_id_2 = NULL,
                      graph_id_1_col = "black", graph_id_2_col = "red",
@@ -97,6 +98,12 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL,
       alpha = alpha, size = 0.2) +
     # scale_color_manual(values = rep("black", nrow(dt)))
     scale_color_manual(values = c(graph_id_1_col, graph_id_2_col))
+
+  if("wavelengths_rs" %in% names(spc_tbl) && x_unit = "wavelength") {
+    p <- p +
+      ggplot2::scale_x_continuous()
+  }
+
   if(legend == FALSE) {
     p <- p +
     # Remove legend
