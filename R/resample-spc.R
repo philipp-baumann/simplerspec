@@ -73,7 +73,7 @@ resample_spc <- function(spc_tbl, x_unit = "wavenumber",
 
   } else if (x_unit == "wavelength" && "wavelengths" %in% names(spc_tbl)) {
     # Create sequence of new wavelengths
-    wl_seq <- rev(seq(from = wl_lower, wl_upper, by = wl_interval))
+    wl_seq <- seq(from = wl_lower, wl_upper, by = wl_interval)
 
     # Collect sequence of wavelengths in list
     wavelengths_rs <- rep(list(wl_seq), nrow(spc_tbl))
