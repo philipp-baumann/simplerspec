@@ -4,10 +4,10 @@
 \alias{rf_ken_stone}
 \title{Calibration sampling, model tuning, and random forest modeling}
 \usage{
-rf_ken_stone(spec_chem, split_method = "ken_stone", ratio_val, pc = 2,
-  print = TRUE, evaluation_method = "test_set", validation, response,
-  variable, tuning_method = "resampling", ntree_max = 500,
-  env = parent.frame())
+rf_ken_stone(spec_chem, split_method = "ken_stone", ratio_val,
+  ken_sto_pc = 2, print = TRUE, evaluation_method = "test_set",
+  validation, response, variable, tuning_method = "resampling",
+  ntree_max = 500, env = parent.frame())
 }
 \arguments{
 \item{spec_chem}{data.frame that contains IR spectroscopy
@@ -15,7 +15,7 @@ and chemical data}
 
 \item{ratio_val}{Ratio of number of validation and all samples.}
 
-\item{pc}{Number of Principal Components used for Calibration
+\item{ken_sto_pc}{Number of Principal Components used for Calibration
 sampling (Kennard-Stones algorithm)}
 
 \item{print}{Logical expression weather graphs shall be printed}

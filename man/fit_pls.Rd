@@ -4,12 +4,12 @@
 \alias{fit_pls}
 \title{Calibration sampling, model tuning, and PLS regression}
 \usage{
-fit_pls(spec_chem, response, variable = NULL,
+fit_pls(spec_chem, center = TRUE, scale = TRUE, response, variable = NULL,
   evaluation_method = "test_set", validation = TRUE,
   split_method = "ken_stone", tuning_method = "resampling",
   resampling_method = "kfold_cv", cv = "kfold_cv", ratio_val = 1/3,
-  invert = TRUE, pls_ncomp_max = 20, ncomp_fixed = 5, pc = 2,
-  print = TRUE, center = TRUE, scale = TRUE, env = parent.frame())
+  invert = TRUE, pls_ncomp_max = 20, ncomp_fixed = 5, ken_sto_pc = 2,
+  pc, print = TRUE, env = parent.frame())
 }
 \arguments{
 \item{spec_chem}{data.frame that contains IR spectroscopy
@@ -22,7 +22,7 @@ validation is performed}
 
 \item{ratio_val}{Ratio of number of validation and all samples.}
 
-\item{pc}{Number of Principal Components used for Calibration
+\item{ken_sto_pc}{Number of Principal Components used for Calibration
 sampling (Kennard-Stones algorithm)}
 
 \item{print}{Logical expression weather graphs shall be printed}

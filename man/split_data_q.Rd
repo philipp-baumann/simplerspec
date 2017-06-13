@@ -4,7 +4,8 @@
 \alias{split_data_q}
 \title{Split spectra into calibration and validation sets}
 \usage{
-split_data(spec_chem, evaluation_method, ratio_val, pc, print = TRUE)
+split_data(spec_chem, evaluation_method, ratio_val, ken_sto_pc,
+print = TRUE)
 }
 \arguments{
 \item{spec_chem}{data.frame that contains chemical
@@ -12,7 +13,7 @@ and IR spectroscopy data}
 
 \item{ratio_val}{Ratio of number of validation and all samples.}
 
-\item{pc}{Number of principal components (numeric)}
+\item{ken_sto_pc}{Number of principal components (numeric)}
 
 \item{print}{logical expression weather calibration}
 

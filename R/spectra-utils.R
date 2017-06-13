@@ -31,3 +31,15 @@ summary_df <- function(df, x, y){
     b = b
   )
 }
+
+#' @export
+# Function to calculate standard error of the mean
+sem <- function(x) {
+  qt(x = 0.975, df = length(na.omit(x))) *
+    sqrt(var(x, na.rm = TRUE) / length(na.omit(x)))
+}
+#' @export
+# Calculate standard error
+se <- function(x) {
+  sqrt(var(x, na.rm = TRUE) / length(na.omit(x)))
+}
