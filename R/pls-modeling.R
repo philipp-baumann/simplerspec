@@ -494,7 +494,7 @@ evaluate_pls_q <- function(x, pls_model, response,
       # average observed and predicted values by sample_id
       dplyr::group_by(sample_id) %>%
       # Average observed and predicted values
-      dplyr::mutate(obs = mean(obs), pred = mean(pred), pred_sd = sd(pred)) %>%
+      dplyr::mutate(obs = mean(obs), pred_sd = sd(pred), pred = mean(pred)) %>%
       # slice data set
       dplyr::slice(1L)
       # optinally: state number of observations per group
@@ -507,7 +507,7 @@ evaluate_pls_q <- function(x, pls_model, response,
       # !!! sample_id newly added
       predobs_cv, obs, pred, pred_sd, model, dataType, object
     )
-    # Add column pred_sd to predobs data frame (assign values to NA) so that
+    # Add column pred_sd to predobs data frame (assign values to 0) so that
     # column pred_sd is retained in predobs_cv after dplyr::bind_rows
     predobs$pred_sd <- NA
     # Desn't work because some columns are turned into numeric;
