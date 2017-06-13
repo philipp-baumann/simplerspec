@@ -494,8 +494,9 @@ evaluate_pls_q <- function(x, pls_model, response,
       # average observed and predicted values by sample_id
       dplyr::group_by(sample_id) %>%
       # Average observed and predicted values
-      dplyr::mutate(obs = mean(obs), pred_sd = sd(pred),
-        pred_sem = sem(pred), pred = mean(pred)) %>%
+      dplyr::mutate(obs = mean(obs), pred_sd = sd(pred)) %>%
+      dplyr::mutate_at(.cols = vars(pred), .funs = sem) %>%
+      dplyr::mutate(pred = mean(pred)) %>%
       # slice data set
       dplyr::slice(1L)
       # optinally: state number of observations per group
