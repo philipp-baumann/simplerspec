@@ -511,7 +511,7 @@ evaluate_pls_q <- function(x, pls_model, response,
     predobs_cv$dataType <- "Cross-validation"
     predobs_cv <- dplyr::select(
       # !!! sample_id newly added
-      predobs_cv, obs, pred, pred_sd, model, dataType, object
+      predobs_cv, obs, pred, pred_sd, pred_sem, model, dataType, object
     )
     # Add column pred_sd to predobs data frame (assign values to 0) so that
     # column pred_sd is retained in predobs_cv after dplyr::bind_rows
