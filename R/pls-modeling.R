@@ -499,7 +499,8 @@ evaluate_pls_q <- function(x, pls_model, response,
       dplyr::group_by(sample_id) %>%
       # Average observed and predicted values
       dplyr::mutate(obs = mean(obs), pred_sd = sd(pred)) %>%
-      # dplyr::mutate_at(.vars = vars(pred), .funs = funs(sem)) %>%
+      dplyr::mutate_at(.vars = vars(pred),
+        .funs = funs(pred_sem = simplerspec::sem)) %>%
       dplyr::mutate(pred = mean(pred)) %>%
       # slice data set
       dplyr::slice(1L)
@@ -511,7 +512,7 @@ evaluate_pls_q <- function(x, pls_model, response,
     predobs_cv$dataType <- "Cross-validation"
     predobs_cv <- dplyr::select(
       # !!! sample_id newly added
-      predobs_cv, obs, pred, pred_sd, model, dataType, object # pred_sem
+      predobs_cv, obs, pred, pred_sd, pred_sem, model, dataType, object
     )
     # Add column pred_sd to predobs data frame (assign values to 0) so that
     # column pred_sd is retained in predobs_cv after dplyr::bind_rows
