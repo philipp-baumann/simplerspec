@@ -678,7 +678,7 @@ evaluate_pls_q <- function(x, pls_model, response,
   if(pls_model$method == "pls") {
   p_model <- ggplot2::ggplot(data = predobs) +
     ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
-      shape = 1, size = 2, alpha = 1/2) +
+      shape = 1, size = 2, alpha = 1/2, inherit.aes = FALSE) +
     ggplot2::geom_errorbar(
       ggplot2::aes(ymin = pred - pred_sem, ymax = pred + pred_sem),
       width = .1, data = predobs, inherit.aes = FALSE) +
