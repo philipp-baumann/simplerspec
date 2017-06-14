@@ -489,6 +489,10 @@ evaluate_pls_q <- function(x, pls_model, response,
     # Generate sample_id column for rowIndex of pred list element of
     # train object; select only rowIndex and sample_id of calibration tibble
     cal_index <- x$calibration %>% dplyr::select(rowIndex, sample_id)
+    sem <- function(x) {
+      qt(0.975, df = length(na.omit(x))) *
+        sqrt(var(x, na.rm = TRUE) / length(na.omit(x)))
+    }
     # Make a full join of cal_index and predobs_cv
     predobs_cv <- dplyr::full_join(predobs_cv, cal_index) %>%
       # average observed and predicted values by sample_id
