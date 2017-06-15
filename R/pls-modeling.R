@@ -377,7 +377,7 @@ train_rf_q <- function(x,
 }
 
 
-# Evaluate PLS performance (validation and cross-validation) ----
+# Evaluate model performance (validation and cross-validation) -----------------
 
 #' @title Evaluate PLS performance
 #' @description Calculate model performance indices based
@@ -867,8 +867,8 @@ pls_ken_stone <- fit_pls
 # Note: check non standard evaluation, argument passing...
 rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
     ken_sto_pc = 2, print = TRUE,
-    evaluation_method = "test_set", validation, # Validation is depreciated
-    response, variable, # variable depreciated
+    evaluation_method = "test_set", validation = NULL, # Validation is depreciated
+    response, variable = NULL, # variable depreciated
     tuning_method = "resampling", ntree_max = 500,
     env = parent.frame()) {
   calibration <- 0
