@@ -735,7 +735,7 @@ fit_pls <- function(
   evaluation_method = "test_set", validation = TRUE, # validation depreciated
   split_method = "ken_stone",
   tuning_method = "resampling",
-  resampling_method = "kfold_cv", cv = "kfold_cv", # cv depreciated
+  resampling_method = "kfold_cv", cv = NULL, # cv depreciated
   ratio_val = 1/3, # is only used if evaluation_method = "test_set"
   invert = TRUE, # only if split_method = "ken_stone"
   pls_ncomp_max = 20, # Maximal number of PLS components used by model tuning
