@@ -404,7 +404,7 @@ evaluate_model_q <- function(x, model, response,
   evaluation_method,
   tuning_method, print = TRUE, env = parent.frame()) {
   # Set global variables to NULL to avoid R CMD check notes
-  MIR <- object <- model <- dataType <- obs <- pred <- NULL
+  MIR <- object <- dataType <- obs <- pred <- NULL
   ncomp <- finalModel <- rmsd <- r2 <- r2 <- rpd <- n <- NULL
   rmse <- calibration <- NULL
   # Collect fitted object into a list
