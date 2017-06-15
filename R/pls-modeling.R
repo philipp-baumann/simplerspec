@@ -873,6 +873,7 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
     env = parent.frame()) {
   calibration <- 0
 
+  # Warning messages and reassignment for depreciated arguments ----------------
   # Replace validation = TRUE or FALSE with
   # new argument evaluation_method = “test_set” or “resampling”
   if (!missing(validation)) {
@@ -886,26 +887,28 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
     response <- variable
   }
 
-  # Calibration sampling
+  # Calibration sampling -------------------------------------------------------
   list_sampled <- split_data_q(
     spec_chem, split_method, ratio_val = ratio_val,
     ken_sto_pc = substitute(ken_sto_pc),
     evaluation_method = substitute(evaluation_method)
   )
-  tr_control <- control_train_q(list_sampled,
-    substitute(response), env
-  )
+  # Control parameters for caret::train ----------------------------------------
+  tr_control <- control_train_q(list_sampled, substitute(response), env)
+  # Train random forest model (model tuning) -----------------------------------
   rf <- train_rf_q(x = list_sampled,
     evaluation_method = "test_set",
     response = substitute(response), tr_control = tr_control, env,
     ntree_max = substitute(ntree_max)
   )
+  # Evaluate finally chosen random forest model --------------------------------
   stats <- evaluate_model_q(x = list_sampled, pls_model = rf,
     response = substitute(response),
     evaluation_method = substitute(evaluation_method),
     tuning_method = substitute(tuning_method),
     env = parent.frame()
   )
+  # Return list with results ---------------------------------------------------
   list(data = list_sampled, p_pc = list_sampled$p_pc,
     rf_model = rf, stats = stats$stats, p_model = stats$p_model)
 }
