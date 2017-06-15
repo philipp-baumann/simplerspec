@@ -408,7 +408,7 @@ evaluate_model_q <- function(x, model, response,
   ncomp <- finalModel <- rmsd <- r2 <- r2 <- rpd <- n <- NULL
   rmse <- calibration <- NULL
   # Collect fitted object into a list
-  list_models <- list(pls = model)
+  list_models <- list(model = model)
   # Evaluate validation argument in parent.frame !!!
   evaluation_method <- eval(evaluation_method, envir = parent.frame())
   # Evaluate tuning_method argument in parent.frame
