@@ -678,7 +678,7 @@ evaluate_pls_q <- function(x, pls_model, response,
     ggplot2::geom_errorbar(
       ggplot2::aes(x = obs, ymin = pred - pred_sem_ci,
       ymax = pred + pred_sem_ci),
-      width = .1, data = predobs, inherit.aes = FALSE) +
+      width = 0, data = predobs, inherit.aes = FALSE) +
     ggplot2::geom_text(data = annotation,
       ggplot2::aes(x = Inf, y = -Inf, label = ncomp), size = 3,
       hjust = 1.15, vjust = -4.5, parse = TRUE) + # !!! additional label
