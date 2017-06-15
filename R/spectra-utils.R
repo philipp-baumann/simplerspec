@@ -35,7 +35,7 @@ summary_df <- function(df, x, y){
 #' @export
 # Function to calculate standard error of the mean
 sem <- function(x) {
-  qt(0.975, df = length(na.omit(x))) *
+  qt(0.975, df = length(na.omit(x)) - 1) *
     sqrt(var(x, na.rm = TRUE) / length(na.omit(x)))
 }
 #' @export
