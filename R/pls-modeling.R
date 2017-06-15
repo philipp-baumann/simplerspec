@@ -865,7 +865,7 @@ pls_ken_stone <- fit_pls
 #' @param env Environment where function is evaluated
 #' @export
 # Note: check non standard evaluation, argument passing...
-rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
+fit_rf <- function(spec_chem, split_method = "ken_stone", ratio_val,
     ken_sto_pc = 2, print = TRUE,
     evaluation_method = "test_set", validation = NULL, # Validation is depreciated
     response, variable = NULL, # variable depreciated
