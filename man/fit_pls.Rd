@@ -7,7 +7,7 @@
 fit_pls(spec_chem, center = TRUE, scale = TRUE, response, variable = NULL,
   evaluation_method = "test_set", validation = TRUE,
   split_method = "ken_stone", tuning_method = "resampling",
-  resampling_method = "kfold_cv", cv = "kfold_cv", ratio_val = 1/3,
+  resampling_method = "kfold_cv", cv = NULL, ratio_val = 1/3,
   invert = TRUE, pls_ncomp_max = 20, ncomp_fixed = 5, ken_sto_pc = 2,
   pc, print = TRUE, env = parent.frame())
 }
