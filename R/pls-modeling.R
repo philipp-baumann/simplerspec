@@ -749,6 +749,7 @@ fit_pls <- function(
 {
   calibration <- 0
 
+  # Warning messages and reassignment for depreciated arguments ----------------
   # Depreciate argument variable, use more specific term for the response
   # to be predicted by spectral modeling
   if (!is.null(variable)) {
@@ -785,7 +786,7 @@ fit_pls <- function(
     resampling_method <- "rep_kfold_cv"
   }
 
-  # Perform calibration sampling
+  # Perform calibration sampling -----------------------------------------------
   list_sampled <- split_data_q(
     spec_chem, split_method, ratio_val = ratio_val,
     ken_sto_pc = substitute(ken_sto_pc),
@@ -813,8 +814,7 @@ fit_pls <- function(
     tr_control <- control_train_q(list_sampled,
       substitute(response), env)
   }
-  # Fit a pls calibration model; pls object is output from caret::train()
-  # and has class train
+  # Fit a pls calibration model; pls object is output from caret::train() ------
   if(tuning_method == "resampling") {
     pls <- train_pls_q(x = list_sampled,
       evaluation_method = "test_set",
@@ -830,7 +830,7 @@ fit_pls <- function(
       ncomp_fixed = substitute(ncomp_fixed), env
       )
   }
-  # Evaluate model accuracy (predicted vs. observed)
+  # Evaluate model accuracy (predicted vs. observed) ---------------------------
   stats <- evaluate_model_q(x = list_sampled, pls_model = pls,
     response = substitute(response),
     evaluation_method = substitute(evaluation_method),
