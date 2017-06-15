@@ -348,7 +348,7 @@ train_pls <- function(x, response, evaluation_method = "resampling",
 #' of the desired internal validation framework
 #' @param env Environment where function is evaluated
 #' @export
-fit_rf_q <- function(x,
+train_rf_q <- function(x,
   validation = TRUE, evaluation_method = "resampling",
   response, tr_control, ntree_max = 500, env = parent.frame()) {
   # Fit a partial least square regression (pls) model
@@ -933,7 +933,7 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
   tr_control <- control_train_q(list_sampled,
     substitute(response), env
   )
-  rf <- fit_rf_q(x = list_sampled,
+  rf <- train_rf_q(x = list_sampled,
     evaluation_method = "test_set",
     response = substitute(response), tr_control = tr_control, env,
     ntree_max = substitute(ntree_max)
