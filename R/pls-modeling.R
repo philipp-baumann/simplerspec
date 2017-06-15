@@ -624,44 +624,7 @@ evaluate_model_q <- function(x, pls_model, response,
     x = label_validation, ggplot2::label_parsed
   )
 
-  # -------------------------------------------------------------
-
-
-  # http://docs.ggplot2.org/0.9.3.1/label_parsed.html
-  # some other info: https://coderclub.b.uib.no/tag/plotmath/
-  # !!! now depreciated in ggplot2 >= 2.0.0
-  # dataType_labeller <- function(variable, value){
-  #   new <- paste0(dataType_names[value], "~(", annotation$n, ")")
-  #   plyr::llply(as.character(new), function(x) parse(text = x))
-  # }
-  p_pred_obs <- ggplot2::ggplot(data = predobs) +
-    ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
-      shape = 1, size = 4) +
-    ggplot2::geom_text(data = annotation,
-      ggplot2::aes(x = -Inf, y = Inf, label = r2), size = 7,
-      hjust = -0.1, vjust = 1.5, parse = TRUE) +
-    ggplot2::geom_text(data = annotation,
-      ggplot2::aes(x = -Inf, y = Inf, label = rmse), size = 7,
-      hjust = -0.075, vjust = 4.25, parse = TRUE) +
-    ggplot2::geom_text(data = annotation,
-      ggplot2::aes(x = -Inf, y = Inf, label = rpd), size = 7,
-      hjust = -0.1, vjust = 6.5, parse = TRUE) +
-    ggplot2::facet_grid(~ dataType,
-      labeller = ggplot2::as_labeller(to_string)) +
-    # ggplot2::facet_grid(~ dataType,
-    #   labeller = dataType_labeller) +
-    ggplot2::theme_bw() +
-    ggplot2::geom_abline(col = "red") +
-    ggplot2::labs(x = "Observed", y = "Predicted") +
-    ggplot2::xlim(c(min(predobs$obs) -
-        0.05 * diff(range(predobs$obs)),
-      max(predobs$obs) +
-        0.05 * diff(range(predobs$obs)))) +
-    ggplot2::ylim(c(min(predobs$obs) -
-        0.05 * diff(range(predobs$obs)),
-      max(predobs$obs) +
-        0.05 * diff(range(predobs$obs)))) # +
-    # theme.user
+  # Create model evaluation plot -----------------------------------------------
 
   ## ggplot graph for model comparison
   ## (arranged later in panels)
@@ -670,7 +633,6 @@ evaluate_model_q <- function(x, pls_model, response,
   y_label <- paste0("Predicted ",
     as.character(response_name))
 
-  # Create model evaluation plot -----------------------------------------------
   if(pls_model$method == "pls") {
   p_model <- ggplot2::ggplot(data = predobs) +
     ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
