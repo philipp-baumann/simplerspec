@@ -400,7 +400,7 @@ fit_rf_q <- function(x,
 #' called. Default argument of \code{env} is
 #' \code{parent.frame()}
 #' @export
-evaluate_pls_q <- function(x, pls_model, response,
+evaluate_model_q <- function(x, pls_model, response,
   evaluation_method,
   tuning_method, print = TRUE, env = parent.frame()) {
   # Set global variables to NULL to avoid R CMD check notes
@@ -869,7 +869,7 @@ fit_pls <- function(
       )
   }
   # Evaluate model accuracy (predicted vs. observed)
-  stats <- evaluate_pls_q(x = list_sampled, pls_model = pls,
+  stats <- evaluate_model_q(x = list_sampled, pls_model = pls,
     response = substitute(response),
     evaluation_method = substitute(evaluation_method),
     tuning_method = substitute(tuning_method),
@@ -938,7 +938,7 @@ rf_ken_stone <- function(spec_chem, split_method = "ken_stone", ratio_val,
     response = substitute(response), tr_control = tr_control, env,
     ntree_max = substitute(ntree_max)
   )
-  stats <- evaluate_pls_q(x = list_sampled, pls_model = rf,
+  stats <- evaluate_model_q(x = list_sampled, pls_model = rf,
     response = substitute(response),
     evaluation_method = substitute(evaluation_method),
     tuning_method = substitute(tuning_method),
