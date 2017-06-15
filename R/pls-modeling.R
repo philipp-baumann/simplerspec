@@ -489,10 +489,6 @@ evaluate_pls_q <- function(x, pls_model, response,
     # Generate sample_id column for rowIndex of pred list element of
     # train object; select only rowIndex and sample_id of calibration tibble
     cal_index <- x$calibration %>% dplyr::select(rowIndex, sample_id)
-    sem <- function(x) {
-      qt(0.975, df = length(na.omit(x))) *
-        sqrt(var(x, na.rm = TRUE) / length(na.omit(x)))
-    }
     # Make a full join of cal_index and predobs_cv
     predobs_cv <- dplyr::full_join(predobs_cv, cal_index) %>%
       # average observed and predicted values by sample_id
@@ -500,7 +496,7 @@ evaluate_pls_q <- function(x, pls_model, response,
       # Average observed and predicted values
       dplyr::mutate(obs = mean(obs), pred_sd = sd(pred)) %>%
       dplyr::mutate_at(.vars = vars(pred),
-        .funs = funs(pred_sem = simplerspec::sem)) %>%
+        .funs = funs(pred_sem_ci = simplerspec::sem_ci)) %>%
       dplyr::mutate(pred = mean(pred)) %>%
       # slice data set
       dplyr::slice(1L)
@@ -512,7 +508,7 @@ evaluate_pls_q <- function(x, pls_model, response,
     predobs_cv$dataType <- "Cross-validation"
     predobs_cv <- dplyr::select(
       # !!! sample_id newly added
-      predobs_cv, obs, pred, pred_sd, pred_sem, model, dataType, object
+      predobs_cv, obs, pred, pred_sd, pred_sem_ci, model, dataType, object
     )
     # Add column pred_sd to predobs data frame (assign values to 0) so that
     # column pred_sd is retained in predobs_cv after dplyr::bind_rows
@@ -678,9 +674,10 @@ evaluate_pls_q <- function(x, pls_model, response,
   if(pls_model$method == "pls") {
   p_model <- ggplot2::ggplot(data = predobs) +
     ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
-      shape = 1, size = 2, alpha = 1/2, inherit.aes = FALSE) +
+      shape = 1, size = 2, alpha = 1/2, data = predobs) +
     ggplot2::geom_errorbar(
-      ggplot2::aes(ymin = pred - pred_sem, ymax = pred + pred_sem),
+      ggplot2::aes(x = obs, ymin = pred - pred_sem_ci,
+      ymax = pred + pred_sem_ci),
       width = .1, data = predobs, inherit.aes = FALSE) +
     ggplot2::geom_text(data = annotation,
       ggplot2::aes(x = Inf, y = -Inf, label = ncomp), size = 3,
