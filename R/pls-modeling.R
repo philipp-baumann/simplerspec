@@ -385,7 +385,7 @@ train_rf_q <- function(x,
 #' set, and internal cross-validation
 #' @param x List that contains calibration and validation data
 #' frame with combined spectral and chemical data
-#' @param pls_model List with PLS regression model output from
+#' @param model List with PLS regression model output from
 #' the caret package
 #' @param response Response variable (e.g. chemical property) to be
 #' modelled (needs to be non-quoted expression). \code{response}
@@ -400,7 +400,7 @@ train_rf_q <- function(x,
 #' called. Default argument of \code{env} is
 #' \code{parent.frame()}
 #' @export
-evaluate_model_q <- function(x, pls_model, response,
+evaluate_model_q <- function(x, model, response,
   evaluation_method,
   tuning_method, print = TRUE, env = parent.frame()) {
   # Set global variables to NULL to avoid R CMD check notes
@@ -408,7 +408,7 @@ evaluate_model_q <- function(x, pls_model, response,
   ncomp <- finalModel <- rmsd <- r2 <- r2 <- rpd <- n <- NULL
   rmse <- calibration <- NULL
   # Collect fitted object into a list
-  list_models <- list(pls = pls_model)
+  list_models <- list(pls = model)
   # Evaluate validation argument in parent.frame !!!
   evaluation_method <- eval(evaluation_method, envir = parent.frame())
   # Evaluate tuning_method argument in parent.frame
@@ -525,7 +525,7 @@ evaluate_model_q <- function(x, pls_model, response,
   }
   # Add number of components to stats; from finalModel list item
   # from train() function output (function from caret package)
-  stats$ncomp <- rep(pls_model$finalModel$ncomp, nrow(stats))
+  stats$ncomp <- rep(model$finalModel$ncomp, nrow(stats))
   # !!! Experimental: return stats
   # return(stats)
   # Add range of observed values for validation and calibraton
@@ -633,7 +633,7 @@ evaluate_model_q <- function(x, pls_model, response,
   y_label <- paste0("Predicted ",
     as.character(response_name))
 
-  if(pls_model$method == "pls") {
+  if(model$method == "pls") {
   p_model <- ggplot2::ggplot(data = predobs) +
     ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
       shape = 1, size = 2, alpha = 1/2, data = predobs) +
@@ -831,14 +831,14 @@ fit_pls <- function(
       )
   }
   # Evaluate model accuracy (predicted vs. observed) ---------------------------
-  stats <- evaluate_model_q(x = list_sampled, pls_model = pls,
+  stats <- evaluate_model_q(x = list_sampled, model = pls,
     response = substitute(response),
     evaluation_method = substitute(evaluation_method),
     tuning_method = substitute(tuning_method),
     env = parent.frame()
   )
   list(data = list_sampled, p_pc = list_sampled$p_pc,
-    pls_model = pls, stats = stats$stats, p_model = stats$p_model,
+    model = pls, stats = stats$stats, p_model = stats$p_model,
     predobs = stats$predobs)
 }
 
@@ -902,7 +902,7 @@ fit_rf <- function(spec_chem, split_method = "ken_stone", ratio_val,
     ntree_max = substitute(ntree_max)
   )
   # Evaluate finally chosen random forest model --------------------------------
-  stats <- evaluate_model_q(x = list_sampled, pls_model = rf,
+  stats <- evaluate_model_q(x = list_sampled, model = rf,
     response = substitute(response),
     evaluation_method = substitute(evaluation_method),
     tuning_method = substitute(tuning_method),
