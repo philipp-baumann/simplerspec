@@ -408,18 +408,13 @@ evaluate_model_q <- function(x, model, response,
   ncomp <- finalModel <- rmsd <- r2 <- r2 <- rpd <- n <- NULL
   rmse <- calibration <- NULL
   # Collect fitted object into a list
-  list_models <- list("model" = model)
+  list_models <- list("final_model" = model)
   # Evaluate validation argument in parent.frame !!!
   evaluation_method <- eval(evaluation_method, envir = parent.frame())
   # Evaluate tuning_method argument in parent.frame
   tuning_method <- eval(tuning_method, envir = parent.frame())
   # Extract best tuning parameters and associated cv predictions
   if(evaluation_method == "test_set") {
-    # !!! experimental: ignore predobs_cal
-    # predobs_cal <- plyr::ldply(list_models,
-    #  function(x) plyr::match_df(x$pred, x$bestTune),
-    #  .id = "model"
-    #)
     # Calculate training (calibration) and test (validation) data
     # predictions based on pls model with calibration data
     r <- eval(response, x$validation, env)
