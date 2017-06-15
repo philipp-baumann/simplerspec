@@ -796,30 +796,30 @@ fit_pls <- function(
   # Replace validation = TRUE or FALSE with
   # new argument evaluation_method = “test_set” or “resampling”
   if (!missing(validation)) {
-    warning("argument validation is deprecated; please use evaluation_method instead.",
+    warning("argument validation is depreciated; please use evaluation_method instead.",
       call. = FALSE)
     evaluation_method <- validation
   }
   # Depreciate argument pc, use more consistent and verbose argument ken_sto_pc
   if (!missing(pc)) {
-    warning("argument cv is deprecated; please use resampling_method instead.",
+    warning("argument pc is depreciated; please use ken_sto_pc instead.",
       call. = FALSE)
     ken_sto_pc <- pc
   }
   # Depreciate argument cv, use more consistent and verbose argument
   # resampling_method
   if (!missing(cv)) {
-    warning("argument cv is deprecated; please use resampling_method instead.",
+    warning("argument cv is depreciated; please use resampling_method instead.",
       call. = FALSE)
     resampling_method <- cv
   }
   # Change values for resampling_method argument
   if(resampling_method == "LOOCV") {
-    warning("value 'LOOCV' (leave one out cross-validation) for argument resampling_method is deprecated; please use value 'loocv' instead.")
+    warning("value 'LOOCV' (leave one out cross-validation) for argument resampling_method is depreciated; please use value 'loocv' instead.")
     resampling_method <- "loocv"
   }
   if(resampling_method == "repeatedcv") {
-     warning("value 'repeatedcv' (repeated k-fold cross-validation) for argument resampling_method is deprecated; please use value 'rep_kfold_cv' instead.")
+     warning("value 'repeatedcv' (repeated k-fold cross-validation) for argument resampling_method is depreciated; please use value 'rep_kfold_cv' instead.")
     resampling_method <- "rep_kfold_cv"
   }
 
