@@ -62,7 +62,7 @@ This package builds mainly upon functions from the following R packages:
 * `ggplot2 `: Alternative plotting system for R, based on the grammar of graphics. See [here](http://ggplot2.org/).
 * `caret `: Classification and regression training. A set of functions that attempt to streamline the process for creating predictive models. See [here](http://topepo.github.io/caret/index.html) for details.
 
-Consistent and reproducible data and metadata management is a important prerequisite for spectral model development. Therefore, different outputs should be stored as R objects in a consistent way using R data structures. Simplerspec functions uses tibble data frames as principal data structures because they allow to store lists within the well-known data frame structures. Lists are flexible and can e.g. contain other lists, vectors, data.frames, or matrices.
+Consistent and reproducible data and metadata management is an important prerequisite for spectral model development. Therefore, different outputs should be stored as R objects in a consistent way using R data structures. Simplerspec functions uses tibble data frames as principal data structures because they allow to store lists within the well-known data frame structures. Lists are flexible and can e.g. contain other lists, vectors, data.frames, or matrices.
 
 # Example workflow
 
@@ -135,14 +135,19 @@ spec_chem <- join_spc_chem(
 ################################################################################
 
 # Example Partial Least Squares (PLS) Regression model for total Carbon (C)
-pls_C <- pls_ken_stone(
-  spec_chem = spec_chem,
-  ratio_val = 1/3,
-  variable = C,
-  validation = TRUE,
-  pc = 6,
-  pls_ncomp_max = 6
-)
+# Use repeated k-fold cross-validation to tune the model (choose optimal 
+# number of PLS components) and estimat model performance on hold-out 
+# predictions of the finally chosen model (model assessment).
+# This allows to use the entire set for both model building and evaluation
+pls_C <- fit_pls(
+  # remove rows with NA in the data
+  spec_chem = spec_chem[!is.na(spec_chem$C), ],
+  response = C,
+  evaluation_method = "resampling",
+  tuning_method = "resampling",
+  resampling_method = "rep_kfold_cv",
+  pls_ncomp_max = 7 # maximum number of PLS components tested during tuning
+) 
 ```
 
 # Details on functions, arguments, and input and output data structures
