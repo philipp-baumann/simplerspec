@@ -46,6 +46,8 @@ VIP <- function(object) {
 
 ## VIPjh returns the VIP of variable j with h components
 VIPjh <- function(object, j, h) {
+    # pb: added to avoid `R CMD check` note
+    method <- Yloadings <- scores <- loading.weights <- NULL
     if (object$method != "oscorespls")
         stop("Only implemented for orthogonal scores algorithm.  Refit with 'method = \"oscorespls\"'")
     if (nrow(object$Yloadings) > 1)
