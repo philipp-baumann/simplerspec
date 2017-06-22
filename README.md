@@ -138,7 +138,8 @@ spec_chem <- join_spc_chem(
 # Use repeated k-fold cross-validation to tune the model (choose optimal 
 # number of PLS components) and estimat model performance on hold-out 
 # predictions of the finally chosen model (model assessment).
-# This allows to use the entire set for both model building and evaluation
+# This allows to use the entire set for both model building and evaluation;
+# recommended for small data sets
 pls_C <- fit_pls(
   # remove rows with NA in the data
   spec_chem = spec_chem[!is.na(spec_chem$C), ],
