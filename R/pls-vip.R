@@ -30,6 +30,8 @@
 ## as a ncomp x nvars matrix.
 #' @export
 VIP <- function(object) {
+    # pb: added to avoid `R CMD check` note
+    method <- Yloadings <- scores <- loading.weights <- NULL
     if (object$method != "oscorespls")
         stop("Only implemented for orthogonal scores algorithm.  Refit with 'method = \"oscorespls\"'")
     if (nrow(object$Yloadings) > 1)
