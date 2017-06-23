@@ -26,7 +26,6 @@ Imports:
     caret,
     tidyr,
     tidyverse,
-    foreach,
     cowplot,
     lazyeval,
     modelr,
