@@ -32,7 +32,8 @@ Imports:
     pls,
     purrr,
     readr,
-    tibble
+    tibble,
+    magrittr
 License: GPL-2
 LazyData: TRUE
 RoxygenNote: 6.0.1
