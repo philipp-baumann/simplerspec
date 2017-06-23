@@ -12,6 +12,7 @@
 #' (\code{TRUE} or \code{FALSE}).
 #' @usage split_data(spec_chem, evaluation_method, ratio_val, ken_sto_pc,
 #' print = TRUE)
+#' @importFrom magrittr "%>%"
 #' @export
 split_data_q <- function(
   spec_chem,
