@@ -1,6 +1,15 @@
-Package: simplerspec
 Type: Package
+Package: simplerspec
+Version: 0.1.0
 Title: Soil and plant spectroscopic model building and prediction
+Description: Functions that cover
+    reading of spectral data, outlier removal,
+    spectral preprocessing, calibration sampling, PLS regression
+    using caret, and model diagnostic statistics and plots.
+Authors@R: person("Philipp", "Baumann",
+  email = "philipp.baumann@usys.ethz.ch", role = c("aut", "cre"))
+URL: https://github.com/philipp-baumann/simplerspec
+BugReports: https://github.com/philipp-baumann/simplerspec
 Depends: R (>= 3.0),
     foreach
 Imports:
@@ -25,13 +34,6 @@ Imports:
     purrr,
     readr,
     tibble
-Version: 0.1.0
-Authors@R: person("Philipp", "Baumann",
-  email = "baumanph@student.ethz.ch", role = c("aut", "cre"))
-Description: Functions that cover
-    reading of spectral data, outlier removal,
-    spectral preprocessing, calibration sampling, PLS regression
-    using caret, and model diagnostic statistics and plots.
 License: GPL-2
 LazyData: TRUE
 RoxygenNote: 6.0.1
