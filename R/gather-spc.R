@@ -1,5 +1,10 @@
 #' @title Gather spectra from list of spectral data into a tibble object
-#' @description
+#' @description Gather specta and spectrometer metadata from list into a tibble.
+#' Spectra and wavenumbers are stored in list-columns. A tibble is an extended
+#' data frame and each spectrum can contain complex data and metadata that
+#' are in a rectangular data structure. List-columns is tidy
+#' data structure concept that can be combined with functional programming
+#' frameworks provided by e.g. the purrr package.
 #' @param data list with file name elements that contain spectra and metadata
 #' after reading binary OPUS files with \code{simplerspec::read_opus()}
 #' @usage gather_spc(data)
