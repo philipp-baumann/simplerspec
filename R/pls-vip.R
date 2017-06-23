@@ -78,6 +78,9 @@ extract_pls_vip <- function(mout) {
 #' @export
 create_vip_rects <- function(df_vip) {
 
+  # Avoid `R CMD check NOTE`: `no visible binding for global variable`
+  VIP <- wavenumber <- tail <- NULL
+
   # Highlight region data
   # https://stackoverflow.com/questions/32543176/highlight-areas-within-certain-x-range-in-ggplot2
   v <- rep(0, nrow(df_vip))
