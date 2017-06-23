@@ -1,6 +1,7 @@
 #' @title Average spectra from spectral data object (tibble)
 #' @description Averages spectra in tibble column by sample_id after
 #' resampling spectra by \code{simplerspec::resample_spc()}.
+#' @import stats
 #' @export
 average_spc <- function(spc_tbl) {
 
@@ -25,7 +26,7 @@ average_spc <- function(spc_tbl) {
   # Create list of averaged spectra, one spectrum is one data.table
   # Method split.data.table is not yet available in data.table 1.9.7
   # Wait for v2.0.0
-  spc_mean_list <- setNames(
+  spc_mean_list <- stats::setNames(
     split(spc_mean_noid, seq(nrow(spc_mean_noid))),
     sample_id_mean
   )
