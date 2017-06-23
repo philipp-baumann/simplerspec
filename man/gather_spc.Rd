@@ -13,3 +13,11 @@ after reading binary OPUS files with \code{simplerspec::read_opus()}}
 \value{
 Spectral data and metadata in object of class tible
 }
+\description{
+Gather specta and spectrometer metadata from list into a tibble.
+Spectra and wavenumbers are stored in list-columns. A tibble is an extended
+data frame and each spectrum can contain complex data and metadata that
+are in a rectangular data structure. List-columns is tidy
+data structure concept that can be combined with functional programming
+frameworks provided by e.g. the purrr package.
+}
