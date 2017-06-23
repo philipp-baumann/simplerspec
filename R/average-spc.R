@@ -2,6 +2,7 @@
 #' @description Averages spectra in tibble column by sample_id after
 #' resampling spectra by \code{simplerspec::resample_spc()}.
 #' @import stats
+#' @importFrom data.table data.table rbindlist setkey setDT := .SD
 #' @export
 average_spc <- function(spc_tbl) {
 
