@@ -8,7 +8,7 @@ data and modeling workflow. Data inputs and outputs are stored in `R` objects wi
 3. Detect and remove outlier spectra based on robust PCA
 4. Resample spectra to new wavenumber intervals
 5. Perform pre-processing of spectra
-6. Join chemial and spectral data sets
+6. Join chemical and spectral data sets
 7. Perform calibration sampling and Partial Least Squares (PLS) regression modeling
 8. Predict chemical properties from a list of calibrated models and new soil spectra
 
@@ -49,9 +49,9 @@ devtools::install_github("philipp-baumann/simplerspec")
 
 The functions are built to work in a pipeline and cover commonly used procedures for spectral model development. Many R packages are available to do tasks in spectral modeling such as pre-processing of spectral data. The motivation to create this package was:
 
-1. Avoid repetition of code in model developement (common source of errors)
+1. Avoid repetition of code in model development (common source of errors)
 2. Provide a reproducible data analysis workflow for FT-IR spectroscopy
-3. R packges are an ideal way to organize and share R code
+3. R packages are an ideal way to organize and share R code
 4. Make soil FT-IR spectroscopy modeling accessible to people that have basic R knowledge
 5. Provide a package interface that keeps data with various structures for spectral modeling related in R objects
 
@@ -94,10 +94,10 @@ lf <- list.files("data/spectra/soilspec_eth_bin/", full.names = TRUE)
 spc_list <- read_opus_univ(fnames = lf, extract = c("spc"))
 ```
 
-Pipes can make R code more readable and fit to the stepwise data processing
+Pipes can make R code more readable and fit to the step-wise data processing
 in the context of developing spectral models. The pipe operator (`%>%`, called "then") is a new operator in R that was introduced
 with the magrittr package. It facilitates readability of code
-and avoids to type intermediate objects. The basic behaviour of
+and avoids to type intermediate objects. The basic behavior of
 the pipe operator is
 that the object on the left hand side is passed as the first argument
 to the function on the right hand side. When loading the tidyverse package, the
@@ -136,7 +136,7 @@ spec_chem <- join_spc_chem(
 
 # Example Partial Least Squares (PLS) Regression model for total Carbon (C)
 # Use repeated k-fold cross-validation to tune the model (choose optimal 
-# number of PLS components) and estimat model performance on hold-out 
+# number of PLS components) and estimate model performance on hold-out 
 # predictions of the finally chosen model (model assessment).
 # This allows to use the entire set for both model building and evaluation;
 # recommended for small data sets
