@@ -101,7 +101,7 @@ and avoids to type intermediate objects. The basic behavior of
 the pipe operator is
 that the object on the left hand side is passed as the first argument
 to the function on the right hand side. When loading the tidyverse package, the
-pipe operator is attached to the current R session
+pipe operator is attached to the current R session.
 More details can be found [here](https://github.com/smbache/magrittr).
 
 The model development process can be quickly coded as the example below illustrates:
