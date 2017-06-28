@@ -66,7 +66,7 @@ VIPjh <- function(object, j, h) {
 extract_pls_vip <- function(mout) {
   # Compute VIP for all wavenumbers and select only VIPs with ncomp in final
   # model
-  final_model <- mout$pls_model$finalModel
+  final_model <- mout$model$finalModel
   vip <- VIP(object = final_model)[final_model$ncomp, ]
   # Collect wavenumbers from preprocessed spectra
   wn <- as.numeric(colnames(mout$data$calibration$spc_pre[[1]]))
