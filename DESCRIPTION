@@ -22,7 +22,7 @@ Imports:
     Rcpp,
     hyperSpec,
     prospectr,
-    dplyr,
+    dplyr (>= 0.7.0),
     caret,
     tidyr,
     tidyverse,
