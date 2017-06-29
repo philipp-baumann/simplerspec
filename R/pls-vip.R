@@ -154,12 +154,14 @@ plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
   rects <- create_vip_rects(df_vip)
 
   # Plot for resampled and mean replicate spectra
-  p_spc <- ggplot2::ggplot(dt1_long, ggplot2::aes(wavenumber, value)) +
+  p_spc <- ggplot2::ggplot(dt1_long, ggplot2::aes(x = wavenumber, y = value)) +
     ggplot2::geom_rect(data = rects, inherit.aes = FALSE,
       ggplot2::aes(xmin = start, xmax = end, ymin = min(dt1_long$value),
         ymax = max(dt1_long$value), group = group), color = "transparent",
         fill = "orange", alpha = 0.3) +
-    ggplot2::geom_line(ggplot2::aes(group = id), alpha = alpha, size = 0.2) +
+    ggplot2::geom_line(data = dt1_long, inherit.aes = FALSE,
+      ggplot2::aes(x = wavenumber, y = value, group = id),
+        alpha = alpha, size = 0.2) +
     ggplot2::labs(x = xlab, y = ylab1) +
     ggplot2::theme_bw() +
     ggplot2::theme(plot.margin = ggplot2::unit(c(0, 5, 1, 1),
@@ -184,7 +186,7 @@ plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
 
   # Plot for VIP
   # Extract PLS model response variable and number of components
-  response <- as.character(unique(mout$stats$variable))
+  response <- as.character(unique(mout$stats$response))
   ncomp <- mout$model$finalModel$ncomp
   p_vip <- ggplot2::ggplot(data = df_vip,
       ggplot2::aes(x = wavenumber, y = vip)) +
