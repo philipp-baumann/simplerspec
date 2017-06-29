@@ -185,7 +185,7 @@ plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
   # Plot for VIP
   # Extract PLS model response variable and number of components
   response <- as.character(unique(mout$stats$variable))
-  ncomp <- mout$pls_model$finalModel$ncomp
+  ncomp <- mout$model$finalModel$ncomp
   p_vip <- ggplot2::ggplot(data = df_vip,
       ggplot2::aes(x = wavenumber, y = vip)) +
     ggplot2::geom_rect(data = rects, inherit.aes = FALSE,
