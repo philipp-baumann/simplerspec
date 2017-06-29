@@ -59,8 +59,7 @@ dplyr Mac OS X El Capitan binary file (`dplyr_0.7.1.tgz`).
 
 OS X El Capitan binaries
 
-After successful compilation and installation, you can install simplerspec
-and by:
+After successful compilation and installation, you can install simplerspec:
 
 ```R
 devtools::install_github("philipp-baumann/simplerspec")
