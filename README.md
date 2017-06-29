@@ -127,7 +127,7 @@ soilchem_tbl <- read_csv(file = "data/soilchem/soilchem_yamsys.csv")
 
 # Join spectra tibble and chemical reference analysis tibble
 spec_chem <- join_spc_chem(
-  spc_tbl = soilspec_tbl_eth , chem_tbl = soilchem_tbl, by = "sample_id")
+  spc_tbl = soilspec_tbl, chem_tbl = soilchem_tbl, by = "sample_id")
 
 
 ################################################################################
