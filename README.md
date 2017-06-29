@@ -47,7 +47,7 @@ install the newest function for dplyr (simplerspec model evaluation won't work
 when using old dplyr 0.5.0 previously available on CRAN):
 
 1.  Install Xcode developer tools via App store on OS X. This will provide the 
-C compilers `clang` and `clang++` required to compile C code in the dplyr package.
+C compiler front end `clang++` required to compile C code in the dplyr package.
 After installing Xcode you can install the dplyr package from the CRAN source with 
 ```R
 install.packages("dplyr", type = "source")
@@ -56,8 +56,6 @@ install.packages("dplyr", type = "source")
 and install it via `RStudio` > `Tools` > `Install Packages...`: 
 `Install from: Package Archive File (.tgz; .tar.gz)`. Select the downloaded 
 dplyr Mac OS X El Capitan binary file (`dplyr_0.7.1.tgz`).
-
-OS X El Capitan binaries
 
 After successful compilation and installation, you can install simplerspec:
 
