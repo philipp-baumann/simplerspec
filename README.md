@@ -52,7 +52,7 @@ After installing Xcode you can install the dplyr package from the CRAN source wi
 ```R
 install.packages("dplyr", type = "source")
 ```
-2.  *Recommended:* Download the following a precompiled binary of dplyr 0.7.1
+2.  *Recommended:* Download the following precompiled binary of dplyr 0.7.1
 and install it via `RStudio` > `Tools` > `Install Packages...`: 
 `Install from: Package Archive File (.tgz; .tar.gz)`. Select the downloaded 
 dplyr Mac OS X El Capitan binary file (`dplyr_0.7.1.tgz`).
