@@ -52,7 +52,7 @@ After installing Xcode you can install the dplyr package from the CRAN source wi
 ```R
 install.packages("dplyr", type = "source")
 ```
-2.  *Recommended:* Download the following precompiled binary of dplyr 0.7.1
+2.  *Recommended:* Download the following [precompiled binary of dplyr 0.7.1](https://github.com/philipp-baumann/R-pkg-osx-binaries)
 and install it via `RStudio` > `Tools` > `Install Packages...`: 
 `Install from: Package Archive File (.tgz; .tar.gz)`. Select the downloaded 
 dplyr Mac OS X El Capitan binary file (`dplyr_0.7.1.tgz`).
@@ -80,7 +80,7 @@ This package builds mainly upon functions from the following R packages:
 * `ggplot2 `: Alternative plotting system for R, based on the grammar of graphics. See [here](http://ggplot2.org/).
 * `caret `: Classification and regression training. A set of functions that attempt to streamline the process for creating predictive models. See [here](http://topepo.github.io/caret/index.html) for details.
 
-Consistent and reproducible data and metadata management is an important prerequisite for spectral model development. Therefore, different outputs should be stored as R objects in a consistent way using R data structures. Simplerspec functions uses tibble data frames as principal data structures because they allow to store lists within the well-known data frame structures. Lists are flexible and can e.g. contain other lists, vectors, data.frames, or matrices.
+Consistent and reproducible data and metadata management is an important prerequisite for spectral model development. Therefore, different outputs should be stored as R objects in a consistent way using R data structures. Simplerspec functions uses tibble data frames as principal data structures because they allow to store lists within the well-known data frame structures. Lists are flexible data structures and can e.g. contain other lists, vectors, data.frames, or matrices.
 
 # Example workflow
 
