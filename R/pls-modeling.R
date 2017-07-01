@@ -509,7 +509,8 @@ evaluate_model_q <- function(x, model, response,
       rlang::UQS(rlang::syms(vars_indexing)))
 
     # Transform cross-validation hold-out predictions --------------------------
-    predobs_cv <- transform_cvpredictions(cal_index = cal_index, predobs_cv)
+    predobs_cv <- transform_cvpredictions(cal_index = cal_index,
+      predobs_cv = predobs_cv)
 
     predobs_cv$object <- predobs_cv$model
     predobs_cv$dataType <- "Cross-validation"
