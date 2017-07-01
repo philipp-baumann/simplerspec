@@ -110,7 +110,7 @@ split_data_q <- function(
       rep("validation", nrow(sel_df_val)))
     sel_df <- rbind(sel_df_cal, sel_df_val)
     # Compute ratio needed to make the figure square
-    ratio <- with(sel_df, diff(range(PC1))/diff(range(PC2)))
+    ratio <- with(sel_df, diff(range(PC1)) / diff(range(PC2)))
     # Save graph showing the selected calibration and validation samples
     # for the first two principal components (pc)
     p_pc <- ggplot2::ggplot(data = sel_df) +
@@ -380,6 +380,26 @@ train_rf_q <- function(x,
 
 # Evaluate model performance (validation and cross-validation) -----------------
 
+# Helper function to transform repeated k-fold cross-validation hold-out
+# predictions
+#' @export
+transform_cvpredictions <- function(cal_index, predobs_cv) {
+
+  predobs_cv <- dplyr::full_join(cal_index, predobs_cv) %>%
+    dplyr::group_by(rlang::UQS(rlang::sym("sample_id"))) %>%
+    # Average observed and predicted values
+    dplyr::mutate(obs = mean(rlang::UQS(rlang::sym("obs"))),
+      pred_sd = sd(rlang::UQS(rlang::sym("pred")))) %>%
+    # Add 95% confidence interval for mean hold-out predictions from
+    # repeated k-fold cross-validation
+    dplyr::mutate_at(.vars = dplyr::vars(pred),
+      .funs = funs(pred_sem_ci = simplerspec::sem_ci)) %>%
+    # Add mean hold-out predictions from repeated k-fold cross-validation
+    dplyr::mutate(pred = mean(rlang::UQS(rlang::sym("pred")))) %>%
+    # Slice data set to only have one row per sample_id
+    dplyr::slice(1L)
+}
+
 #' @title Evaluate PLS performance
 #' @description Calculate model performance indices based
 #' on observed and predicted values of validation and calibration
@@ -484,22 +504,13 @@ evaluate_model_q <- function(x, model, response,
     x$calibration$rowIndex <- 1:nrow(x$calibration)
     # Generate sample_id column for rowIndex of pred list element of
     # train object; select only rowIndex and sample_id of calibration tibble
-    cal_index <- x$calibration %>% dplyr::select(rowIndex, sample_id)
-    # Make a full join of cal_index and predobs_cv
-    predobs_cv <- dplyr::full_join(predobs_cv, cal_index) %>%
-      # average observed and predicted values by sample_id
-      dplyr::group_by(sample_id) %>%
-      # Average observed and predicted values
-      dplyr::mutate(obs = mean(obs), pred_sd = sd(pred)) %>%
-      dplyr::mutate_at(.vars = vars(pred),
-        .funs = funs(pred_sem_ci = simplerspec::sem_ci)) %>%
-      dplyr::mutate(pred = mean(pred)) %>%
-      # slice data set
-      dplyr::slice(1L)
-      # optinally: state number of observations per group
-      # The function n() in dlpyr gives you the number of observations
-    # predobs_cv$sample_id <- x$calibration[predobs_cv$rowIndex, ]
-    # ---
+    vars_indexing <- c("rowIndex", "sample_id")
+    cal_index <- dplyr::select(x$calibration,
+      rlang::UQS(rlang::syms(vars_indexing)))
+
+    # Transform cross-validation hold-out predictions --------------------------
+    predobs_cv <- transform_cvpredictions(cal_index = cal_index, predobs_cv)
+
     predobs_cv$object <- predobs_cv$model
     predobs_cv$dataType <- "Cross-validation"
     predobs_cv <- dplyr::select(
