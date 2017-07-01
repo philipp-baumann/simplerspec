@@ -439,19 +439,19 @@ evaluate_model_q <- function(x, model, response,
     # Calculate training (calibration) and test (validation) data
     # predictions based on pls model with calibration data
     r <- eval(response, x$validation, env)
-    if (tibble::is_tibble(x$validation)) {
-      spc_pre <- data.table::rbindlist(x$validation$spc_pre)
-      predobs <- caret::extractPrediction(list_models,
-        testX = spc_pre, testY = r) # update ***
-      # Append sample_id column to predobs data.frame
-      # extract sample_id from validation set
-      predobs$sample_id <- c(
-        x$calibration$sample_id, x$validation$sample_id)
-    } else {
-      # depreciated
-      predobs <- caret::extractPrediction(list_models,
-        testX = x$validation$MIR, testY = r) # update ***
+
+    if (!tibble::is_tibble(x$validation)) {
+      error("Spectra and reference data need to be provided as tibble
+        (class `tbl_df`, `tbl`, `data.frame`")
     }
+    spc_pre <- data.table::rbindlist(x$validation$spc_pre)
+    predobs <- caret::extractPrediction(list_models,
+      testX = spc_pre, testY = r) # update ***
+    # Append sample_id column to predobs data.frame
+    # extract sample_id from validation set
+    predobs$sample_id <- c(
+      x$calibration$sample_id, x$validation$sample_id)
+
     # Create new data frame column <object>
     predobs$object <- predobs$model
 
