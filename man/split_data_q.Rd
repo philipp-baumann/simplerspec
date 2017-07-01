@@ -4,7 +4,7 @@
 \alias{split_data_q}
 \title{Split spectra into calibration and validation sets}
 \usage{
-split_data(spec_chem, evaluation_method, ratio_val, ken_sto_pc,
+split_data_q(spec_chem, evaluation_method, ratio_val, ken_sto_pc,
 print = TRUE)
 }
 \arguments{

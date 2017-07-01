@@ -10,7 +10,7 @@
 #' @param validation Logical expression weather
 #' calibration sampling is performed
 #' (\code{TRUE} or \code{FALSE}).
-#' @usage split_data(spec_chem, evaluation_method, ratio_val, ken_sto_pc,
+#' @usage split_data_q(spec_chem, evaluation_method, ratio_val, ken_sto_pc,
 #' print = TRUE)
 #' @importFrom magrittr "%>%"
 #' @export
