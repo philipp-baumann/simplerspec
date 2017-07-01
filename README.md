@@ -1,16 +1,16 @@
 # simplerspec 
 
 The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as FT-IR soil spectroscopy. Different helper functions are designed to create a 
-data and modeling workflow. Data inputs and outputs are stored in `R` objects with specific data structures. The following steps are covered in the current version of the package:
+data and modeling workflow. Data inputs and outputs are stored in `R` objects with specific data structures. The following features are covered in the current version of the package:
 
-1. Read spectral data from text files (`.csv`) and Bruker OPUS binary files
-2. Average spectra for replicate scans
-3. Detect and remove outlier spectra based on robust PCA
-4. Resample spectra to new wavenumber intervals
-5. Perform pre-processing of spectra
-6. Join chemical and spectral data sets
-7. Perform calibration sampling and Partial Least Squares (PLS) regression modeling
-8. Predict chemical properties from a list of calibrated models and new soil spectra
+1. `read_opus_univ`: Read spectra and metadata from Bruker OPUS binary files
+2. `gather_spc`: Gather spectra and metadata from list into a tibble object (list-columns)
+4. `resample_spc`: Resample spectra to new wavenumber intervals
+2. `average_spc`: Average spectra for replicate scans
+5. `preprocess_spc`: Perform pre-processing of spectra
+6. `join_chem_spc`: Join chemical and spectral data sets by `sample_id`
+7. `fit_pls`: Perform model tuning and evaluation based Partial Least Squares (PLS) regression
+8. `predict_from_spc`: Predict multiple chemical properties from a list of calibrated models and new soil spectra
 
 # Installation
 
