@@ -393,7 +393,7 @@ transform_cvpredictions <- function(cal_index, predobs_cv) {
     # Add 95% confidence interval for mean hold-out predictions from
     # repeated k-fold cross-validation
     dplyr::mutate_at(.vars = dplyr::vars(pred),
-      .funs = funs(pred_sem_ci = simplerspec::sem_ci)) %>%
+      .funs = dplyr::funs(pred_sem_ci = simplerspec::sem_ci)) %>%
     # Add mean hold-out predictions from repeated k-fold cross-validation
     dplyr::mutate(pred = mean(rlang::UQS(rlang::sym("pred")))) %>%
     # Slice data set to only have one row per sample_id
