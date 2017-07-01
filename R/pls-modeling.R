@@ -1,19 +1,5 @@
-# Perform calibration sampling based on spectral PCA ------------
-#' @title Split spectra into calibration and validation sets
-#' @description Perform calibration sampling based on
-#' the Kennard-Stones algorithm.
-#' @param spec_chem data.frame that contains chemical
-#' and IR spectroscopy data
-#' @param ratio_val Ratio of number of validation and all samples.
-#' @param ken_sto_pc Number of principal components (numeric)
-#' @param print logical expression weather calibration
-#' @param validation Logical expression weather
-#' calibration sampling is performed
-#' (\code{TRUE} or \code{FALSE}).
-#' @usage split_data_q(spec_chem, evaluation_method, ratio_val, ken_sto_pc,
-#' print = TRUE)
-#' @importFrom magrittr "%>%"
-#' @export
+## Perform calibration sampling based on spectral PCA
+## or random split -------------------------------------------------------------
 split_data_q <- function(
   spec_chem,
   split_method,
@@ -141,16 +127,7 @@ split_data_q <- function(
   }
 }
 
-#' @title Perform model tuning
-#' @description Uses function from caret to to model tuning
-#' for PLS regression.
-#' @param x list from calibration sampling
-#' @param response response variable for PLS regression, supplied
-#' as character expression
-#' @param validation Logical expression weather an independent
-#' validation is performed.
-#' @param env Environment where function is evaluated
-#' @export
+# trainControl generating helper function
 control_train_q <- function(x, response, env = parent.frame()) {
   calibration <- NULL
   # List of calibration and validation samples
@@ -174,16 +151,7 @@ control_train_q <- function(x, response, env = parent.frame()) {
 
 ## Adapt model tuning to leave-one-out cross-validation ========================
 
-#' @title Perform model tuning
-#' @description Uses function from caret to to model tuning
-#' for PLS regression.
-#' @param x list from calibration sampling
-#' @param response response variable for PLS regression, supplied
-#' as character expression
-#' @param validation Logical expression weather an independent
-#' validation is performed.
-#' @param env Environment where function is evaluated
-#' @export
+## trainControl generating helper function
 control_train_loocv_q <- function(x, response, env = parent.frame()) {
   calibration <- NULL
   # r: response
@@ -194,16 +162,7 @@ control_train_loocv_q <- function(x, response, env = parent.frame()) {
 
 ## Adapt model tuning to repeated k-fold cross-validation ======================
 
-#' @title Perform model tuning
-#' @description Uses function from caret to to model tuning
-#' for PLS regression.
-#' @param x list from calibration sampling
-#' @param response response variable for PLS regression, supplied
-#' as character expression
-#' @param validation Logical expression weather an independent
-#' validation is performed.
-#' @param env Environment where function is evaluated
-#' @export
+## trainControl generating helper function
 control_train_rcv_q <- function(x, response, env = parent.frame()) {
   calibration <- NULL
   # r: response
@@ -218,16 +177,7 @@ control_train_rcv_q <- function(x, response, env = parent.frame()) {
 ## Fitting models without parameter tuning =====================================
 # 5.9; https://topepo.github.io/caret/model-training-and-tuning.html
 
-#' @title Perform model fitting without parameter tuning
-#' @description Uses function from caret to set model tuning to none
-#' for PLS regression.
-#' @param x list from calibration sampling
-#' @param response response variable for PLS regression, supplied
-#' as character expression
-#' @param validation Logical expression weather an independent
-#' validation is performed.
-#' @param env Environment where function is evaluated
-#' @export
+## trainControl generating helper function
 control_train_none_q <- function(x, response, env = parent.frame()) {
   calibration <- NULL
   # r: response
@@ -240,35 +190,14 @@ control_train_none_q <- function(x, response, env = parent.frame()) {
   caret::trainControl(method = "none", index = idx, savePredictions = TRUE)
 }
 
-#' @title Perform model tuning
-#' @description Uses function from caret to to model tuning
-#' for PLS regression.
-#' @param x list from calibration sampling
-#' @param response response variable for PLS regression, supplied
-#' as character expression
-#' @param validation Logical expression weather an independent
-#' validation is performed.
-#' @param env Environment where function is evaluated
-#' @export
+## Standard evlauation version of trainContol helper function
 control_train <- function(x, response, env = parent.frame()) {
   control_train_q(x, substitute(response), env)
 }
 
-# Fit a PLS regression model using the caret package ------------
+# Fit a PLS regression model using the caret package ---------------------------
 
-#' @title Train a PLS regression model
-#' (quoted version of the function)
-#' @description Uses the caret package to perform PLS modeling.
-#' Spectra are centered and scaled prior to modeling.
-#' @param x List that contains calibration
-#' set, validation set, and model tuning options
-#' @param validation Logical expression weather independent
-#' validation is performed
-#' @param response Response variable to be modeled
-#' @param tr_control Object that defines controlling parameters
-#' of the desired internal validation framework
-#' @param env Environment where function is evaluated
-#' @export
+## Train a PLS regression model
 train_pls_q <- function(x,
   evaluation_method = "test_resampling",
   response, tr_control, env = parent.frame(),
@@ -316,16 +245,7 @@ train_pls_q <- function(x,
 }
 
 
-#' @title Fit a PLS regression model
-#' @description Uses the caret package to perform PLS modeling.
-#' Spectra are centered and scaled prior to modeling.
-#' @param x List that contains calibration
-#' set, validation set, and model tuning options
-#' @param validation Logical expression weather independent
-#' validation is performed
-#' @param response Response variable to be modeled
-#' @param env Environment where function is evaluated
-#' @export
+## Standard evaluation version for training a PLS regression model
 train_pls <- function(x, response, evaluation_method = "resampling",
   env = parent.frame()) {
   train_pls_q(x = x, evaluation_method = substitute(evaluation_method),
@@ -333,22 +253,9 @@ train_pls <- function(x, response, evaluation_method = "resampling",
   )
 }
 
-# Fit a random forest model using the caret package -------------
+# Fit a random forest model using the caret package ----------------------------
 
-#' @title Fit a random forest model
-#' (quoted version of the function)
-#' @description Uses the caret package to perform random forest
-#' modeling.
-#' Spectra are centered and scaled prior to modeling.
-#' @param x List that contains calibration
-#' set, validation set, and model tuning options
-#' @param validation Logical expression weather independent
-#' validation is performed
-#' @param response Response variable to be modeled
-#' @param tr_control Object that defines controlling parameters
-#' of the desired internal validation framework
-#' @param env Environment where function is evaluated
-#' @export
+## Train a random forest model
 train_rf_q <- function(x,
   validation = TRUE, evaluation_method = "resampling",
   response, tr_control, ntree_max = 500, env = parent.frame()) {
@@ -380,8 +287,8 @@ train_rf_q <- function(x,
 
 # Evaluate model performance (validation and cross-validation) -----------------
 
-# Helper function to transform repeated k-fold cross-validation hold-out
-# predictions
+## Helper function to transform repeated k-fold cross-validation hold-out
+## predictions
 transform_cvpredictions <- function(cal_index, predobs_cv) {
 
   predobs_cv <- dplyr::full_join(cal_index, predobs_cv) %>%
@@ -399,27 +306,7 @@ transform_cvpredictions <- function(cal_index, predobs_cv) {
     dplyr::slice(1L)
 }
 
-#' @title Evaluate PLS performance
-#' @description Calculate model performance indices based
-#' on observed and predicted values of validation and calibration
-#' set, and internal cross-validation
-#' @param x List that contains calibration and validation data
-#' frame with combined spectral and chemical data
-#' @param model List with PLS regression model output from
-#' the caret package
-#' @param response Response variable (e.g. chemical property) to be
-#' modelled (needs to be non-quoted expression). \code{response}
-#' needs to be a column name in the \code{validation} data.frame
-#' (element of \code{x})
-#' @param validation Logical expression if independent validation
-#' is performed (split data set into calibration set and
-#' validation set)
-#' @param print Print observed vs. predicted for calibration
-#' and validation. Default is \code{TRUE}.
-#' @param env Specifiy the environment in which the function is
-#' called. Default argument of \code{env} is
-#' \code{parent.frame()}
-#' @export
+## Evaluate PLS performance
 evaluate_model_q <- function(x, model, response,
   evaluation_method,
   tuning_method, print = TRUE, env = parent.frame()) {
@@ -726,35 +613,84 @@ evaluate_model_q <- function(x, model, response,
 #' @title Calibration sampling, model tuning, and PLS regression
 #' @description Perform calibration sampling and use selected
 #' calibration set for model tuning
-#' @param spec_chem data.frame that contains IR spectroscopy
-#' and chemical data
-#' @param k Number of validation samples
-#' @param ken_sto_pc Number of Principal Components used for Calibration
-#' sampling (Kennard-Stones algorithm)
-#' @param ratio_val Ratio of number of validation and all samples.
-#' @param print Logical expression weather graphs shall be printed
-#' @param validation Logical expression weather independent
-#' validation is performed
-#' @param response Response variable (without quotes)
-#' @param env Environment where function is evaluated
+#' @param spec_chem Tibble that contains spectra, metadata and chemical
+#' reference as list-columns. The tibble to be supplied to \code{spec_chem} can
+#' be generated by the `join_chem_spc() function`
+#' @param response Response variable as symbol or name
+#' (without quotes, no character vector). The provided response symbol needs to be
+#' a column name in the \code{spec_chem} tibble.
+#' @param variable Depreciated and replaced by `response`
+#' @param center Logical whether to perform mean centering of each spectrum column
+#' (e.g. wavenumber or wavelength) after common spectrum preprocessing. Default is
+#' \code{center = TRUE}
+#' @param scale Logical whether to perform standard deviation scaling
+#' of each spectrum column (e.g. wavenumber or wavelength) after common
+#' spectrum preprocessing. Default is \code{scale = TRUE}
+#' @param evaluation_method Character vector stating evaluation method.
+#' Either \code{"test_set"} (default) or \code{"resampling"}. \code{"test_set"}
+#' will split the data into a calibration (training) and validation (test) set,
+#' and evaluate the final model by predicting on the validation set.
+#' If \code{"resampling"}, the finally selected model will be evaluated based
+#' on the cross-validation hold-out predictions.
+#' @param validation Depreciated and replaced by \code{evaluation_method)
+#' @param split_method Method how to to split the data into a independent test
+#' set. Default is \code{"ken_sto"}, which will select samples for calibration
+#' based on Kennard-Stone sampling algorithm of preprocessed spectra. The
+#' proportion of validation to the total number of samples can be specified
+#' in the argument \code{ratio_val}.
+#' \code{split_method = "random"} will create a single random split
+#' @param ken_sto_pc Number of component used
+#' for calculating mahalanobsis distance on PCA scores for computing
+#' Kennard-Stone algorithm.
+#' Default is \code{ken_sto_pc = 2}, which will use the first two PCA
+#' components.
+#' @param pc Depreciated; renamed argument is `ken_sto_pc`.
+#' @param invert Logical
+#' @param tuning_method Character specifying tuning method. Tuning method
+#' affects how caret selects a final tuning value set from a list of candidate
+#' values. Possible values are \code{"resampling"}, which will use a
+#' specified resampling method such as repeated k-fold cross-validation (see
+#' argument \code{resampling_method}) and the generated performance profile
+#' based on the hold-out predictions to decide on the final tuning values
+#' that lead to optimal model performance. The value \code{"none"} will force
+#' caret to compute a final model for a predefined canditate PLS tuning
+#' parameter number of PLS components. In this case, the value
+#' supplied by \code{ncomp_fixed}` is used to set model complexity at
+#' a fixed number of components.
+#' @param resampling_method Character specifying resampling method. Currently,
+#' \code{"kfold_cv"} (default, performs 10-fold cross-validation),
+#' \code{"rep_kfold_cv"} (performs 5-times repeated 10-fold cross-validation),
+#' \code{"loocv"} (performs leave-one-out cross-validation), and \code{"none"}
+#' (if \code{resampling_method = "none"}) are supported.
+#' @param cv Depreciated. Use \code{resampling_method} instead.
+#' @param ratio_val Ratio of number of validation to total samples
+#' @param pls_ncomp_max Maximum number of PLS components that are evaluated
+#' by caret::train. Caret will aggregate a performance profile using resampling
+#' for an integer sequence from 1 to \code{pls_ncomp_max}
+#' @param ncomp_fixed Integer of fixed number of PLS components. Will only be
+#' used when \code{tuning_method = "none"} and  \code{resampling_method = "none"}
+#' are used.
+#' @param print Logical expression whether model evaluation graphs shall be
+#' printed
+#' @param env Environment where function is evaluated. Default is
+#' \code{parent.frame}.
 #' @export
 # Note: check non standard evaluation, argument passing...
 fit_pls <- function(
   spec_chem,
+  response, variable = NULL, # variable depreciated, will not work
   center = TRUE, scale = TRUE, # center and scale all predictors (wavenumbers)
-  response, variable = NULL, # variable not valid anymore
   evaluation_method = "test_set", validation = TRUE, # validation depreciated
   split_method = "ken_stone",
+  ken_sto_pc = 2, pc, # only if split_method = "ken_stone"; number of component used
+  # for calculating mahalanobsis distance on PCA scores
+  invert = TRUE, # only if split_method = "ken_stone"
   tuning_method = "resampling",
   resampling_method = "kfold_cv", cv = NULL, # cv depreciated
   ratio_val = 1/3, # is only used if evaluation_method = "test_set"
-  invert = TRUE, # only if split_method = "ken_stone"
   pls_ncomp_max = 20, # Maximal number of PLS components used by model tuning
   ncomp_fixed = 5, # only fit and evaluate one model, if tuning_method = "none"
-  ken_sto_pc = 2, pc, # only if split_method = "ken_stone"; number of component used
-  # for calculating mahalanobsis distance on PCA scores
-  print = TRUE, # print model output graphs
-  # resulting from preprocessed spectra
+  print = TRUE, # print model summary and evaluation graphs
   env = parent.frame())
 
 {
