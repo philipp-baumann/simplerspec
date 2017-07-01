@@ -1,6 +1,7 @@
 #' @title Average spectra from spectral data object (tibble)
 #' @description Averages spectra in tibble column by sample_id after
 #' resampling spectra by \code{simplerspec::resample_spc()}.
+#' @param spc_tbl Spectra after resampling spectra with \code{resample_spc()}
 #' @import stats
 #' @importFrom data.table data.table rbindlist setkey setDT := .SD
 #' @export
@@ -22,7 +23,7 @@ average_spc <- function(spc_tbl) {
   # Create vector of sample_id from column sample_id in spc_mean
   sample_id_mean <- spc_mean$sample_id
   # Delete sample_id column in data.table
-  spc_mean_noid <- spc_mean[, sample_id := NULL]
+  spc_mean_noid <- spc_mean[, sample_id:=NULL]
 
   # Create list of averaged spectra, one spectrum is one data.table
   # Method split.data.table is not yet available in data.table 1.9.7
