@@ -383,6 +383,7 @@ train_rf_q <- function(x,
 # Helper function to transform repeated k-fold cross-validation hold-out
 # predictions
 #' @export
+#' @importFrom rlang sym syms UQ UQS quo quos
 transform_cvpredictions <- function(cal_index, predobs_cv) {
 
   predobs_cv <- dplyr::full_join(cal_index, predobs_cv) %>%
