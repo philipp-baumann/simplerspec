@@ -108,6 +108,9 @@ plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
                          ylab1 = "Absorbance", ylab2 = "Preprocessed Abs.",
                          alpha = 0.2) {
 
+  # Avoid `R CMD check` NOTE: no visible binding for global variable `...`
+  variable <- wavenumber <- value <- group <- vip <- NULL
+
   # Extract spectra tibble for calibration
   spc_tbl <- mout$data$calibration
   # Gather spectra in one data.table
