@@ -3,13 +3,13 @@
 The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as FT-IR soil spectroscopy. Different helper functions are designed to create a 
 data and modeling workflow. Data inputs and outputs are stored in `R` objects with specific data structures. The following features are covered in the current version of the package:
 
-1. `read_opus_univ`: Read spectra and metadata from Bruker OPUS binary files
+1. `read_opus_univ`: Read spectra and metadata from Bruker OPUS binary files into R list
 2. `gather_spc`: Gather spectra and metadata from list into a tibble object (list-columns)
 4. `resample_spc`: Resample spectra to new wavenumber intervals
 2. `average_spc`: Average spectra for replicate scans
 5. `preprocess_spc`: Perform pre-processing of spectra
 6. `join_chem_spc`: Join chemical and spectral data sets by `sample_id`
-7. `fit_pls`: Perform model tuning and evaluation based Partial Least Squares (PLS) regression
+7. `fit_pls`: Perform model tuning and evaluation based on Partial Least Squares (PLS) regression
 8. `predict_from_spc`: Predict multiple chemical properties from a list of calibrated models and new soil spectra
 
 # Installation
@@ -84,12 +84,9 @@ Consistent and reproducible data and metadata management is an important prerequ
 
 # Example workflow
 
-In a fist step, the spectra (one file per spectrum and replicate scan) are read from the text (`.txt`) files. Currently, an export macro within the Bruker OPUS
-software is used to convert OPUS binary files to spectra in the form of a text 
-file. The argument `path` specifies the the folder where all spectral files to 
-be loaded into R are located. The files contain two columns that are 
-comma-separated. The first is the wavenumber and the second is the absorbance 
-value.
+Bruker FTIR spectrometers produce binary files in the OPUS format that can contain different types of spectra and many parameters such as instrument type and settings that were used at the time of data acquisition and internal processing (e.g. Fourier transform operations). Basically, the entire set of setup measurement parameters, selected spectra, supplementary metadata such as the time of measurement are written into OPUS binary files. In contrast to simple text files that contain only plain text with a defined character encoding, binary files can contain any type of data represented as sequences of bytes (a single byte is sequence of 8 bits and 1 bit either represents 0 or 1).
+
+Simplerspec comes with reader function `read_opus_univ()` that is intended to be a universal Bruker OPUS file reader that extract spectra and key metadata from files. Usually, one is mostly interested to extract the final absorbance spectra (shown as *AB* in the OPUS viewer software).
 
 ```R
 # Load simplerspec package for spectral model development wrapper functions
@@ -106,7 +103,7 @@ require(tidyverse)
 ## Read spectra in list ========================================================
 
 # List of OPUS binary spectra files
-lf <- list.files("data/spectra/soilspec_eth_bin/", full.names = TRUE)
+lf <- list.files("data/spectra/soilspec_eth_bin", full.names = TRUE)
 
 # Read spectra from files into R list
 spc_list <- read_opus_univ(fnames = lf, extract = c("spc"))
