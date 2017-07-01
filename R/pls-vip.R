@@ -28,7 +28,6 @@
 
 ## VIP returns all VIP values for all variables and all number of components,
 ## as a ncomp x nvars matrix.
-#' @export
 VIP <- function(object) {
     # pb: added to avoid `R CMD check` note
     method <- Yloadings <- scores <- loading.weights <- NULL
@@ -75,7 +74,6 @@ extract_pls_vip <- function(mout) {
 }
 
 
-#' @export
 create_vip_rects <- function(df_vip) {
 
   # Avoid `R CMD check NOTE`: `no visible binding for global variable`
