@@ -13,8 +13,7 @@
 #' @param slice
 #' @param alpha
 #' @param legend
-#' @usage plot_spc(spc_tbl = pls_$data$calibration,
-#' spc_tbl_2 = pls_C$data$validation,
+#' @usage plot_spc(spc_tbl, spc_tbl_2,
 #' y = "spc_pre", by = "sample_id", graph_id_1 = "Calibration",
 #' graph_id_2 = "Validation", slice = TRUE, alpha = 1)
 #' @export
@@ -26,6 +25,9 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL,
                      xlab = expression(paste("Wavenumber [", cm^-1, "]")),
                      ylab = "Absorbance", slice = TRUE, alpha = 0.2,
                      legend = TRUE) {
+
+  # Fix `R CMD check NOTE`: "no visible binding for global variable ‘...‘"
+  graph_id <- id <- variable <- value <- NULL
 
   # (0) Slice spectra tibble to remove triplicate spectra (reps)
   # only sample_id level
@@ -88,7 +90,7 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL,
   # (4) Plot spectra
   # Define nice breaks for x axis
   brk  <- pretty(as.numeric(names(dt)[!names(dt) %in% c("id", "graph_id")]), n = 10)
-  p <- ggplot(dt_long, ggplot2::aes(variable, value)) +  # group = group)) +
+  p <- ggplot2::ggplot(dt_long, ggplot2::aes(variable, value)) +
     ggplot2::labs(x = xlab, y = ylab) +
     ggplot2::theme_bw() +
     ggplot2::scale_x_reverse(breaks = brk) +
