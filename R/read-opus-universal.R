@@ -3,7 +3,10 @@
 #' Read single binary file acquired with an
 #' Bruker Vertex FTIR Instrument
 #' @param file_path Character vector with path to file
-#' @usage read_opus_bin_univ(file_path)
+#' @param print_progress Logical (default \code{TRUE}) whether a message is
+#' printed when an OPUS binary file is parsed into an R list entry.
+#' @usage read_opus_bin_univ(file_path, extract = c("spc"),
+#' print_progress = TRUE)
 #' @export
 # Importing functions `%do%` and foreach::`%dopar%` does not work, see
 # http://stackoverflow.com/questions/30216613/how-to-use-dopar-when-only-import-foreach-in-description-of-a-package
