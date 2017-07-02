@@ -9,6 +9,7 @@
 # http://stackoverflow.com/questions/30216613/how-to-use-dopar-when-only-import-foreach-in-description-of-a-package
 # Got the following error:
 # "Error : object ‘`%do%`’ is not exported by 'namespace:foreach'"
+#' @importFrom foreach %dopar% %do%
 read_opus_bin_univ <- function(file_path, extract = c("spc"),
   print_progress = TRUE) {
 

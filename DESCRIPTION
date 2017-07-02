@@ -34,7 +34,8 @@ Imports:
     readr,
     tibble,
     magrittr,
-    utils
+    utils,
+    rlang
 License: GPL-2
 LazyData: TRUE
 RoxygenNote: 6.0.1
