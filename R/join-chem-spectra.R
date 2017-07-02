@@ -10,6 +10,7 @@
 #' @export
 join_chem_spec <- function(
   dat_chem, dat_spec, by = "sample_ID") {
+
   # Alternative when "no visible binding for global variable":
   data_meta <- MIR <- MIR_pre <- ori <- MIR_mean <- NULL
   # http://stackoverflow.com/questions/23475309/in-r-is-it-possible-to-suppress-note-no-visible-binding-for-global-variable
@@ -45,8 +46,9 @@ join_chem_spec <- function(
 #' @return Tibble joined by sample_id
 #' @export
 join_spc_chem <- function(spc_tbl, chem_tbl, by = "sample_id") {
+
   if(!tibble::is_tibble(spc_tbl)) {
-    stop(dat_chem, "needs to be a Tibble", call. = FALSE)
+    stop(spc_tbl, "needs to be a Tibble", call. = FALSE)
   } else {
     # Rename column sample_ID to sample_id if sample_ID exists
     if("sample_ID" %in% colnames(chem_tbl)) {
