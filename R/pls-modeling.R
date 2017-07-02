@@ -293,16 +293,16 @@ train_rf_q <- function(x,
 transform_cvpredictions <- function(cal_index, predobs_cv) {
 
   predobs_cv <- dplyr::full_join(cal_index, predobs_cv) %>%
-    dplyr::group_by(rlang::UQS(rlang::sym("sample_id"))) %>%
+    dplyr::group_by(rlang::UQ(rlang::sym("sample_id"))) %>%
     # Average observed and predicted values
-    dplyr::mutate("obs" = mean(rlang::UQS(rlang::sym("obs"))),
-      "pred_sd" = sd(rlang::UQS(rlang::sym("pred")))) %>%
+    dplyr::mutate("obs" = mean(rlang::UQ(rlang::sym("obs"))),
+      "pred_sd" = sd(rlang::UQ(rlang::sym("pred")))) %>%
     # Add 95% confidence interval for mean hold-out predictions from
     # repeated k-fold cross-validation
-    dplyr::mutate_at(.vars = dplyr::vars(pred),
+    dplyr::mutate_at(.vars = dplyr::vars(rlang::UQ(rlang::sym("pred"))),
       .funs = dplyr::funs("pred_sem_ci" = sem_ci)) %>%
     # Add mean hold-out predictions from repeated k-fold cross-validation
-    dplyr::mutate("pred" = mean(rlang::UQS(rlang::sym("pred")))) %>%
+    dplyr::mutate("pred" = mean(rlang::UQ(rlang::sym("pred")))) %>%
     # Slice data set to only have one row per sample_id
     dplyr::slice(1L)
 }
