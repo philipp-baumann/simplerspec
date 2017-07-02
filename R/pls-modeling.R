@@ -1,5 +1,6 @@
 ## Perform calibration sampling based on spectral PCA
 ## or random split -------------------------------------------------------------
+#' @importFrom magrittr %>%
 split_data_q <- function(
   spec_chem,
   split_method,
@@ -294,14 +295,14 @@ transform_cvpredictions <- function(cal_index, predobs_cv) {
   predobs_cv <- dplyr::full_join(cal_index, predobs_cv) %>%
     dplyr::group_by(rlang::UQS(rlang::sym("sample_id"))) %>%
     # Average observed and predicted values
-    dplyr::mutate(obs = mean(rlang::UQS(rlang::sym("obs"))),
-      pred_sd = sd(rlang::UQS(rlang::sym("pred")))) %>%
+    dplyr::mutate("obs" = mean(rlang::UQS(rlang::sym("obs"))),
+      "pred_sd" = sd(rlang::UQS(rlang::sym("pred")))) %>%
     # Add 95% confidence interval for mean hold-out predictions from
     # repeated k-fold cross-validation
     dplyr::mutate_at(.vars = dplyr::vars(pred),
-      .funs = dplyr::funs(pred_sem_ci = sem_ci)) %>%
+      .funs = dplyr::funs("pred_sem_ci" = sem_ci)) %>%
     # Add mean hold-out predictions from repeated k-fold cross-validation
-    dplyr::mutate(pred = mean(rlang::UQS(rlang::sym("pred")))) %>%
+    dplyr::mutate("pred" = mean(rlang::UQS(rlang::sym("pred")))) %>%
     # Slice data set to only have one row per sample_id
     dplyr::slice(1L)
 }
@@ -400,14 +401,15 @@ evaluate_model_q <- function(x, model, response,
 
     predobs_cv$object <- predobs_cv$model
     predobs_cv$dataType <- "Cross-validation"
-    predobs_cv <- dplyr::select(
+    vars_keep <- c("obs", "pred", "pred_sd", "pred_sem_ci",
+      "model", "dataType", "object")
+    predobs_cv <- dplyr::select(predobs_cv,
       # !!! sample_id newly added
-      predobs_cv, obs, pred, pred_sd, pred_sem_ci, model, dataType, object
+      rlang::UQS(rlang::syms(vars_keep))
     )
     # Add column pred_sd to predobs data frame (assign values to 0) so that
     # column pred_sd is retained in predobs_cv after dplyr::bind_rows
     predobs$pred_sd <- NA
-    predobs$pred_sem <- NA
     # Desn't work because some columns are turned into numeric;
     # resulting data frame has only two rows
     predobs <- dplyr::bind_rows(predobs, predobs_cv)
