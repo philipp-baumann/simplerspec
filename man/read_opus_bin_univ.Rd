@@ -4,10 +4,14 @@
 \alias{read_opus_bin_univ}
 \title{Read a Bruker OPUS spectrum binary file}
 \usage{
-read_opus_bin_univ(file_path)
+read_opus_bin_univ(file_path, extract = c("spc"),
+print_progress = TRUE)
 }
 \arguments{
 \item{file_path}{Character vector with path to file}
+
+\item{print_progress}{Logical (default \code{TRUE}) whether a message is
+printed when an OPUS binary file is parsed into an R list entry.}
 }
 \description{
 Read single binary file acquired with an
