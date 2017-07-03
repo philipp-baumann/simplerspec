@@ -12,12 +12,27 @@
 #' @export
 gather_spc <- function(data) {
 
-  ## Extract data from list
+  ## Extract data from list by dplyr::map variants -----------------------------
+
+  # Extract original spectral matrix for all scans
+  # First, try to map all spectra; if some of the list elements are NULL,
+  # remove all spectra and metadata for Bruker files that were
+  # not successfully read (NULL in final spectra in sublist "spc")
+  map_spc <- purrr::map(data, "spc")
+  which_NULL <- which(sapply(map_spc, is.null))
+  if (length(which_NULL > 0)) {
+    message(paste0("Sample spectra originating from the following",
+      " OPUS files could not gathered because extracted spectra are NULL: <",
+      paste(names(which_NULL), collapse = ";"), ">. ",
+      "The following list positions have therefore been omitted from
+      <data> when gathering spectra from list into tibble: ",
+      paste(which_NULL, collapse = "; ")), ".")
+    data <- data[- which_NULL]
+    map_spc <- map_spc[- which_NULL]
+  }
   # Extract metadata list elements and combine into data.frame
   map_metadata_df <- purrr::map_df(data, "metadata")
   map_metadata <- purrr::map(data, "metadata")
-  # Extract original spectral matrix for all scans
-  map_spc <- purrr::map(data, "spc")
   # Extract rownames of spectra; remove names of rownames vector
   rownames_spc <- unname(unlist(lapply(map_spc, rownames)))
   # Extract wavenumbers
