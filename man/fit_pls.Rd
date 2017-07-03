@@ -7,17 +7,17 @@
 \usage{
 fit_pls(spec_chem, response, variable = NULL, center = TRUE, scale = TRUE,
   evaluation_method = "test_set", validation = TRUE,
-  split_method = "ken_stone", ken_sto_pc = 2, pc, invert = TRUE,
-  tuning_method = "resampling", resampling_method = "kfold_cv", cv = NULL,
-  ratio_val = 1/3, pls_ncomp_max = 20, ncomp_fixed = 5, print = TRUE,
-  env = parent.frame())
+  split_method = "ken_stone", ratio_val = 1/3, ken_sto_pc = 2, pc,
+  invert = TRUE, tuning_method = "resampling",
+  resampling_method = "kfold_cv", cv = NULL, pls_ncomp_max = 20,
+  ncomp_fixed = 5, print = TRUE, env = parent.frame())
 
 pls_ken_stone(spec_chem, response, variable = NULL, center = TRUE,
   scale = TRUE, evaluation_method = "test_set", validation = TRUE,
-  split_method = "ken_stone", ken_sto_pc = 2, pc, invert = TRUE,
-  tuning_method = "resampling", resampling_method = "kfold_cv", cv = NULL,
-  ratio_val = 1/3, pls_ncomp_max = 20, ncomp_fixed = 5, print = TRUE,
-  env = parent.frame())
+  split_method = "ken_stone", ratio_val = 1/3, ken_sto_pc = 2, pc,
+  invert = TRUE, tuning_method = "resampling",
+  resampling_method = "kfold_cv", cv = NULL, pls_ncomp_max = 20,
+  ncomp_fixed = 5, print = TRUE, env = parent.frame())
 }
 \arguments{
 \item{spec_chem}{Tibble that contains spectra, metadata and chemical
@@ -53,7 +53,10 @@ set. Default is \code{"ken_sto"}, which will select samples for calibration
 based on Kennard-Stone sampling algorithm of preprocessed spectra. The
 proportion of validation to the total number of samples can be specified
 in the argument \code{ratio_val}.
-\code{split_method = "random"} will create a single random split}
+\code{split_method = "random"} will create a single random split.}
+
+\item{ratio_val}{Ratio of validation (test) samples to
+total number of samples (calibration (training) and validation (test)).}
 
 \item{ken_sto_pc}{Number of component used
 for calculating mahalanobsis distance on PCA scores for computing
@@ -84,8 +87,6 @@ a fixed number of components.}
 (if \code{resampling_method = "none"}) are supported.}
 
 \item{cv}{Depreciated. Use \code{resampling_method} instead.}
-
-\item{ratio_val}{Ratio of number of validation to total samples}
 
 \item{pls_ncomp_max}{Maximum number of PLS components that are evaluated
 by caret::train. Caret will aggregate a performance profile using resampling
