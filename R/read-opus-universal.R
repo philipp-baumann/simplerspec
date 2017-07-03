@@ -58,10 +58,10 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     # are not correctly read. This results in an error when trying to calculate
     # the wavenumbers; The below code is a quick and dirty fix to remove
     # FXV values that don't have LXV values and vice versa
-    # (difference between "LXV" and "LXV" for a spectral data block
+    # (difference between "LXV" and "FXV" for a spectral data block
     # should be 16) ------------------------------------------------------------
     if(length(fxv_all) > length(lxv_all)) {
-      diff_lxv_lxf <- lapply(lxv_all, function(x) x - fxv_all)
+      diff_lxv_fxf <- lapply(lxv_all, function(x) x - fxv_all)
       # Return list of logical vectors indicating whether difference of fxv
       # and lxv is 16 (distance of 16 bytes)
       lxv_fxv_min <- lapply(diff_lxv_fxv, function(x) x == 16)
