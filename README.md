@@ -82,7 +82,7 @@ This package builds mainly upon functions from the following R packages:
 
 Consistent and reproducible data and metadata management is an important prerequisite for spectral model development. Therefore, different outputs should be stored as R objects in a consistent way using R data structures. Simplerspec functions uses tibble data frames as principal data structures because they allow to store lists within the well-known data frame structures. Lists are flexible data structures and can e.g. contain other lists, vectors, data.frames, or matrices.
 
-List-columns features provided within the tibble framework are an excellent base to work with functional programming toolsin R, which allows to efficiently write code. 
+List-columns features provided within the tibble framework are an excellent base to work with functional programming tools in R, which allows to efficiently write code. 
 Simplerspec internally uses popular functional programming extension tools provided
 by the `purrr` package for processing and transforming spectra. 
 For learning more, I would recommend
@@ -114,6 +114,12 @@ lf <- list.files("data/spectra/soilspec_eth_bin", full.names = TRUE)
 
 # Read spectra from files into R list
 spc_list <- read_opus_univ(fnames = lf, extract = c("spc"))
+# Returns messages:
+#> Extracted spectra data from file: <BF_lo_01_soil_cal.0>
+#> Extracted spectra data from file: <BF_lo_01_soil_cal.1>
+#> Extracted spectra data from file: <BF_lo_01_soil_cal.2>
+#> Extracted spectra data from file: <BF_lo_02_soil_cal.0>
+#> ...
 ```
 
 Pipes can make R code more readable and fit to the step-wise data processing
@@ -142,15 +148,43 @@ soilspec_tbl <- spc_list %>%
   # of 21 points
   preprocess_spc(select = "sg_1_w21")
   
+#> # A tibble: 284 x 10
+#>                                 unique_id             file_id         sample_id
+#>                                     <chr>               <chr>             <chr>
+#> 1 BF_lo_01_soil_cal.0_2015-11-06 14:34:10 BF_lo_01_soil_cal.0 BF_lo_01_soil_cal
+#> 2 BF_lo_01_soil_cal.1_2015-11-06 14:38:14 BF_lo_01_soil_cal.1 BF_lo_01_soil_cal
+#> 3 BF_lo_01_soil_cal.2_2015-11-06 14:40:55 BF_lo_01_soil_cal.2 BF_lo_01_soil_cal
+#> 4 BF_lo_02_soil_cal.0_2015-11-06 17:27:55 BF_lo_02_soil_cal.0 BF_lo_02_soil_cal
+#> 5 BF_lo_02_soil_cal.1_2015-11-06 17:30:19 BF_lo_02_soil_cal.1 BF_lo_02_soil_cal
+#> 6 BF_lo_02_soil_cal.2_2015-11-06 17:32:47 BF_lo_02_soil_cal.2 BF_lo_02_soil_cal
+#> 7 BF_lo_03_soil_cal.0_2015-11-09 11:32:55 BF_lo_03_soil_cal.0 BF_lo_03_soil_cal
+#> 8 BF_lo_03_soil_cal.1_2015-11-09 11:35:26 BF_lo_03_soil_cal.1 BF_lo_03_soil_cal
+#> 9 BF_lo_03_soil_cal.2_2015-11-09 11:38:08 BF_lo_03_soil_cal.2 BF_lo_03_soil_cal
+#>10 BF_lo_04_soil_cal.0_2015-11-06 10:36:13 BF_lo_04_soil_cal.0 BF_lo_04_soil_cal
+#> # ... with 274 more rows, and 7 more variables: spc <list>, wavenumbers <list>,
+#> #   metadata <list>, spc_rs <list>, wavenumbers_rs <list>, spc_mean <list>, spc_pre <list>
+  
 ## Read chemical reference data and join with spectral data ====================
 
 # Read chemical reference analysis data
 soilchem_tbl <- read_csv(file = "data/soilchem/soilchem_yamsys.csv")
 
+#> Parsed with column specification:
+#> cols(
+#>   .default = col_double(),
+#>   sample_ID = col_character(),
+#>   country = col_character(),
+#>   site = col_character(),
+#>   material = col_character(),
+#>   site_comb = col_character()
+#> )
+#> See spec(...) for full column specifications.
+
 # Join spectra tibble and chemical reference analysis tibble
 spec_chem <- join_spc_chem(
   spc_tbl = soilspec_tbl, chem_tbl = soilchem_tbl, by = "sample_id")
 
+#> Joining, by = "sample_id"
 
 ################################################################################
 ## Part 2: Run PLS regression models for different soil variables
