@@ -4,9 +4,15 @@
 #' expected to be in one .txt tab delimited file. The first row should contain
 #' the name 'Wavelength' for the first column and the file names for the
 #' remaining columns.
+#' @param file Tab delmited file from ASD software export where the first
+#' column called \code{Wavelength} contais wavelengths in nanometer and the
+#' remaining columns are sample spectra referred by an ID name provided in the
+#' first row of these columns.
 #' @return Spectra data in tibble data frame (class `tbl_df`) that contains
-#' columns `sample_id`, `spc` (list of spectral matrices) and 'wavelengths'
-#' (list of wavelength vectors).
+#' columns \code{sample_id} (derived from 2nd and following column names of
+#' tab delimited ASD exported text file),
+#' \code{spc} (list-column of spectral matrices)
+#' and \code{wavelengths} (list-column containing wavelength vectors).
 #' @export
 read_asd <- function(file) {
 
@@ -14,7 +20,7 @@ read_asd <- function(file) {
   asd_tbl <- readr::read_tsv(file = file)
   # Transpose tibble and add Wavelengths as column names
   asd_tbl_t <- tibble::as_tibble(
-    t(dplyr::select(asd_tbl, - Wavelength))
+    t(dplyr::select(asd_tbl, - rlang::UQS(rlang::syms("Wavelength"))))
   )
   colnames(asd_tbl_t) <- asd_tbl[["Wavelength"]]
 
