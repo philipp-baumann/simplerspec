@@ -148,6 +148,7 @@ soilspec_tbl <- spc_list %>%
   # of 21 points
   preprocess_spc(select = "sg_1_w21")
   
+soilspec_tbl
 #> # A tibble: 284 x 10
 #>                                 unique_id             file_id         sample_id
 #>                                     <chr>               <chr>             <chr>
@@ -164,11 +165,11 @@ soilspec_tbl <- spc_list %>%
 #> # ... with 274 more rows, and 7 more variables: spc <list>, wavenumbers <list>,
 #> #   metadata <list>, spc_rs <list>, wavenumbers_rs <list>, spc_mean <list>, spc_pre <list>
   
+
 ## Read chemical reference data and join with spectral data ====================
 
 # Read chemical reference analysis data
 soilchem_tbl <- read_csv(file = "data/soilchem/soilchem_yamsys.csv")
-
 #> Parsed with column specification:
 #> cols(
 #>   .default = col_double(),
@@ -183,7 +184,6 @@ soilchem_tbl <- read_csv(file = "data/soilchem/soilchem_yamsys.csv")
 # Join spectra tibble and chemical reference analysis tibble
 spec_chem <- join_spc_chem(
   spc_tbl = soilspec_tbl, chem_tbl = soilchem_tbl, by = "sample_id")
-
 #> Joining, by = "sample_id"
 
 ################################################################################
