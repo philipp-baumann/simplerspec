@@ -4,10 +4,59 @@
 \alias{plot_spc}
 \title{Plot tibble spectra}
 \usage{
-plot_spc(spc_tbl = pls_$data$calibration,
-spc_tbl_2 = pls_C$data$validation,
+plot_spc(spc_tbl, spc_tbl_2,
 y = "spc_pre", by = "sample_id", graph_id_1 = "Calibration",
 graph_id_2 = "Validation", slice = TRUE, alpha = 1)
+}
+\arguments{
+\item{spc_tbl}{Tibble that contains the first set of spectra to plot as
+list-column}
+
+\item{spc_tbl_2}{Tibble that contains the first set of spectra to plot as
+list-column. Default is \code{NULL}.}
+
+\item{y}{Character vector list-column name in tibble where spectra of
+desired type are extracted to plot.}
+
+\item{by}{Character vector of column that is used to group the spectra.
+Default is \code{"unique_id"}. If replica spectra are present in the file
+and processed spectra resulting after averaging need to be plotted,
+it is recommend to use \code{"sample_id"} as argument to group according
+the sample_id column in the tibble(s) containing the spectra (\code{spc_tbl}
+and \code{spc_tbl_2}).}
+
+\item{graph_id_1}{Character used for grouping the first spectra set
+(\code{spc_tbl}) and producing
+the label text accordingly.}
+
+\item{graph_id_2}{Character used for grouping the second spectra set
+(\code{spc_tbl_2}) and producing the label text accordingly. Default is
+\code{NULL}}
+
+\item{graph_id_1_col}{Character for the colour of the first spectra set.
+Defaulat is \code{"black"}.}
+
+\item{graph_id_2_col}{Character for the colour of the first spectra set.
+Defaulat is \code{"red"}.}
+
+\item{xlab}{Character vector or mathematical expression
+(use \code{expression}) for the x axis title. Default is
+\code{expression(paste("Wavenumber [", cm^-1, "]"))}.}
+
+\item{ylab}{Character vector or mathematical expression
+(use \code{expression}) for the y axis title. Default is \code{"absorbance"}.}
+
+\item{slice}{Logical whether to slice the data sets (select rows by position).
+Default is \code{TRUE}.
+This argument will soon be supported to group spectra based id variables present
+in spc_tbl such as the `sample_id` and slicing the data set prior to plotting.}
+
+\item{alpha}{Double in between 0 and 1. Sets the transparency for the plotted
+spectra lines.}
+
+\item{legend}{Logical whether to plot a legend for the spectra describing
+its name selected in arguments \code{graph_id_1} and \code{graph_id_2}.
+Default is \code{TRUE}.}
 }
 \description{
 Plot spectra from tibble spectra objects.

@@ -1,23 +1,46 @@
 #' @title Plot tibble spectra
 #' @description Plot spectra from tibble spectra objects.
-#' @param spc_tbl
-#' @param spc_tbl_2
-#' @param y
-#' @param by
-#' @param graph_id_1
-#' @param graph_id_2
-#' @param graph_id_1_col
-#' @param graph_id_2_col
-#' @param xlab
-#' @param ylab
-#' @param slice
-#' @param alpha
-#' @param legend
+#' @param spc_tbl Tibble that contains the first set of spectra to plot as
+#' list-column
+#' @param spc_tbl_2 Tibble that contains the first set of spectra to plot as
+#' list-column. Default is \code{NULL}.
+#' @param y Character vector list-column name in tibble where spectra of
+#' desired type are extracted to plot.
+#' @param by Character vector of column that is used to group the spectra.
+#' Default is \code{"unique_id"}. If replica spectra are present in the file
+#' and processed spectra resulting after averaging need to be plotted,
+#' it is recommend to use \code{"sample_id"} as argument to group according
+#' the sample_id column in the tibble(s) containing the spectra (\code{spc_tbl}
+#' and \code{spc_tbl_2}).
+#' @param graph_id_1 Character used for grouping the first spectra set
+#' (\code{spc_tbl}) and producing
+#' the label text accordingly.
+#' @param graph_id_2 Character used for grouping the second spectra set
+#' (\code{spc_tbl_2}) and producing the label text accordingly. Default is
+#' \code{NULL}
+#' @param graph_id_1_col Character for the colour of the first spectra set.
+#' Defaulat is \code{"black"}.
+#' @param graph_id_2_col Character for the colour of the first spectra set.
+#' Defaulat is \code{"red"}.
+#' @param xlab Character vector or mathematical expression
+#' (use \code{expression}) for the x axis title. Default is
+#' \code{expression(paste("Wavenumber [", cm^-1, "]"))}.
+#' @param ylab Character vector or mathematical expression
+#' (use \code{expression}) for the y axis title. Default is \code{"absorbance"}.
+#' @param slice Logical whether to slice the data sets (select rows by position).
+#' Default is \code{TRUE}.
+#' This argument will soon be supported to group spectra based id variables present
+#' in spc_tbl such as the `sample_id` and slicing the data set prior to plotting.
+#' @param alpha Double in between 0 and 1. Sets the transparency for the plotted
+#' spectra lines.
+#' @param legend Logical whether to plot a legend for the spectra describing
+#' its name selected in arguments \code{graph_id_1} and \code{graph_id_2}.
+#' Default is \code{TRUE}.
 #' @usage plot_spc(spc_tbl, spc_tbl_2,
 #' y = "spc_pre", by = "sample_id", graph_id_1 = "Calibration",
 #' graph_id_2 = "Validation", slice = TRUE, alpha = 1)
 #' @export
-plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL,
+plot_spc <- function(spc_tbl, spc_tbl_2 = NULL,
                      x_unit = "wavenumber",
                      y = "spc", by = "unique_id",
                      graph_id_1 = "graph_1", graph_id_2 = NULL,
@@ -104,14 +127,14 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL, x = NULL,
   if("wavelengths_rs" %in% names(spc_tbl) && x_unit == "wavelength") {
     p <- p +
       ggplot2::scale_x_continuous() +
-      xlab("Wavelength [nm]") +
-      ylab("Reflectance")
+      ggplot2::xlab("Wavelength [nm]") +
+      ggplot2::ylab("Reflectance")
   }
 
   if(legend == FALSE) {
     p <- p +
     # Remove legend
-    guides(colour = FALSE)
+    ggplot2::guides(colour = FALSE)
   }
   p
 }
