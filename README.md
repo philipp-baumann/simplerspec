@@ -96,7 +96,7 @@ require(simplerspec)
 require(tidyverse)
 
 ################################################################################
-## Part 1: Read and pre-process spectra, Read chemical data, and join
+## Part 1: Read and pre-process spectra, read chemical data, and join
 ## spectral and chemical data sets
 ################################################################################
 
