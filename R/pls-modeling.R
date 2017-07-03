@@ -313,7 +313,7 @@ evaluate_model_q <- function(x, model, response,
   evaluation_method,
   tuning_method, print = TRUE, env = parent.frame()) {
   # Set global variables to NULL to avoid R CMD check notes
-  MIR <- object <- dataType <- obs <- pred <- NULL
+  MIR <- object <- dataType <- obs <- pred_sem_ci <- pred <- NULL
   ncomp <- finalModel <- rmsd <- r2 <- r2 <- rpd <- n <- NULL
   rmse <- calibration <- NULL
   # Collect fitted object into a list
@@ -329,7 +329,7 @@ evaluate_model_q <- function(x, model, response,
     r <- eval(response, x$validation, env)
 
     if (!tibble::is_tibble(x$validation)) {
-      error("Spectra and reference data need to be provided as tibble
+      stop("Spectra and reference data need to be provided as tibble
         (class `tbl_df`, `tbl`, `data.frame`")
     }
     spc_pre <- data.table::rbindlist(x$validation$spc_pre)
@@ -613,6 +613,7 @@ evaluate_model_q <- function(x, model, response,
 
 ## PLS regression modeling in one function ======================
 
+#' @name fit_pls
 #' @title Calibration sampling, model tuning, and PLS regression
 #' @description Perform calibration sampling and use selected
 #' calibration set for model tuning
@@ -635,7 +636,8 @@ evaluate_model_q <- function(x, model, response,
 #' and evaluate the final model by predicting on the validation set.
 #' If \code{"resampling"}, the finally selected model will be evaluated based
 #' on the cross-validation hold-out predictions.
-#' @param validation Depreciated and replaced by \code{evaluation_method)
+#' @param validation Depreciated and replaced by \code{evaluation_method}.
+#' Default is \code{TRUE}.
 #' @param split_method Method how to to split the data into a independent test
 #' set. Default is \code{"ken_sto"}, which will select samples for calibration
 #' based on Kennard-Stone sampling algorithm of preprocessed spectra. The
@@ -794,6 +796,7 @@ fit_pls <- function(
 
 ## Old function name of `fit_pls`: `pls_ken_stone`
 
+#' @rdname fit_pls
 #' @export
 pls_ken_stone <- fit_pls
 

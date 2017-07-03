@@ -2,10 +2,18 @@
 % Please edit documentation in R/pls-modeling.R
 \name{fit_pls}
 \alias{fit_pls}
+\alias{pls_ken_stone}
 \title{Calibration sampling, model tuning, and PLS regression}
 \usage{
 fit_pls(spec_chem, response, variable = NULL, center = TRUE, scale = TRUE,
   evaluation_method = "test_set", validation = TRUE,
+  split_method = "ken_stone", ken_sto_pc = 2, pc, invert = TRUE,
+  tuning_method = "resampling", resampling_method = "kfold_cv", cv = NULL,
+  ratio_val = 1/3, pls_ncomp_max = 20, ncomp_fixed = 5, print = TRUE,
+  env = parent.frame())
+
+pls_ken_stone(spec_chem, response, variable = NULL, center = TRUE,
+  scale = TRUE, evaluation_method = "test_set", validation = TRUE,
   split_method = "ken_stone", ken_sto_pc = 2, pc, invert = TRUE,
   tuning_method = "resampling", resampling_method = "kfold_cv", cv = NULL,
   ratio_val = 1/3, pls_ncomp_max = 20, ncomp_fixed = 5, print = TRUE,
