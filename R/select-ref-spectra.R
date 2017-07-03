@@ -20,7 +20,7 @@ select_ref_spc <- function(spc_tbl, ratio_ref = 0.15, pc = 2,
   pc_number <- eval(pc, envir = parent.frame())
 
   # Avoid `R CMD check` NOTE: `no visible binding for global variable ...`
-  PC1 <- PC2 <- NULL
+  PC1 <- PC2 <- type <- NULL
 
   if(tibble::is_tibble(spc_tbl)) {
     # Slice based on sample_id if spectral data is in tibble class
