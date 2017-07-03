@@ -37,8 +37,9 @@
 #' its name selected in arguments \code{graph_id_1} and \code{graph_id_2}.
 #' Default is \code{TRUE}.
 #' @usage plot_spc(spc_tbl, spc_tbl_2,
-#' y = "spc_pre", by = "sample_id", graph_id_1 = "Calibration",
-#' graph_id_2 = "Validation", slice = TRUE, alpha = 1)
+#'                y = "spc_pre", by = "sample_id",
+#'                graph_id_1 = "Calibration", graph_id_2 = "Validation",
+#'                slice = TRUE, alpha = 1)
 #' @export
 plot_spc <- function(spc_tbl, spc_tbl_2 = NULL,
                      x_unit = "wavenumber",

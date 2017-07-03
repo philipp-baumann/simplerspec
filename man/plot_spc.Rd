@@ -5,8 +5,9 @@
 \title{Plot tibble spectra}
 \usage{
 plot_spc(spc_tbl, spc_tbl_2,
-y = "spc_pre", by = "sample_id", graph_id_1 = "Calibration",
-graph_id_2 = "Validation", slice = TRUE, alpha = 1)
+               y = "spc_pre", by = "sample_id",
+               graph_id_1 = "Calibration", graph_id_2 = "Validation",
+               slice = TRUE, alpha = 1)
 }
 \arguments{
 \item{spc_tbl}{Tibble that contains the first set of spectra to plot as
