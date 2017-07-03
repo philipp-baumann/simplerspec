@@ -1,5 +1,7 @@
 #' @title Predict soil properties of new spectra based on a list of calibration models
-#' @description
+#' @description Append predictions for a set of responses specified by a list
+#' of calibration models and a tibble containing preprocessed spectra as
+#' list-columns
 #' @param model_list List of model output generated from calibration step
 #' (\code{pls_ken_stone()}
 #' @param spc_tbl Tibble of spectra after preprocessing
