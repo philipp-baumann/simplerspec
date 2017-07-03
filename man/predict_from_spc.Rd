@@ -19,3 +19,8 @@ predict_from_spc(spc_tbl, model_list, slice = TRUE)
 tibble with new columns \code{model}, and predicted values with
 column names of model list.
 }
+\description{
+Append predictions for a set of responses specified by a list
+of calibration models and a tibble containing preprocessed spectra as
+list-columns
+}
