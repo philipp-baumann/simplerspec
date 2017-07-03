@@ -9,9 +9,10 @@
 #' @param file.name Character vector with path to files
 #' @usage read_opus_text(file.name)
 #' @export
+#' @importFrom utils read.csv
 read_opus_text <- function(file.name){
   if (file.exists(file.name)) {
-    out <- read.csv(file.name, header=F,
+    out <- utils::read.csv(file.name, header=F,
       col.names = c("wavenumber", "absorbance")
     )
     return(out)
