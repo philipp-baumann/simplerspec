@@ -37,6 +37,9 @@ and evaluate the final model by predicting on the validation set.
 If \code{"resampling"}, the finally selected model will be evaluated based
 on the cross-validation hold-out predictions.}
 
+\item{validation}{Depreciated and replaced by \code{evaluation_method}.
+Default is \code{TRUE}.}
+
 \item{split_method}{Method how to to split the data into a independent test
 set. Default is \code{"ken_sto"}, which will select samples for calibration
 based on Kennard-Stone sampling algorithm of preprocessed spectra. The
