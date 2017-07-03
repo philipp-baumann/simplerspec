@@ -18,8 +18,9 @@ split_data_q <- function(
 
   # Slice based on sample_id if spectral data is in tibble class
   if(tibble::is_tibble(spec_chem)) {
-    spec_chem <- spec_chem %>% group_by(sample_id) %>%
-      slice(1L)
+    spec_chem <- spec_chem %>%
+      dplyr::group_by(rlang::UQ(rlang::sym("sample_id"))) %>%
+      dplyr::slice(1L)
   }
 
   if(evaluation_method == "test_set") {
@@ -60,10 +61,10 @@ split_data_q <- function(
         df_split <- modelr::crossv_mc(spec_chem, n = 1, test = ratio_val)
         # Select train of df_split and convert back into tibble,
         # assign to calibration set
-        cal_set <-  df_split[1, ] %>% .$train %>% .[[1]] %>% as_tibble()
+        cal_set <- tibble::as_tibble(df_split[1, ][["train"]][[1]])
         # Select test of df_split and convert back into tibble,
         # assign to validation set
-        val_set <- df_split[1, ] %>% .$test %>% .[[1]] %>% as_tibble()
+        val_set <- tibble::as_tibble(df_split[1, ][["test"]][[1]])
       }
       sel_df_cal <- data.frame(sel$pc[sel$model, 1:2])
       sel_df_val <- data.frame(sel$pc[- sel$model, 1:2])
