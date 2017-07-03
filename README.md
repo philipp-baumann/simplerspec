@@ -82,6 +82,13 @@ This package builds mainly upon functions from the following R packages:
 
 Consistent and reproducible data and metadata management is an important prerequisite for spectral model development. Therefore, different outputs should be stored as R objects in a consistent way using R data structures. Simplerspec functions uses tibble data frames as principal data structures because they allow to store lists within the well-known data frame structures. Lists are flexible data structures and can e.g. contain other lists, vectors, data.frames, or matrices.
 
+List-columns features provided within the tibble framework are an excellent base to work with functional programming toolsin R, which allows to efficiently write code. 
+Simplerspec internally uses popular functional programming extension tools provided
+by the `purrr` package for processing and transforming spectra. 
+For learning more, I would recommend
+[this nice purrr list-column tutorial](https://jennybc.github.io/purrr-tutorial/ls13_list-columns.html) 
+provided by Jenny Brian.
+
 # Example workflow
 
 Bruker FTIR spectrometers produce binary files in the OPUS format that can contain different types of spectra and many parameters such as instrument type and settings that were used at the time of data acquisition and internal processing (e.g. Fourier transform operations). Basically, the entire set of setup measurement parameters, selected spectra, supplementary metadata such as the time of measurement are written into OPUS binary files. In contrast to simple text files that contain only plain text with a defined character encoding, binary files can contain any type of data represented as sequences of bytes (a single byte is sequence of 8 bits and 1 bit either represents 0 or 1).
