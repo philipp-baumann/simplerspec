@@ -61,7 +61,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     # (difference between "LXV" and "FXV" for a spectral data block
     # should be 16) ------------------------------------------------------------
     if(length(fxv_all) > length(lxv_all)) {
-      diff_lxv_fxf <- lapply(lxv_all, function(x) x - fxv_all)
+      diff_lxv_fxv <- lapply(lxv_all, function(x) x - fxv_all)
       # Return list of logical vectors indicating whether difference of fxv
       # and lxv is 16 (distance of 16 bytes)
       lxv_fxv_min <- lapply(diff_lxv_fxv, function(x) x == 16)
