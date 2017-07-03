@@ -4,7 +4,7 @@
 \alias{predict_from_spc}
 \title{Predict soil properties of new spectra based on a list of calibration models}
 \usage{
-predict_from_spc(spc_tbl, model_list, slice = TRUE)
+predict_from_spc(model_list, spc_tbl, slice = TRUE)
 }
 \arguments{
 \item{model_list}{List of model output generated from calibration step

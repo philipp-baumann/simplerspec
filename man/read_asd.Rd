@@ -2,8 +2,8 @@
 % Please edit documentation in R/read-asd.R
 \name{read_asd}
 \alias{read_asd}
-\title{Read tab delimited text (.txt) files from ASD field spectrometer data
-export into simplerspec spectra tibble.}
+\title{Read ASD fieldspec spectrometer data export into into simplerspec
+spectra tibble.}
 \usage{
 read_asd(file)
 }
@@ -21,8 +21,10 @@ tab delimited ASD exported text file),
 and \code{wavelengths} (list-column containing wavelength vectors).
 }
 \description{
-For reading ASD file spectrometer data the exported data are
-expected to be in one .txt tab delimited file. The first row should contain
+Read tab delimited text (.txt) files exported from ASD field
+spectrometer into simplerspec spectra tibble.
+ASD Fieldspec data files are expected in .txt tab delimited file format.
+The first row should contain
 the name 'Wavelength' for the first column and the file names for the
 remaining columns.
 }

@@ -7,7 +7,7 @@
 #' @param spc_tbl Tibble of spectra after preprocessing
 #' (\code{preprocess_spc()})
 #' @param slice Logical expression wheather only one row per sample_id returned.
-#' @usage predict_from_spc(spc_tbl, model_list, slice = TRUE)
+#' @usage predict_from_spc(model_list, spc_tbl, slice = TRUE)
 #' @return tibble with new columns \code{model}, and predicted values with
 #' column names of model list.
 #' @export
