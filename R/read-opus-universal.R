@@ -24,6 +24,8 @@
 read_opus_bin_univ <- function(file_path, extract = c("spc"),
   print_progress = TRUE) {
 
+  # Avoid `R CMD check` NOTE: no visible binding for global variable ...
+  x <- y <- i <- npt <- NULL
   if(!file.exists(file_path)) {
     stop(paste0("File does not exist"))
   }
@@ -575,6 +577,9 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
 #' @export
 read_opus_univ <- function(fnames, extract = c("spc"), parallel = FALSE) {
 
+  # Avoid `R CMD check` NOTE: ``no visible binding for variable ...
+  i <- NULL
+
   if(parallel == TRUE) {
     foreach::foreach(i = 1:length(fnames),
       .export = "simplerspec::read_opus_bin_univ",
@@ -582,7 +587,7 @@ read_opus_univ <- function(fnames, extract = c("spc"), parallel = FALSE) {
       .packages = c("foreach"),
       .final = function(i) setNames(i, sub(".+/(.+)", "\\1", fnames))) %dopar% {
         try(
-          read_opus_bin(file_path = fnames[[i]], extract = extract)
+          read_opus_bin_univ(file_path = fnames[[i]], extract = extract)
         )
     }
   } else if (parallel == FALSE) {
