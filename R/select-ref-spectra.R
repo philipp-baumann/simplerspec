@@ -12,8 +12,6 @@
 #' explaining at least (pc * 100) percent of the total variance.
 #' @param print logical expression whether a plot (ggplot2) of sample selection
 #' for reference analysis is shown in PCA space
-#' @param validation Logical expression whether
-#' calibration sampling is performed
 #' (\code{TRUE} or \code{FALSE}).
 #' @usage select_ref_spc(spc_tbl, ratio_ref, pc, print = TRUE)
 #' @export
@@ -21,10 +19,13 @@ select_ref_spc <- function(spc_tbl, ratio_ref = 0.15, pc = 2,
   print = TRUE) {
   pc_number <- eval(pc, envir = parent.frame())
 
+  # Avoid `R CMD check` NOTE: `no visible binding for global variable ...`
+  PC1 <- PC2 <- NULL
+
   if(tibble::is_tibble(spc_tbl)) {
     # Slice based on sample_id if spectral data is in tibble class
-    spc_tbl <- spc_tbl %>% group_by(sample_id) %>%
-      slice(1L)
+    spc_tbl <- dplyr::group_by(spc_tbl, rlang::UQ(rlang::sym("sample_id"))) %>%
+      dplyr::slice(1L)
     # Bind list of data.tables in list-column spc_pre to one data table
     # containing spectral data
     spc_pre <- as.matrix(data.table::rbindlist(spc_tbl$spc_pre))
@@ -51,7 +52,7 @@ select_ref_spc <- function(spc_tbl, ratio_ref = 0.15, pc = 2,
   # Bind rows of reference and prediction PC scores data frames
   sel_df <- rbind(sel_df_ref, sel_df_pred)
   # Compute ratio needed to make the figure square
-  ratio <- with(sel_df, diff(range(PC1))/diff(range(PC2)))
+  ratio <- with(sel_df, diff(range(PC1)) / diff(range(PC2)))
   # Create spectra PC score plots ----------------------------------------------
   p_pca <- ggplot2::ggplot(data = sel_df) +
     ggplot2::geom_point(
