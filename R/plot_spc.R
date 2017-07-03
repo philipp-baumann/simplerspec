@@ -41,7 +41,7 @@
 #' @param legend Logical whether to plot a legend for the spectra describing
 #' its name selected in arguments \code{graph_id_1} and \code{graph_id_2}.
 #' Default is \code{TRUE}.
-#' @usage plot_spc(spc_tbl, spc_tbl_2,
+#' @usage plot_spc(spc_tbl, spc_tbl_2 = NULL,
 #'   x_unit = "wavenumber",
 #'   y = "spc", by = "unique_id",
 #'   graph_id_1 = "Set 1", graph_id_2 = "Set 2",
@@ -50,7 +50,7 @@
 #'   ylab = "Absorbance",
 #'   slice = TRUE, alpha = 0.2, legend = TRUE)
 #' @export
-plot_spc <- function(spc_tbl, spc_tbl_2,
+plot_spc <- function(spc_tbl, spc_tbl_2 = NULL,
                      x_unit = "wavenumber",
                      y = "spc", by = "unique_id",
                      graph_id_1 = "Set 1", graph_id_2 = "Set 2",

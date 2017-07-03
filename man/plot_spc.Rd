@@ -4,7 +4,7 @@
 \alias{plot_spc}
 \title{Plot tibble spectra}
 \usage{
-plot_spc(spc_tbl, spc_tbl_2,
+plot_spc(spc_tbl, spc_tbl_2 = NULL,
   x_unit = "wavenumber",
   y = "spc", by = "unique_id",
   graph_id_1 = "Set 1", graph_id_2 = "Set 2",
