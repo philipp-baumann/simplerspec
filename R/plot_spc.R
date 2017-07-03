@@ -2,9 +2,14 @@
 #' @description Plot spectra from tibble spectra objects.
 #' @param spc_tbl Tibble that contains the first set of spectra to plot as
 #' list-column
-#' @param spc_tbl_2 Tibble that contains the first set of spectra to plot as
-#' list-column. Default is \code{NULL}.
-#' @param y Character vector list-column name in tibble where spectra of
+#' @param spc_tbl_2 Tibble that contains the second set of spectra (optional)
+#' to plot as list-column.
+#' @param x_unit Character describing the x axis unit. Default is
+#'  \code{"wavenumber"}, which will produce a graph with wavenumbers on the
+#'  x axis with reversed number. If \code{x_unit = "wavelength"}, the axis
+#'  will be in regular order (lower wavelengths in nm on the left and higher
+#'  on the right side of the axis).
+#' @param y Character vector of list-column name in tibble where spectra of
 #' desired type are extracted to plot.
 #' @param by Character vector of column that is used to group the spectra.
 #' Default is \code{"unique_id"}. If replica spectra are present in the file
@@ -14,14 +19,14 @@
 #' and \code{spc_tbl_2}).
 #' @param graph_id_1 Character used for grouping the first spectra set
 #' (\code{spc_tbl}) and producing
-#' the label text accordingly.
+#' the label text accordingly. Default is \code{"Set 1"}.
 #' @param graph_id_2 Character used for grouping the second spectra set
 #' (\code{spc_tbl_2}) and producing the label text accordingly. Default is
-#' \code{NULL}
+#' \code{"Set 2"}
 #' @param graph_id_1_col Character for the colour of the first spectra set.
-#' Defaulat is \code{"black"}.
+#' Default is \code{"black"}.
 #' @param graph_id_2_col Character for the colour of the first spectra set.
-#' Defaulat is \code{"red"}.
+#' Default is \code{"red"}.
 #' @param xlab Character vector or mathematical expression
 #' (use \code{expression}) for the x axis title. Default is
 #' \code{expression(paste("Wavenumber [", cm^-1, "]"))}.
@@ -37,14 +42,18 @@
 #' its name selected in arguments \code{graph_id_1} and \code{graph_id_2}.
 #' Default is \code{TRUE}.
 #' @usage plot_spc(spc_tbl, spc_tbl_2,
-#'                y = "spc_pre", by = "sample_id",
-#'                graph_id_1 = "Calibration", graph_id_2 = "Validation",
-#'                slice = TRUE, alpha = 1)
+#'   x_unit = "wavenumber",
+#'   y = "spc", by = "unique_id",
+#'   graph_id_1 = "Set 1", graph_id_2 = "Set 2",
+#'   graph_id_1_col = "black", graph_id_2_col = "red",
+#'   xlab = expression(paste("Wavenumber [", cm^-1, "]")),
+#'   ylab = "Absorbance",
+#'   slice = TRUE, alpha = 0.2, legend = TRUE)
 #' @export
-plot_spc <- function(spc_tbl, spc_tbl_2 = NULL,
+plot_spc <- function(spc_tbl, spc_tbl_2,
                      x_unit = "wavenumber",
                      y = "spc", by = "unique_id",
-                     graph_id_1 = "graph_1", graph_id_2 = NULL,
+                     graph_id_1 = "Set 1", graph_id_2 = "Set 2",
                      graph_id_1_col = "black", graph_id_2_col = "red",
                      xlab = expression(paste("Wavenumber [", cm^-1, "]")),
                      ylab = "Absorbance", slice = TRUE, alpha = 0.2,
@@ -127,7 +136,7 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL,
 
   if("wavelengths_rs" %in% names(spc_tbl) && x_unit == "wavelength") {
     p <- p +
-      ggplot2::scale_x_continuous() +
+      ggplot2::scale_x_continuous(breaks = brk) +
       ggplot2::xlab("Wavelength [nm]") +
       ggplot2::ylab("Reflectance")
   }

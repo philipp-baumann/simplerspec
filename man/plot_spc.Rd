@@ -5,18 +5,28 @@
 \title{Plot tibble spectra}
 \usage{
 plot_spc(spc_tbl, spc_tbl_2,
-               y = "spc_pre", by = "sample_id",
-               graph_id_1 = "Calibration", graph_id_2 = "Validation",
-               slice = TRUE, alpha = 1)
+  x_unit = "wavenumber",
+  y = "spc", by = "unique_id",
+  graph_id_1 = "Set 1", graph_id_2 = "Set 2",
+  graph_id_1_col = "black", graph_id_2_col = "red",
+  xlab = expression(paste("Wavenumber [", cm^-1, "]")),
+  ylab = "Absorbance",
+  slice = TRUE, alpha = 0.2, legend = TRUE)
 }
 \arguments{
 \item{spc_tbl}{Tibble that contains the first set of spectra to plot as
 list-column}
 
-\item{spc_tbl_2}{Tibble that contains the first set of spectra to plot as
-list-column. Default is \code{NULL}.}
+\item{spc_tbl_2}{Tibble that contains the second set of spectra (optional)
+to plot as list-column.}
 
-\item{y}{Character vector list-column name in tibble where spectra of
+\item{x_unit}{Character describing the x axis unit. Default is
+\code{"wavenumber"}, which will produce a graph with wavenumbers on the
+x axis with reversed number. If \code{x_unit = "wavelength"}, the axis
+will be in regular order (lower wavelengths in nm on the left and higher
+on the right side of the axis).}
+
+\item{y}{Character vector of list-column name in tibble where spectra of
 desired type are extracted to plot.}
 
 \item{by}{Character vector of column that is used to group the spectra.
@@ -28,17 +38,17 @@ and \code{spc_tbl_2}).}
 
 \item{graph_id_1}{Character used for grouping the first spectra set
 (\code{spc_tbl}) and producing
-the label text accordingly.}
+the label text accordingly. Default is \code{"Set 1"}.}
 
 \item{graph_id_2}{Character used for grouping the second spectra set
 (\code{spc_tbl_2}) and producing the label text accordingly. Default is
-\code{NULL}}
+\code{"Set 2"}}
 
 \item{graph_id_1_col}{Character for the colour of the first spectra set.
-Defaulat is \code{"black"}.}
+Default is \code{"black"}.}
 
 \item{graph_id_2_col}{Character for the colour of the first spectra set.
-Defaulat is \code{"red"}.}
+Default is \code{"red"}.}
 
 \item{xlab}{Character vector or mathematical expression
 (use \code{expression}) for the x axis title. Default is
