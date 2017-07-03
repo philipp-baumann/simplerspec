@@ -6,7 +6,7 @@
 #' data structure concept that can be combined with functional programming
 #' frameworks provided by e.g. the purrr package.
 #' @param data list with file name elements that contain spectra and metadata
-#' after reading binary OPUS files with \code{simplerspec::read_opus()}
+#' after reading binary OPUS files with \code{simplerspec::read_opus_univ()}
 #' @usage gather_spc(data)
 #' @return Spectral data and metadata in object of class tible
 #' @export
