@@ -2,7 +2,7 @@
 ### `pls' package.
 ### $Id: VIP.R,v 1.2 2007/07/30 09:17:36 bhm Exp $
 
-### Copyright ? 2006,2007 Björn-Helge Mevik
+### Copyright: 2006,2007 Bjoern-Helge Mevik
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License version 2 as
 ### published by the Free Software Foundation.
@@ -16,9 +16,9 @@
 ### http://www.gnu.org/licenses/gpl-2.0.txt
 
 ### Contact info:
-### Bj?rn-Helge Mevik
+### Boejrn-Helge Mevik
 ### bhx6@mevik.net
-### R?dtvetvien 20
+### Roedtvetvien 20
 ### N-0955 Oslo
 ### Norway
 
@@ -60,7 +60,18 @@ VIPjh <- function(object, j, h) {
     sqrt(nrow(W) * sum(SS * W[j,]^2 / Wnorm2) / sum(SS))
 }
 
-
+#' @title Extract VIPs (variable importance in the projection) for a PLS
+#' regression model output returned from model fitting with
+#' \code{simplerspec::fit_pls()}
+#' @description VIPs are extracted based on the \code{finalModel} sublist
+#' in the \code{caret::train} output contained in the \code{model} element
+#' of the \code{simplerspec::fit_pls()} model output list. The VIPs for
+#' derived number of PLS components in the \code{finalModel} are computed.
+#' @param mout Model output list returned from \code{simplerspec::fit_pls()}.
+#' @usage extract_pls_vip(mout)
+#' @return A tibble data frame with columns \code{wavenumber} and correponding
+#' VIP values in the column \code{vip} for the finally chosen PLS regression
+#' model at the final number of PLS components.
 #' @export
 extract_pls_vip <- function(mout) {
   # Compute VIP for all wavenumbers and select only VIPs with ncomp in final
@@ -95,10 +106,43 @@ create_vip_rects <- function(df_vip) {
 }
 
 #' @title Plot stacked ggplot2 graphs with the Variable Importance for the
-#' Projection (VIP) scores, mean replicate spectra (absorbance) per sample_id, and the preprocessed spectra.
+#' Projection (VIP) scores, mean replicate spectra (absorbance) per sample_id,
+#'and the preprocessed spectra.
 #' @description Plot stacked ggplot2 graphs of VIP for the final
-#' PLS regression model of the calibration (training) data set for the final
-#' number of components, raw (replicate mean) spectra, and preprocessed spectra.
+#' PLS regression model output of the calibration (training) data set for the
+#' final number of components, raw (replicate mean) spectra, and preprocessed
+#' spectra. Regions with VIP > 1 are highlighted across the stacked graphs
+#' in beige colour rectangles. VIP calculation is implemented as described in
+#' Chong, I.-G., and Jun, C.-H. (2005). Performance of some variable selection
+#' methods when multicollinearity is present. Chemometrics and Intelligent
+#' Laboratory Systems, 78(1--2), 103--112. https://doi.org/10.1016/j.chemolab.2004.12.011
+#' @param mout Model output list that is returned from
+#' \code{simplerspec::fit_pls()}. This object contains a nested list with
+#' the \code{caret::train()} object (class \code{train}), based on which
+#' VIPs at finally selected number of PLS components are computed.
+#' @param y1 Character vector of list-column name in
+#' \code{mout$data$calibration}, where spectra for bottom graph are extracted.
+#' Default is \code{"spc_mean"}, which plots the mean calibration spectra after
+#' resampling.
+#' @param y2 Character string of list-column name in
+#' \code{mout$data$calibration}, where spectra for bottom graph are extracted.
+#' Default is \code{"spc_pre"}, which plots the preprocessed calibration
+#' spectra after resampling.
+#' @param by Character string that is used to assign spectra to the same group
+#' and therefore ensures that all spectra are plotted with the same colour.
+#' Default is \code{"sample_id"}
+#' @param xlab Character string of X axis title for shared x axis of stacked
+#' graphs. Default is \code{expression(paste("Wavenumber [", cm^-1, "]"))}
+#' @param ylab1 Y axis title of bottom spectrum. Default is \code{"Absorbance"}.
+#' @param ylab2 Y axis title of bottom spectrum. Default is
+#' \code{"Preprocessed Abs."}.
+#' @param alpha Double between 0 and 1 that defines transparency of spectra
+#' lines in returned graph (ggplot plot object).
+#' @usage plot_pls_vip(mout, y1 = "spc_mean", y2 = "spc_pre",
+#'   by = "sample_id",
+#'   xlab = expression(paste("Wavenumber [", cm^-1, "]")),
+#'   ylab1 = "Absorbance", ylab2 = "Preprocessed Abs.",
+#'   alpha = 0.2)
 #' @export
 plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
                          by = "sample_id",

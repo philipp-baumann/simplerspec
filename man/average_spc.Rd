@@ -6,6 +6,9 @@
 \usage{
 average_spc(spc_tbl)
 }
+\arguments{
+\item{spc_tbl}{Spectra after resampling spectra with \code{resample_spc()}}
+}
 \description{
 Averages spectra in tibble column by sample_id after
 resampling spectra by \code{simplerspec::resample_spc()}.

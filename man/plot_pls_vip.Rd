@@ -3,14 +3,53 @@
 \name{plot_pls_vip}
 \alias{plot_pls_vip}
 \title{Plot stacked ggplot2 graphs with the Variable Importance for the
-Projection (VIP) scores, mean replicate spectra (absorbance) per sample_id, and the preprocessed spectra.}
+Projection (VIP) scores, mean replicate spectra (absorbance) per sample_id,
+and the preprocessed spectra.}
 \usage{
-plot_pls_vip(mout, y1 = "spc_mean", y2 = "spc_pre", by = "sample_id",
+plot_pls_vip(mout, y1 = "spc_mean", y2 = "spc_pre",
+  by = "sample_id",
   xlab = expression(paste("Wavenumber [", cm^-1, "]")),
-  ylab1 = "Absorbance", ylab2 = "Preprocessed Abs.", alpha = 0.2)
+  ylab1 = "Absorbance", ylab2 = "Preprocessed Abs.",
+  alpha = 0.2)
+}
+\arguments{
+\item{mout}{Model output list that is returned from
+\code{simplerspec::fit_pls()}. This object contains a nested list with
+the \code{caret::train()} object (class \code{train}), based on which
+VIPs at finally selected number of PLS components are computed.}
+
+\item{y1}{Character vector of list-column name in
+\code{mout$data$calibration}, where spectra for bottom graph are extracted.
+Default is \code{"spc_mean"}, which plots the mean calibration spectra after
+resampling.}
+
+\item{y2}{Character string of list-column name in
+\code{mout$data$calibration}, where spectra for bottom graph are extracted.
+Default is \code{"spc_pre"}, which plots the preprocessed calibration
+spectra after resampling.}
+
+\item{by}{Character string that is used to assign spectra to the same group
+and therefore ensures that all spectra are plotted with the same colour.
+Default is \code{"sample_id"}}
+
+\item{xlab}{Character string of X axis title for shared x axis of stacked
+graphs. Default is \code{expression(paste("Wavenumber [", cm^-1, "]"))}}
+
+\item{ylab1}{Y axis title of bottom spectrum. Default is \code{"Absorbance"}.}
+
+\item{ylab2}{Y axis title of bottom spectrum. Default is
+\code{"Preprocessed Abs."}.}
+
+\item{alpha}{Double between 0 and 1 that defines transparency of spectra
+lines in returned graph (ggplot plot object).}
 }
 \description{
 Plot stacked ggplot2 graphs of VIP for the final
-PLS regression model of the calibration (training) data set for the final
-number of components, raw (replicate mean) spectra, and preprocessed spectra.
+PLS regression model output of the calibration (training) data set for the
+final number of components, raw (replicate mean) spectra, and preprocessed
+spectra. Regions with VIP > 1 are highlighted across the stacked graphs
+in beige colour rectangles. VIP calculation is implemented as described in
+Chong, I.-G., and Jun, C.-H. (2005). Performance of some variable selection
+methods when multicollinearity is present. Chemometrics and Intelligent
+Laboratory Systems, 78(1--2), 103--112. https://doi.org/10.1016/j.chemolab.2004.12.011
 }

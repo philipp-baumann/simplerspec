@@ -17,10 +17,7 @@ of principal components kept corresponds to the number of components
 explaining at least (pc * 100) percent of the total variance.}
 
 \item{print}{logical expression whether a plot (ggplot2) of sample selection
-for reference analysis is shown in PCA space}
-
-\item{validation}{Logical expression whether
-calibration sampling is performed
+for reference analysis is shown in PCA space
 (\code{TRUE} or \code{FALSE}).}
 }
 \description{

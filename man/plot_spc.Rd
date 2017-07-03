@@ -20,41 +20,41 @@ list-column}
 \item{spc_tbl_2}{Tibble that contains the second set of spectra (optional)
 to plot as list-column.}
 
-\item{x_unit}{Character describing the x axis unit. Default is
+\item{x_unit}{Character string describing the x axis unit. Default is
 \code{"wavenumber"}, which will produce a graph with wavenumbers on the
 x axis with reversed number. If \code{x_unit = "wavelength"}, the axis
 will be in regular order (lower wavelengths in nm on the left and higher
 on the right side of the axis).}
 
-\item{y}{Character vector of list-column name in tibble where spectra of
+\item{y}{Character string of list-column name in tibble where spectra of
 desired type are extracted to plot.}
 
-\item{by}{Character vector of column that is used to group the spectra.
+\item{by}{Character string of column that is used to group the spectra.
 Default is \code{"unique_id"}. If replica spectra are present in the file
 and processed spectra resulting after averaging need to be plotted,
 it is recommend to use \code{"sample_id"} as argument to group according
 the sample_id column in the tibble(s) containing the spectra (\code{spc_tbl}
 and \code{spc_tbl_2}).}
 
-\item{graph_id_1}{Character used for grouping the first spectra set
+\item{graph_id_1}{Character string used for grouping the first spectra set
 (\code{spc_tbl}) and producing
 the label text accordingly. Default is \code{"Set 1"}.}
 
-\item{graph_id_2}{Character used for grouping the second spectra set
+\item{graph_id_2}{Character string used for grouping the second spectra set
 (\code{spc_tbl_2}) and producing the label text accordingly. Default is
 \code{"Set 2"}}
 
-\item{graph_id_1_col}{Character for the colour of the first spectra set.
-Default is \code{"black"}.}
+\item{graph_id_1_col}{Character string for the colour of the first spectra
+set. Default is \code{"black"}.}
 
-\item{graph_id_2_col}{Character for the colour of the first spectra set.
-Default is \code{"red"}.}
+\item{graph_id_2_col}{Character string for the colour of the first spectra
+set. Default is \code{"red"}.}
 
-\item{xlab}{Character vector or mathematical expression
+\item{xlab}{Character string or mathematical expression
 (use \code{expression}) for the x axis title. Default is
 \code{expression(paste("Wavenumber [", cm^-1, "]"))}.}
 
-\item{ylab}{Character vector or mathematical expression
+\item{ylab}{Character string or mathematical expression
 (use \code{expression}) for the y axis title. Default is \code{"absorbance"}.}
 
 \item{slice}{Logical whether to slice the data sets (select rows by position).
