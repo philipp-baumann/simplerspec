@@ -1,6 +1,27 @@
-#' @title Preprocess spectra from spectral data object (tibble)
+#' @title Preprocess spectra
 #' @description Preprocesses spectra in tibble column by sample_id after
 #' averaging spectra by \code{simplerspec::average_spc()}.
+#' @param spc_tbl Tibble that contains spectra to be preprocessed within
+#' a list-column.
+#' @param select Character vector of predefined preprocessing options to be
+#' applied to the spectra list-column specified in \code{column_in}.
+#' Common prefined values are stated as abbreviated preprocessing methods and
+#' options such as \code{"sg_1_w21"}, where \code{"sg"} stands for
+#' Savitzky-Golay and \code{1} for first derivative and \code{"w21"}
+#' for a window size of 21 points.
+#' @param column_in Character vector of single list-column in \code{spc_tbl} that
+#' contain list of spectra (1 row matrix) to be processed by function supplied
+#' in \code{select}.
+#' @param custom_function A character string of a custom processing function
+#' that is later parsed (produces expression in a list) and evaluated within
+#'  the function \code{preprocess_spc}.
+#' The character vector argument of \code{custom_function}
+#' needs to contain \code{"spc_raw"}, which is the single data table of spectra
+#' that results from binding a list of data.tables (spectra to preprocess)
+#' from the spectra list-column specified in \code{column_in}.
+#' An example for a value is
+#' \code{"prospectr::savitzkyGolay(X = spc_raw, m = 0, p = 3, w = 9)"}.
+#' Optional argument. Default is \code{NULL}.
 #' @export
 preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
   custom_function = NULL) {
