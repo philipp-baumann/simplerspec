@@ -147,4 +147,4 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL,
     ggplot2::guides(colour = FALSE)
   }
   p
-} #
+}
