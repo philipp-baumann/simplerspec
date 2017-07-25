@@ -628,8 +628,7 @@ evaluate_model_q <- function(x, model, response,
     print(p_model)
   }
 
-  list(stats = stats, p_model = p_model, predobs = predobs, xy_max = max(xy_max),
-    xy_min = min(xy_min))
+  list(stats = stats, p_model = p_model, predobs = predobs)
 }
 
 
