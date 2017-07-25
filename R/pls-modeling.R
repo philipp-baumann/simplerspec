@@ -148,7 +148,7 @@ control_train_q <- function(x, response, env = parent.frame()) {
   idx <- caret::createFolds(y = response, k = 10, returnTrain = TRUE)
   # inject the index in the trainControl object
   caret::trainControl(method = "cv", index = idx,
-    savePredictions = TRUE)
+    savePredictions = TRUE, selectionFunction = "oneSE")
 }
 
 ## Adapt model tuning to leave-one-out cross-validation ========================
@@ -159,7 +159,8 @@ control_train_loocv_q <- function(x, response, env = parent.frame()) {
   # r: response
   response <- eval(response, x$calibration, env)
   # Set up leave-one-out cross-validation
-  caret::trainControl(method = "LOOCV", savePredictions = TRUE)
+  caret::trainControl(method = "LOOCV", savePredictions = TRUE,
+    selectionFunction = "oneSE")
 }
 
 ## Adapt model tuning to repeated k-fold cross-validation ======================
@@ -173,7 +174,7 @@ control_train_rcv_q <- function(x, response, env = parent.frame()) {
   idx <- caret::createMultiFolds(y = response, k = 10, times = 5) # update ***
   # inject the index in the trainControl object
   caret::trainControl(method = "repeatedcv", index = idx,
-    savePredictions = TRUE)
+    savePredictions = TRUE, selectionFunction = "oneSE")
 }
 
 ## Fitting models without parameter tuning =====================================
@@ -189,7 +190,8 @@ control_train_none_q <- function(x, response, env = parent.frame()) {
   # use a fixed number of PLS components instead
   idx <- caret::createFolds(y = response, k = 10, returnTrain = TRUE) # update ***
   # inject the index in the trainControl object
-  caret::trainControl(method = "none", index = idx, savePredictions = TRUE)
+  caret::trainControl(method = "none", index = idx, savePredictions = TRUE,
+    selectionFunction = "oneSE")
 }
 
 ## Standard evlauation version of trainContol helper function
@@ -310,8 +312,8 @@ transform_cvpredictions <- function(cal_index, predobs_cv) {
 
 ## Evaluate PLS performance
 evaluate_model_q <- function(x, model, response,
-  evaluation_method,
-  tuning_method, print = TRUE, env = parent.frame()) {
+  evaluation_method, tuning_method, resampling_method,
+  print = TRUE, env = parent.frame()) {
   # Set global variables to NULL to avoid R CMD check notes
   MIR <- object <- dataType <- obs <- pred_sem_ci <- pred <- NULL
   ncomp <- finalModel <- rmsd <- r2 <- r2 <- rpd <- n <- NULL
@@ -322,6 +324,8 @@ evaluate_model_q <- function(x, model, response,
   evaluation_method <- eval(evaluation_method, envir = parent.frame())
   # Evaluate tuning_method argument in parent.frame
   tuning_method <- eval(tuning_method, envir = parent.frame())
+  # Evaluate resampling_method argument in parent.frame
+  resampling_method <- eval(resampling_method, envir = parent.frame())
   # Extract best tuning parameters and associated cv predictions
   if(evaluation_method == "test_set") {
     # Calculate training (calibration) and test (validation) data
@@ -485,7 +489,8 @@ evaluate_model_q <- function(x, model, response,
   # http://sahirbhatnagar.com/facet_wrap_labels
 
   # Prepare lookup character vector
-  make_label <- function(x, evaluation_method = "test_set") {
+  make_label <- function(x, evaluation_method = "test_set",
+                         resampling_method = "kfold_cv") {
     dataType <- n <- NULL
 
     if (evaluation_method == "test_set") {
@@ -494,6 +499,15 @@ evaluate_model_q <- function(x, model, response,
       ),
         `Validation` = paste0("Validation", "~(",
           x[x$dataType == "Validation", ]$n, ")"
+        )
+      )
+    } else if (evaluation_method == "resampling" &&
+        resampling_method == "rep_kfold_cv") {
+      c(`Calibration` = paste0("Calibration", "~(",
+        x[x$dataType == "Calibration", ]$n, ")"
+      ),
+        `Cross-validation` = paste0("Repeated~CV", "~(",
+          x[x$dataType == "Cross-validation", ]$n, ")"
         )
       )
     } else {
@@ -509,6 +523,11 @@ evaluate_model_q <- function(x, model, response,
   if (evaluation_method == "test_set") {
     label_validation <- make_label(x = annotation,
       evaluation_method = "test_set"
+    )
+  } else if (evaluation_method == "resampling" &&
+    resampling_method == "rep_kfold_cv") {
+    label_validation <- make_label(x = annotation,
+      evaluation_method = "resampling", resampling_method = "rep_kfold_cv"
     )
   } else {
     label_validation <- make_label(x = annotation,
@@ -529,6 +548,16 @@ evaluate_model_q <- function(x, model, response,
     as.character(response_name))
   y_label <- paste0("Predicted ",
     as.character(response_name))
+
+  ## Create x and y minimum and maximum for plotting range; use either
+  ## observed or predicted data, depending on what minimum and maximum values
+  ## are
+  xy_min <- if (min(predobs$obs) < min(predobs$pred))
+    {predobs$obs} else {predobs$pred}
+  xy_max <- if (max(predobs$obs) > max(predobs$pred))
+    {predobs$obs} else {predobs$pred}
+  xy_range <- ifelse(diff(range(xy_min) > diff(range(xy_max))),
+    diff(range(xy_min)), diff(range(xy_max)))
 
   if (model$method == "pls") {
   p_model <- ggplot2::ggplot(data = predobs) +
@@ -553,14 +582,10 @@ evaluate_model_q <- function(x, model, response,
     ggplot2::theme_bw() +
     ggplot2::geom_abline(col = "red") +
     ggplot2::labs(x = x_label, y = y_label) +
-    ggplot2::xlim(c(min(predobs$obs) -
-        0.05 * diff(range(predobs$obs)),
-      max(predobs$obs) +
-        0.05 * diff(range(predobs$obs)))) +
-    ggplot2::ylim(c(min(predobs$obs) -
-        0.05 * diff(range(predobs$obs)),
-      max(predobs$obs) +
-        0.05 * diff(range(predobs$obs)))) +
+    ggplot2::xlim(c(min(xy_min) - 0.05 * xy_range,
+      max(xy_max) + 0.05 * xy_range)) +
+    ggplot2::ylim(c(min(xy_min) - 0.05 * xy_range,
+      max(xy_max) + 0.05 * xy_range)) +
     ggplot2::coord_fixed()
 
     if (evaluation_method == "resampling") {
@@ -592,14 +617,10 @@ evaluate_model_q <- function(x, model, response,
     ggplot2::theme_bw() +
     ggplot2::geom_abline(col = "red") +
     ggplot2::labs(x = x_label, y = y_label) +
-    ggplot2::xlim(c(min(predobs$obs) -
-        0.05 * diff(range(predobs$obs)),
-      max(predobs$obs) +
-        0.05 * diff(range(predobs$obs)))) +
-    ggplot2::ylim(c(min(predobs$obs) -
-        0.05 * diff(range(predobs$obs)),
-      max(predobs$obs) +
-        0.05 * diff(range(predobs$obs)))) +
+    ggplot2::xlim(c(min(xy_min) - 0.05 * xy_range,
+      max(xy_max) + 0.05 * xy_range)) +
+    ggplot2::ylim(c(min(xy_min) -
+      0.05 * xy_range, max(xy_max) + 0.05 * xy_range)) +
     ggplot2::coord_fixed()
   }
 
@@ -607,7 +628,8 @@ evaluate_model_q <- function(x, model, response,
     print(p_model)
   }
 
-  list(stats = stats, p_model = p_model, predobs = predobs)
+  list(stats = stats, p_model = p_model, predobs = predobs, xy_max = max(xy_max),
+    xy_min = min(xy_min))
 }
 
 
@@ -788,6 +810,7 @@ fit_pls <- function(
     response = substitute(response),
     evaluation_method = substitute(evaluation_method),
     tuning_method = substitute(tuning_method),
+    resampling_method = substitute(resampling_method),
     env = parent.frame()
   )
   list(data = list_sampled, p_pc = list_sampled$p_pc,
@@ -911,6 +934,7 @@ fit_rf <- function(spec_chem,
     response = substitute(response),
     evaluation_method = substitute(evaluation_method),
     tuning_method = substitute(tuning_method),
+    resampling_method = substitute(resampling_method),
     env = parent.frame()
   )
   # Return list with results ---------------------------------------------------
