@@ -15,7 +15,7 @@ predict_from_spc <- function(model_list, spc_tbl, slice = TRUE) {
 
   # Helper function that extracts all pls_model elements (outputs from caret)
   # for a list of models
-  models <- lapply(model_list, function(x) x$pls_model)
+  models <- lapply(model_list, function(x) x[["model"]])
 
   # Group by spectra tibble by sample_id and keep one row per sample_id
   if (slice == TRUE) {
