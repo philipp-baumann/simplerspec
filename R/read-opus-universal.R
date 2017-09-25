@@ -162,7 +162,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
         param_min <- foreach::foreach(i = 1:length(spc_param_list),
           .final = function(i) setNames(i, names(spc_param_list))) %do% {
           param_min[[i]][[last_minus164]] <-
-          spc_param_list[[i]][isminus164[[last_minus164]]]
+            spc_param_list[[i]][isminus164[[last_minus164]]]
           param_min[[i]]
         }
       }
@@ -220,24 +220,49 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     # Check if elements in FXV_spc (frequency of first point) are equal to 0;
     # these are interferogram spectra ------------------------------------------
     which_Ig <- FXV_spc[which(FXV_spc == 0)]
-    Ig_assigned <- if(length(which_Ig) == 0) {
+    Ig_assigned <- if (length(which_Ig) == 0) {
         NULL
-      } else if(length(which_Ig) == 1) {
-      list(
-        spc_idx = names(which_Ig),
-        spc_code = "IgSm"
-      )
+      } else if (length(which_Ig) == 1) {
+        list(
+          spc_idx = names(which_Ig),
+          spc_code = "IgSm"
+        )
+      } else if (length(which_Ig == 3)) {
+        list(
+          spc_idx = names(which_Ig)[1:2],
+          spc_code = c("IgSm", "IgRf")
+        )
       } else {
       list(
         spc_idx = names(which_Ig),
         spc_code = c("IgSm", "IgRf")
       )
-      }
+    }
+
+    na_assigned <- list(
+      spc_idx = NULL,
+      spc_code = NULL
+    )
+    if (length(which_Ig) == 3) {
+      # Assign duplicated interferogram spectrum to 'not available' assigned
+      na_assigned <- list(
+        spc_idx = names(which_Ig)[3],
+        spc_code = NA
+      )
+    }
+
+    # Remove NA assigned spectra in spc list -------------------------------------
+    if (!is.null(na_assigned$spc_idx)) {
+      spc[na_assigned$spc_idx] <- NULL
+    # Remove wavenumbers with NA assigned spectra in spc list
+      wavenumbers[na_assigned$spc_idx] <- NULL
+    }
 
     # Assign single channel spectra if present in file -------------------------
     # Return idx (index names) of all remaining spectra that are not
     # interferograms
-    notIg <- names(spc)[!names(spc) %in% Ig_assigned$spc_idx]
+    notIg <- names(spc)[!names(spc) %in%
+      c(Ig_assigned$spc_idx, na_assigned$spc_idx)]
     # Calculate peak ratio for absorbance at around 2392 cm^(-1)
     # and 2358 cm^(-1)
     peak_ratio <- lapply(
@@ -251,9 +276,9 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     which_Sc <- names(which(peak_ratio > 2))
     # Check for single channel, exclude spectral blocks already assigned to
     # interferograms
-    Sc_assigned <- if(length(which_Sc) == 0) {
+    Sc_assigned <- if (length(which_Sc) == 0) {
         NULL
-      } else if(length(which_Sc) == 1) {
+      } else if (length(which_Sc) == 1) {
         list(
           spc_idx = which_Sc,
           spc_code = "ScSm"
@@ -269,15 +294,15 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     which_AB <- names(spc)[!names(spc) %in%
       c(Ig_assigned[["spc_idx"]], Sc_assigned[["spc_idx"]])]
     AB_assigned <- if(length(which_AB) == 1) {
-    list(
-      spc_idx = which_AB,
-      spc_code = "spc"
-    )
+      list(
+        spc_idx = which_AB,
+        spc_code = "spc"
+      )
     } else {
-    list(
-      spc_idx = which_AB,
-      spc_code = c("spc_nocomp", "spc")
-    )
+      list(
+        spc_idx = which_AB,
+        spc_code = c("spc_nocomp", "spc")
+      )
     }
 
     # Read result spectrum with new offset (no `-4`) when atmospheric
@@ -525,6 +550,9 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     out <- list(
       'metadata' = metadata,
       'spc' = spc_m[["spc"]],
+      'spc_nocomp' = if("spc_nocomp" %in% extract &&
+        "spc_nocomp" %in% names(spc_m)) {
+          spc_m[["spc_nocomp"]]} else {NULL},
       'sc_sm' = if("ScSm" %in% extract && "ScSm" %in% names(spc_m)) {
         spc_m[["ScSm"]]} else {NULL},
       'sc_rf' = if("ScRf" %in% extract && "ScRf" %in% names(spc_m)) {
