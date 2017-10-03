@@ -539,40 +539,39 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     # Save all relevant data parameters (metadata)
     # in tibble data frame (class "data.frame" and "tbl_diff" ==================
     metadata <- tibble::data_frame(
-      unique_id = unique_id,
-      file_id = file_name_nopath, # pb (20170514): changed `scan_id` to `file_id`
-      sample_id = sample_id,
-      rep_no = as.numeric(rep_no),
-      date_time_sm = max(date_time),
-      date_time_rf = min(date_time),
-      sample_name = SNM,
-      instr_name_range = instr_range,
-      resolution_wn = RES,
-      result_spc = unique(PLF), # Result spectrum; e.g. "AB" = Absorbance
-      beamspl = BMS,
-      laser_wn = LWN,
-      # `spc_in_file`: character vector of spectra found in OPUS file
-      spc_in_file = paste(unlist(list_assigned_t[["spc_code"]]),
-        collapse = ";", sep = ";"),
-      zero_filling = ZFF, # Zero filling factor for fourier transformation
-      # Temperature of scanner during sample measurement
-      temp_scanner_sm = TSC_all[[length(TSC_all)]], # select last element
-      # Temperature of scanner during reference measurement;
-      # if there is only one element in TSC_all, temperature during reference
-      # mesurement is not saved
-      temp_scanner_rf = if(length(TSC_all) == 1) {NA} else {TSC_all[[1]]},
-      # Relative humidity
-      hum_rel_sm = HUM_rel[[length(HUM_rel)]], # sample measurement
-      hum_rel_rf = if(length(HUM_rel) == 1) {NA} else {HUM_rel[[1]]}, # reference
-      # measurement
-      # Absolute humidity; sample measurement (sm); reference measurment (rf);
-      # note: for Vertex 70 instrument HUA is not present, in this case,
-      # HUM_abs is a list without elements
-      hum_abs_sm = if(length(HUM_abs != 0)) {HUM_abs[[length(HUM_abs)]]}
-        else {NA},
-      hum_abs_rf = if(length(HUM_abs) == 1 | length(HUM_abs) == 0) {NA}
-        else {HUM_abs[[1]]} # reference
-      # measurement
+unique_id = unique_id,
+    file_id = file_name_nopath, # pb (20170514): changed `scan_id` to `file_id`
+    sample_id = sample_id,
+    rep_no = as.numeric(rep_no),
+    date_time_sm = max(date_time),
+    date_time_rf = min(date_time),
+    sample_name = SNM,
+    instr_name_range = instr_range,
+    resolution_wn = RES,
+    # Result spectrum; e.g. "AB" = Absorbance
+    result_spc = ifelse(length(unique(PLF)) == 1, unique(PLF), unique(PLF)[2]),
+    beamspl = BMS,
+    laser_wn = LWN,
+    # `spc_in_file`: character vector of spectra found in OPUS file
+    spc_in_file = paste(unlist(list_assigned_t[["spc_code"]]),
+      collapse = ";", sep = ";"),
+    zero_filling = ZFF, # Zero filling factor for fourier transformation
+    # Temperature of scanner during sample measurement
+    temp_scanner_sm = TSC_all[[length(TSC_all)]], # select last element
+    # Temperature of scanner during reference measurement;
+    # if there is only one element in TSC_all, temperature during reference
+    # mesurement is not saved
+    temp_scanner_rf = ifelse(length(TSC_all) == 1, NA, TSC_all[[1]]),
+    # Relative humidity
+    hum_rel_sm = HUM_rel[[length(HUM_rel)]], # sample measurement
+    hum_rel_rf = ifelse(length(HUM_rel) == 1, NA, HUM_rel[[1]]), # reference
+    # measurement
+    # Absolute humidity; sample measurement (sm); reference measurment (rf);
+    # note: for Vertex 70 instrument HUA is not present, in this case,
+    # HUM_abs is a list without elements
+    hum_abs_sm = ifelse(length(HUM_abs) != 0, HUM_abs[[length(HUM_abs)]], NA),
+    hum_abs_rf = ifelse(length(HUM_abs) == 1 | length(HUM_abs) == 0, NA, HUM_abs[[1]]) # reference
+    # measurement
     )
 
     ## Allocate and return data from spectra in output list (out) ==============
