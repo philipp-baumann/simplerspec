@@ -232,13 +232,18 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
       wav = as.numeric(colnames(spc_raw)), type = "A")}
 
   # Select final preprocessing based on selection argument and
-  # save matrix in data table
+  # save matrix in data.table
   pre <- select
   spc_pre <- data.table::as.data.table(get(pre))
 
   # Convert preprocessed spectra in data.table to list of data.table spectra
   spc_pre_list <- split(spc_pre, seq(nrow(spc_pre)))
+  # Convert x-values of preprocessed spectra in list of vectors
+  # prospectr only hands over new xunits in matrix colnames of type character
+  xvalues_pre_list <- lapply(spc_pre_list,
+    function(x) as.numeric(colnames(x)))
 
-  # Add list of preprocessed spectra to tibble
-  spc_tbl <- tibble::add_column(spc_tbl, spc_pre = spc_pre_list)
+  # Add list of preprocessed spectra and correspoding wavenumbers to tibble
+  spc_tbl <- tibble::add_column(spc_tbl,
+    spc_pre = spc_pre_list, xvalues_pre = xvalues_pre_list)
 }
