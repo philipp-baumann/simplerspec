@@ -1,8 +1,9 @@
+################################################################################
 ## Helper functions to gather spectra, corresponding x-value vectors,
 ## metadata and measure columns (e.g. chemical reference data) from tibble
 ## list-columns into a single data.table or a list of data.tables conntaining
 ## long form data directly to be used for customized ggplot2 plotting functions
-## =============================================================================
+################################################################################
 
 # bind a list-column in a tibble to a list of data.tables ----------------------
 
