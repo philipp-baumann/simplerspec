@@ -5,7 +5,7 @@
 #' @import stats
 #' @importFrom data.table data.table rbindlist setkey setDT := .SD
 #' @export
-average_spc <- function(spc_tbl) {
+average_spc <- function(spc_tbl, by = "sample_id") {
 
   # Avoid R CMD check note: `no visible binding for global variable`
   spc_rs <- sample_id <- NULL
@@ -14,23 +14,23 @@ average_spc <- function(spc_tbl) {
   spc <- data.table::rbindlist(spc_tbl$spc_rs)
 
   # Add sample_id column to resampled spectra
-  spc[, sample_id:=spc_tbl$sample_id]
+  spc[, id := spc_tbl[, by][[by]]]
 
   # Average spectra, use sample_id as index for grouping
-  data.table::setkey(spc, sample_id)
-  spc_mean <- spc[, lapply(.SD, mean), by = sample_id]
+  data.table::setkey(spc, id)
+  spc_mean <- spc[, lapply(.SD, mean), by = id]
 
   # Create vector of sample_id from column sample_id in spc_mean
-  sample_id_mean <- spc_mean$sample_id
+  sample_id_mean <- spc_mean[, id]
   # Delete sample_id column in data.table
-  spc_mean_noid <- spc_mean[, sample_id:=NULL]
+  spc_mean_noid <- spc_mean[, id := NULL]
 
   # Create list of averaged spectra, one spectrum is one data.table
   # Method split.data.table is not yet available in data.table 1.9.7
   # Wait for v2.0.0
   spc_mean_list <- stats::setNames(
     split(spc_mean_noid, seq(nrow(spc_mean_noid))),
-    sample_id_mean
+      sample_id_mean
   )
 
   # Convert averaged spectra and sample_id to tibble
