@@ -51,3 +51,39 @@ read_asd <- function(file) {
   )
 
 }
+
+## Simplespec spectra tibble version of ASD reader based on prospectr::readASD
+## Reads binary ASD data and converts data into list-columns containing spectral
+## data that can be further processed within the simplerspec spectra processing
+## framework ===================================================================
+
+read_asd_bin <- function(fnames) {
+
+  data <- prospectr::readASD(fnames = fnames,
+    in_format = "binary", out_format = "list")
+  gps <- purrr::map(data, c("header", "GPS"))
+  header <- purrr::map(purrr::map(data, "header"),
+    function(x) x[- which(names(x) == "GPS")])
+  file_id <- purrr::map_chr(data, "name")
+  sample_id <- sub("(.+)\\.[[:alpha:]]+$", "\\1", file_id) # remove ".asd"
+  datetime <- purrr::map(data, "datetime")
+  unique_id <- mapply(function(x, y) paste0(x, "_", y), sample_id, datetime)
+  metadata <- purrr::map(header, tibble::as_tibble)
+  # Add GPS to metadata
+  metadata <- purrr::map2(metadata, gps, dplyr::bind_cols)
+  spc_l <- purrr::transpose(
+    purrr::map(data, `[`, c("radiance", "reference", "reflectance")))
+  wl_l <- purrr::transpose(purrr::map(data, `[`, "wavelength"))
+  spc_dt <- purrr::modify_depth(spc_l, 2,
+    function(x) data.table::data.table(t(x)))
+  spc_tbl <- tibble::tibble(
+    unique_id = unique_id,
+    file_id = file_id,
+    sample_id = sample_id,
+    metadata = metadata,
+    wavelengths = wl_l[["wavelength"]],
+    spc_radiance = spc_dt[["radiance"]],
+    spc_reference = spc_dt[["reference"]],
+    spc = spc_dt[["reflectance"]]
+  )
+}
