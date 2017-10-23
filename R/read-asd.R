@@ -57,6 +57,7 @@ read_asd <- function(file) {
 ## data that can be further processed within the simplerspec spectra processing
 ## framework ===================================================================
 
+#' @export
 read_asd_bin <- function(fnames) {
 
   data <- prospectr::readASD(fnames = fnames,
