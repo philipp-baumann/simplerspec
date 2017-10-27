@@ -22,7 +22,7 @@
 # "Error : object ‘`%do%`’ is not exported by 'namespace:foreach'"
 #' @importFrom foreach %dopar% %do%
 read_opus_bin_univ <- function(file_path, extract = c("spc"),
-  print_progress = TRUE) {
+  print_progress = TRUE, atm_comp_minus4offset = FALSE) {
 
   # Avoid `R CMD check` NOTE: no visible binding for global variable ...
   x <- y <- i <- npt <- NULL
@@ -339,9 +339,10 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     # with index name idx that corresponds to final spectrum after atmospheric
     # compensation; OPUS files from particular spectrometers/OPUS software
     # versions do still need the same offset end_spc[[spc_idx]] - 4 as the other
-    # spectra types; new argument atm_comp_offset (default FALSE) is a quick fix
-    # to read files with different offsets after atmospheric compensation ------
-    if (length(which_AB) == 2 && !atm_comp_offset) {
+    # spectra types; new argument atm_comp_minus4offset (default FALSE) is a
+    # quick fix to read files with different offsets after atmospheric
+    # compensation -------------------------------------------------------------
+    if (length(which_AB) == 2 && !atm_comp_minus4offset) {
       spc[[which_AB[length(which_AB)]]] <-
         hexView::readRaw(file_path, width = NULL,
         offset = end_spc[which_AB[length(which_AB)]],
@@ -634,7 +635,8 @@ unique_id = unique_id,
 #' Bruker OPUS spectrometer files. List names are the names of the OPUS
 #' files whose spectral data were extracted.
 #' @export
-read_opus_univ <- function(fnames, extract = c("spc"), parallel = FALSE) {
+read_opus_univ <- function(fnames, extract = c("spc"), parallel = FALSE,
+                           atm_comp_minus4offset = FALSE) {
 
   # Avoid `R CMD check` NOTE: ``no visible binding for variable ...
   # i <- NULL
@@ -648,12 +650,14 @@ read_opus_univ <- function(fnames, extract = c("spc"), parallel = FALSE) {
       .packages = c("foreach", "simplerspec"),
       .final = function(i) setNames(i, sub(".+/(.+)", "\\1", fnames))) %dopar% {
         try(
-          read_opus_bin_univ(file_path = fnames[[i]], extract = extract)
+          read_opus_bin_univ(file_path = fnames[[i]], extract = extract,
+            atm_comp_minus4offset = atm_comp_minus4offset)
         )
     }
   } else if (parallel == FALSE) {
     spc_list <- lapply(fnames,
-      function(x) try(read_opus_bin_univ(file_path = x, extract = extract)))
+      function(x) try(read_opus_bin_univ(file_path = x, extract = extract,
+        atm_comp_minus4offset = atm_comp_minus4offset)))
     names(spc_list) <- sub(".+/(.+)", "\\1", fnames)
     spc_list
   }
