@@ -326,7 +326,8 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
         aes_string(x = "xvalues_value", y = "spc_value")) +
       ggplot2::geom_line(ggplot2::aes_string(colour = "group_id_tbl",
         group = "spc_id"), alpha = alpha, size = line_width) +
-      ggplot2::facet_grid(spc_type ~ group_id, scales = "free")
+      ggplot2::facet_grid(spc_type ~ group_id, scales = "free",
+        labeller = labeller(spc_type = lbl))
   }
 
   p <- p + ggplot2::scale_x_reverse(breaks = brk) +
