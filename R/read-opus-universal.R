@@ -337,8 +337,11 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     # Read result spectrum with new offset (no `-4`) when atmospheric
     # compensation was done by the OPUS software; replace the spectrum position
     # with index name idx that corresponds to final spectrum after atmospheric
-    # compensation -------------------------------------------------------------
-    if(length(which_AB) == 2) {
+    # compensation; OPUS files from particular spectrometers/OPUS software
+    # versions do still need the same offset end_spc[[spc_idx]] - 4 as the other
+    # spectra types; new argument atm_comp_offset (default FALSE) is a quick fix
+    # to read files with different offsets after atmospheric compensation ------
+    if (length(which_AB) == 2 && !atm_comp_offset) {
       spc[[which_AB[length(which_AB)]]] <-
         hexView::readRaw(file_path, width = NULL,
         offset = end_spc[which_AB[length(which_AB)]],
