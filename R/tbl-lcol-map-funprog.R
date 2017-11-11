@@ -1,4 +1,5 @@
 # Split a tibble data.frame into a list of tibbles by a group column
+#' @export
 split_df2l <- function(tbl_df, group) {
   split(tbl_df, tbl_df[, group])
 }
