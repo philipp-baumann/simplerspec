@@ -22,6 +22,7 @@ slice_xvalues_idxseq <- function(spc_l, xvalues, xvalues_cut) {
 
 # Use helper functions in final spectrum x unit slicing function ---------------
 
+#' @export
 slice_xvalues <- function(spc_tbl, xunit_lcol = "wavenumbers", spc_lcol = "spc",
                           xvalues_cut = NULL) {
   if (is.atomic(xvalues_cut)) xvalues_cut <- list(xvalues_cut)
