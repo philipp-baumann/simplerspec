@@ -308,7 +308,7 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
 
   # Plot different spectral types and group_id in panels
   if (group_panel && length(lcols_spc) > 1) {
-    if (relabel_spc == TRUE) {
+    if (relabel_spc) {
       lbl <- relabel_spc_types(...) # see this function for arguments and values
       p <- p + ggplot2::facet_grid(spc_type ~ group_id, scales = "free",
         labeller = labeller(spc_type = lbl))
@@ -326,12 +326,12 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
       ggplot2::aes_string(x = "xvalues_value", y = "spc_value")) +
       ggplot2::geom_line(ggplot2::aes_string(colour = "group_id_tbl",
         group = "spc_id"), alpha = alpha, size = line_width)
-    if (relabel_spc) {
+    if (relabel_spc == TRUE) {
       lbl <- relabel_spc_types(...)
       p <- p + ggplot2::facet_grid(spc_type ~ group_id, scales = "free",
         labeller = labeller(spc_type = lbl))
-    } else {
-      p <- p + ggplot2::facet_grid(spc_type ~ group_id, scales = "free")
+    } else if (relabel_spc == FALSE) {
+      p <- p + ggplot2::facet_wrap(~ group_id, ncol = ncol, scales = "free")
     }
   }
 
