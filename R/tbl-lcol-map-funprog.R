@@ -6,6 +6,7 @@ split_df2l <- function(tbl_df, group) {
 
 # Extract multiple tibble list columns, row bind them separately into
 # single data tables and return a list of data.tables
+#' @export
 extract_lcols2dts <- function(spc_tbl, lcols) {
   # Below code is first part of simplerspec::bind_lcols_dts
   # todo: add warning for lcols not present in spc_tbl
