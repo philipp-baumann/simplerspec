@@ -4,7 +4,7 @@
 \alias{average_spc}
 \title{Average spectra from spectral data object (tibble)}
 \usage{
-average_spc(spc_tbl)
+average_spc(spc_tbl, by = "sample_id")
 }
 \arguments{
 \item{spc_tbl}{Spectra after resampling spectra with \code{resample_spc()}}
