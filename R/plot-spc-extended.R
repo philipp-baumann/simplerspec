@@ -323,11 +323,16 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
   # Special case when list of tibbles are supplied
   if (group_panel && !is.null(spc_tbl_l)) {
     p <- ggplot2::ggplot(data = dt,
-        aes_string(x = "xvalues_value", y = "spc_value")) +
+      ggplot2::aes_string(x = "xvalues_value", y = "spc_value")) +
       ggplot2::geom_line(ggplot2::aes_string(colour = "group_id_tbl",
-        group = "spc_id"), alpha = alpha, size = line_width) +
-      ggplot2::facet_grid(spc_type ~ group_id, scales = "free",
+        group = "spc_id"), alpha = alpha, size = line_width)
+    if (relabel_spc) {
+      lbl <- relabel_spc_types(...)
+      p <- p + ggplot2::facet_grid(spc_type ~ group_id, scales = "free",
         labeller = labeller(spc_type = lbl))
+    } else {
+      p <- p + ggplot2::facet_grid(spc_type ~ group_id, scales = "free")
+    }
   }
 
   p <- p + ggplot2::scale_x_reverse(breaks = brk) +
