@@ -241,7 +241,7 @@ train_pls_q <- function(x,
     }
   } else {
     # No centering and scaling!
-    pls_model <- caret::train(x = spc_pre, y = response,
+    pls_model <- caret::train(x = spc_pre, y = r,
       method = "pls",
       tuneLength = pls_ncomp_max,
       trControl = tr_control)
