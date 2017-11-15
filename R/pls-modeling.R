@@ -295,7 +295,7 @@ train_rf_q <- function(x,
 ## predictions
 transform_cvpredictions <- function(cal_index, predobs_cv) {
 
-  predobs_cv <- dplyr::full_join(cal_index, predobs_cv) %>%
+  predobs_cv <- dplyr::full_join(cal_index, predobs_cv, by = "rowIndex") %>%
     dplyr::group_by(rlang::UQ(rlang::sym("sample_id"))) %>%
     # Average observed and predicted values
     dplyr::mutate("obs" = mean(rlang::UQ(rlang::sym("obs"))),
