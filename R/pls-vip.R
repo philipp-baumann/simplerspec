@@ -210,7 +210,7 @@ plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
     ggplot2::scale_x_reverse(limits = x_lim, breaks = brk) +
     ggplot2::labs(x = xlab, y = ylab1) +
     ggplot2::theme_bw() +
-    ggplot2::theme(plot.margin = ggplot2::unit(c(0, 5, 1, 1),
+    ggplot2::theme(plot.margin = ggplot2::unit(c(1, 5, -30, 6),
       units = "points"), axis.text.x = ggplot2::element_blank())
 
     p_spc_pre <- ggplot2::ggplot(dt2_long, ggplot2::aes(wavenumber, value)) +
@@ -247,7 +247,7 @@ plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
         ", ", .(ncomp), " comps)"))) +
     ggplot2::scale_x_reverse(limits = x_lim, breaks = brk) +
     ggplot2::theme_bw() +
-    ggplot2::theme(plot.margin = ggplot2::unit(c(1, 5, -30, 6),
+    ggplot2::theme(plot.margin = ggplot2::unit(c(0, 5, 1, 1),
       units = "points"), axis.title.y = ggplot2::element_text(vjust = 0.25))
 
   # Arrange plots in two panels without any margins in between
