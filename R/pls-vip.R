@@ -255,7 +255,7 @@ plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
   # Hints from
   # https://stackoverflow.com/questions/42567045/alignment-of-two-plots-using-grid-arrange
   cowplot::plot_grid(
-    p_vip, p_spc_pre, p_spc, rel_heights = c(0.3, 0.3, 0.4),
+    p_spc, p_spc_pre, p_vip, rel_heights = c(0.4, 0.3, 0.3),
     ncol = 1, align = "v")
 }
 
