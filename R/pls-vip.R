@@ -241,6 +241,7 @@ plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
       fill = "orange", alpha = 0.3) +
     ggplot2::geom_hline(yintercept = 1, colour = "red") +
     ggplot2::geom_line() +
+    ggplot2::xlab(xlab) +
     ggplot2::ylab(
       bquote(paste(VIP[PLSR], " (", .(response),
         ", ", .(ncomp), " comps)"))) +
