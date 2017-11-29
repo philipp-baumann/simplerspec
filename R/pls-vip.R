@@ -207,6 +207,7 @@ plot_pls_vip <- function(mout, y1 = "spc_mean", y2 = "spc_pre",
     ggplot2::geom_line(data = dt1_long, inherit.aes = FALSE,
       ggplot2::aes(x = wavenumber, y = value, group = id),
         alpha = alpha, size = 0.2) +
+    ggplot2::scale_x_reverse(limits = x_lim, breaks = brk) +
     ggplot2::labs(x = xlab, y = ylab1) +
     ggplot2::theme_bw() +
     ggplot2::theme(plot.margin = ggplot2::unit(c(0, 5, 1, 1),
