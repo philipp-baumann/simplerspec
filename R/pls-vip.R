@@ -84,7 +84,7 @@ extract_pls_vip <- function(mout) {
   tibble::data_frame_(lazyeval::lazy_dots(wavenumber = wn, vip = vip))
 }
 
-
+#' @export
 create_vip_rects <- function(df_vip) {
 
   # Avoid `R CMD check NOTE`: `no visible binding for global variable`
