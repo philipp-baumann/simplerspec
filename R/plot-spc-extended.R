@@ -6,7 +6,7 @@
 ################################################################################
 
 # bind a list-column in a tibble to a list of data.tables ----------------------
-
+#' @export
 bind_lcols_dts <- function(spc_tbl, lcols,
                            spc_id = "unique_id",
                            group_id = "sample_id") {
