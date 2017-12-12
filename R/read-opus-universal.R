@@ -543,7 +543,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     # Save all relevant data parameters (metadata)
     # in tibble data frame (class "data.frame" and "tbl_diff" ==================
     metadata <- tibble::data_frame(
-unique_id = unique_id,
+    unique_id = unique_id,
     file_id = file_name_nopath, # pb (20170514): changed `scan_id` to `file_id`
     sample_id = sample_id,
     rep_no = as.numeric(rep_no),
