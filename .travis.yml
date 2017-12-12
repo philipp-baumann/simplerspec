@@ -18,7 +18,7 @@ r_github_packages:
   - hadley/devtools
 
 # We need to install BiocInstaller for testing Bioconductor packages
-bioc_required: true
+bioc_required: false
 
 # Set CXX1X for R-devel, as R-devel does not detect CXX1X support for gcc 4.6.3,
 # this was causing hunspell installation to fail
