@@ -14,7 +14,7 @@ extract_lcols2dts <- function(spc_tbl, lcols) {
   which_bind <- colnames(spc_tbl) %in% lcols
   lcols_to_bind <- colnames(spc_tbl)[which_bind]
   names(lcols_to_bind) <- lcols_to_bind
-  dts <- purrr::map(lcols_to_bind,
+  dts <- map(lcols_to_bind,
     function(y) {
       if (is.list(spc_tbl[[y]])) {
         # todo: Test if number of columns is equal in each data.frame or matrix
