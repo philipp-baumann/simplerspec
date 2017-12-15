@@ -8,7 +8,7 @@
 average_spc <- function(spc_tbl, by = "sample_id") {
 
   # Avoid R CMD check note: `no visible binding for global variable`
-  spc_rs <- sample_id <- NULL
+  spc_rs <- sample_id <- id <- NULL
 
   # Combine rows of all resampled spectra in one data.table
   spc <- data.table::rbindlist(spc_tbl$spc_rs)
