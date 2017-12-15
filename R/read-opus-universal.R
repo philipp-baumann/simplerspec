@@ -639,7 +639,7 @@ read_opus_univ <- function(fnames, extract = c("spc"), parallel = FALSE,
                            atm_comp_minus4offset = FALSE) {
 
   # Avoid `R CMD check` NOTE: ``no visible binding for variable ...
-  # i <- NULL
+  i <- NULL
 
   if(parallel == TRUE) {
     foreach::foreach(i = 1:length(fnames),
