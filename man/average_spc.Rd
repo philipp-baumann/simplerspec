@@ -7,7 +7,12 @@
 average_spc(spc_tbl, by = "sample_id")
 }
 \arguments{
-\item{spc_tbl}{Spectra after resampling spectra with \code{resample_spc()}}
+\item{spc_tbl}{Tibble data.frame containing spectra in list-column
+\code{spc_rs}. This list-column is created when resampling spectra
+with \code{resample_spc()}}
+
+\item{by}{Character vector of length 1; specifies column by which spectra
+are averaged. Default is \code{"sample_id"}.}
 }
 \description{
 Averages spectra in tibble column by sample_id after
