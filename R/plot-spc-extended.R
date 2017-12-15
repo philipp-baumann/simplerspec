@@ -334,7 +334,7 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
     if (relabel_spc == TRUE) {
       lbl <- relabel_spc_types(...)
       p <- p + ggplot2::facet_grid(spc_type ~ group_id, scales = "free",
-        ggplot2::labeller = labeller(spc_type = lbl))
+        labeller = ggplot2::labeller(spc_type = lbl))
     } else if (relabel_spc == FALSE) {
       p <- p + ggplot2::facet_wrap(~ group_id, ncol = ncol, scales = "free")
     }
