@@ -215,6 +215,7 @@ merge_dts_l <- function(spc_tbl_l,
 # https://stackoverflow.com/questions/15665535/reorder-factors-numerically-in-a-data-frame
 # ------------------------------------------------------------------------------
 reorder_factor_num <- function(dt, column) {
+  group_id <- NULL
   if(!any(is.na(
     suppressWarnings(as.numeric(dt[, group_id]))))
   ) {
