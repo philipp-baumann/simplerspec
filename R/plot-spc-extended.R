@@ -145,6 +145,7 @@ merge_dts <- function(spc_tbl,
                       variable_name = "variable",
                       value_name = "value") {
 
+  id_long <- NULL
   spc_xvalues <- tolist_spc_xvalues(spc_tbl = spc_tbl,
     lcols_spc = lcols_spc, spc_id = spc_id, group_id = group_id)
   # Set keys for merging list of data.tables for spectra and xunits
@@ -194,6 +195,9 @@ merge_dts_l <- function(spc_tbl_l,
                         group_id = "sample_id",
                         variable_name = "variable",
                         value_name = "value") {
+
+  group_id_tbl <- NULL
+
   dts <- lapply(seq_along(spc_tbl_l),
     function(i) merge_dts(spc_tbl = spc_tbl_l[[i]],
       lcols_spc = lcols_spc, lcol_measure = lcol_measure,
@@ -282,7 +286,7 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
   }
   brk <- pretty(dt[["xvalues_value"]], n = 10) # Pretty x-axis breaks
   p <- ggplot2::ggplot(data = dt,
-    aes_string(x = "xvalues_value", y = "spc_value"))
+    ggplot2::aes_string(x = "xvalues_value", y = "spc_value"))
 
   if (group_color == TRUE && is.null(lcol_measure)) {
     p <- p +
@@ -303,7 +307,7 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
       ggplot2::aes_string(colour = lcol_measure, group = "spc_id",
         x = "xvalues_value", y = "spc_value"),
         alpha = alpha, size = line_width, inherit.aes = FALSE) +
-      scale_colour_distiller(palette = "Spectral")
+      ggplot2::scale_colour_distiller(palette = "Spectral")
   }
 
   # Plot different spectral types and group_id in panels
@@ -329,7 +333,7 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
     if (relabel_spc == TRUE) {
       lbl <- relabel_spc_types(...)
       p <- p + ggplot2::facet_grid(spc_type ~ group_id, scales = "free",
-        labeller = labeller(spc_type = lbl))
+        ggplot2::labeller = labeller(spc_type = lbl))
     } else if (relabel_spc == FALSE) {
       p <- p + ggplot2::facet_wrap(~ group_id, ncol = ncol, scales = "free")
     }
@@ -339,8 +343,8 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
     ggplot2::xlab(expression(paste("Wavenumber [", cm^-1, "]"))) +
     ggplot2::ylab(ylab) +
     ggplot2::theme_bw() +
-    theme(legend.position = "right",
-      axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+    ggplot2::theme(legend.position = "right",
+      axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5))
   p
 }
 
