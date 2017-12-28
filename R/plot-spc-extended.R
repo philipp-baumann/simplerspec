@@ -306,6 +306,51 @@ relabel_spc_types <- function(lb_sc_sm = "Reflectance sample (<ScSm>)",
 
 # Main spectra explorative analysis and diagnostics plotting function ----------
 
+#' @title ggplot2 wrapper for extended spectra plotting
+#' @description \code{plot_spc_ext} is a custom plotting function developed
+#' within the simplerspec framework. Returns plots based on ggplot2
+#' (class "ggplot"). Different spectra types such as raw or preprocessed spectra
+#' and groups can be differentiated by different colors or by using panels
+#' (so called facets). Additionally, spectra can be colored based on an
+#' additional measure variable, e.g. determined by chemical reference analysis.
+#' @param spc_tbl Tibble data frame containing spectra, x-axis values, metadata
+#' and eventual measured variables as list-columns.
+#' #' @param spc_tbl_l List of spectral tibbles (data frames). Default is
+#'  \code{NULL} (argument is not used).
+#' @param lcol_measure Character vector of length 1 denoting the column name
+#' of the measure columns. This argument is optional. Default is \code{NULL},
+#' which does not extract an additional measure column.
+#' @param spc_id Character vector denoting column name for a unique spectrum ID.
+#' Default is \code{"unique_id"}.
+#' @param group_id Character vector denoting column name for the spectrum group
+#' ID. Default is \code{"sample_id"}. The group ID is used for
+#' plotting spectra by group (e.g. by using different colors or panels).
+#' @param group_id_order Logical that specifies whether the panel names
+#' derived from a numeric \code{group_id} column are reordered using ascending
+#' numbers. Default is \code{TRUE}.
+#' @param group_color Logical defining whether spectra are colored by the column
+#' specified by \code{group_id}.
+#' @param group_panel Logical defining whether spectra are arranged into panels
+#' by groups specified in \code{group_id}. Default is \code{TRUE}.
+#' @param group_legend Logical defining whether a legend for the \code{group_id}
+#' is plotted. Default is \code{FALSE}.
+#' @param ncol Integer vector of length 1. Defines number of columns when
+#' plotting panels (facets). Default is \code{NULL} (argument not used).
+#' @param relabel_spc Logical defining whether panels are relabeled with custom
+#' names for spectra types. Default is TRUE. When \code{TRUE}, arguments
+#' from \code{relabel_spc_types} can be passed to \code{plot_spc_ext}
+#' (supported via the \code{...} (ellipsis) argument)
+#' @param ylab Character vector or vector of type \code{"expression"} created by
+#' mathematical expression created by \code{expression}. Custom annotation for
+#' y-axis of spectra
+#' @param alpha Integer of length 1, from 0 to 1. Defines transparency of
+#' spectral lines. Default is \code{0.5} (0 is completely transparent and
+#' 1 is no transparency).
+#' @param line_width Numeric vector of length 1 specifying the width of the
+#' spectral lines. Default is \code{0.2}.
+#' @param ... Further arguments to be passed to \code{plot_spc_ext}. Currently,
+#' arguments of \code{relabel_spc_types} are supported.
+#' @return Object of class \code{"ggplot"} (ggplot2 graph).
 #' @export
 plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
                           lcols_spc = "spc",
