@@ -1,4 +1,6 @@
-# simplerspec 
+# simplerspec
+
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/philipp-baumann/simplerspec?branch=master&svg=true)](https://ci.appveyor.com/project/philipp-baumann/simplerspec)
 
 The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as FT-IR soil spectroscopy. Different helper functions are designed to create a 
 data and modeling workflow. Data inputs and outputs are stored in `R` objects with specific data structures. The following features are covered in the current version of the package:
