@@ -213,9 +213,10 @@ pls_C <- fit_pls(
 ) 
 ```
 
-# Details on functions, arguments, and input and output data structures
+# Package help
 
-## `read_opus()` function
+After successfully installing simplerspec, you can use the R build-in help
+using ``?simplerspec::<fun_name>`
 
 # Credits
 
