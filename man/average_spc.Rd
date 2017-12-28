@@ -2,7 +2,7 @@
 % Please edit documentation in R/average-spc.R
 \name{average_spc}
 \alias{average_spc}
-\title{Average spectra from spectral data object (tibble)}
+\title{Average spectra in spectral tibble data frame}
 \usage{
 average_spc(spc_tbl, by = "sample_id")
 }
@@ -14,7 +14,11 @@ with \code{resample_spc()}}
 \item{by}{Character vector of length 1; specifies column by which spectra
 are averaged. Default is \code{"sample_id"}.}
 }
+\value{
+Tibble data frame (class `tbl_df`) with mean spectra appended
+as list-column named \code{spc_mean}.
+}
 \description{
-Averages spectra in tibble column by sample_id after
+Average spectra in tibble by a group column after
 resampling spectra by \code{simplerspec::resample_spc()}.
 }

@@ -1,4 +1,4 @@
-#' @title Average spectra from spectral data object (tibble)
+#' @title Average spectra in spectral tibble data frame
 #' @description Average spectra in tibble by a group column after
 #' resampling spectra by \code{simplerspec::resample_spc()}.
 #' @param spc_tbl Tibble data.frame containing spectra in list-column
