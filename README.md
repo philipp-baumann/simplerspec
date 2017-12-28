@@ -216,7 +216,7 @@ pls_C <- fit_pls(
 # Package help
 
 After successfully installing simplerspec, you can use the R build-in help
-using ``?simplerspec::<fun_name>`
+using `?simplerspec::<fun_name>`
 
 # Credits
 
