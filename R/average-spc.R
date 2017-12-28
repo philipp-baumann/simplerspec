@@ -1,11 +1,13 @@
 #' @title Average spectra from spectral data object (tibble)
-#' @description Averages spectra in tibble column by sample_id after
+#' @description Average spectra in tibble by a group column after
 #' resampling spectra by \code{simplerspec::resample_spc()}.
 #' @param spc_tbl Tibble data.frame containing spectra in list-column
 #' \code{spc_rs}. This list-column is created when resampling spectra
 #' with \code{resample_spc()}
 #' @param by Character vector of length 1; specifies column by which spectra
 #' are averaged. Default is \code{"sample_id"}.
+#' @return Tibble data frame (class `tbl_df`) with mean spectra appended
+#' as list-column named \code{spc_mean}.
 #' @import stats
 #' @importFrom data.table data.table rbindlist setkey setDT := .SD
 #' @export
