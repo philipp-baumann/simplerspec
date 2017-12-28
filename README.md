@@ -228,4 +228,3 @@ function from the [soil.spec](https://cran.r-project.org/web/packages/soil.spec/
 * [Hadley Wickham](http://hadley.nz/) for his work and concepts on data science within R
 
 
-       
