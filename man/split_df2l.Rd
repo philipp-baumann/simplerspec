@@ -16,3 +16,7 @@ is split into a list of tibbles}
 List of tibbles. Each tibble contains data split by
 a group column within \code{tbl_df}.
 }
+\description{
+Helper function that calls \code{split} on a tibble using a
+grouping column within tibble.
+}

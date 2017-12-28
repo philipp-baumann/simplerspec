@@ -1,5 +1,7 @@
 # Split a tibble data frame into a list of tibbles by a group column
 #' @title Split a tibble data frame into a list of tibbles by a group column
+#' @description Helper function that calls \code{split} on a tibble using a
+#' grouping column within tibble.
 #' @param tbl_df Tibble data frame
 #' @param group Character vector with name of column based on which tibble
 #' is split into a list of tibbles
