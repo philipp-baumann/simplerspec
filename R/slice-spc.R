@@ -22,7 +22,7 @@ slice_xvalues_idxseq <- function(spc_l, xvalues, xvalues_cut) {
 
 # Use helper functions in final spectrum x unit slicing function ---------------
 
-#' @title Slice spectra into defined wavenumber ranges
+#' @title Slice spectra into defined x-axis ranges
 #' @description Slice spectra contained in list-column of spectral tibble
 #' (data frame). A list of x-axis value ranges can be specified. Spectra are
 #' cut based on these ranges.
