@@ -13,6 +13,9 @@
 #' (interferogram of the reference measurement).
 #' @param print_progress Logical (default \code{TRUE}) whether a message is
 #' printed when an OPUS binary file is parsed into an R list entry.
+#' @param atm_comp_minus4offset Logical whether spectra after atmospheric
+#' compensation are read with an offset of \code{-4} bites from Bruker OPUS
+#' files. Default is \code{FALSE}.
 #' @usage read_opus_bin_univ(file_path, extract = c("spc"),
 #' print_progress = TRUE)
 #' @export
@@ -630,6 +633,9 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
 #' files are read in parallel (multiple processors or multiple cores)).
 #' Default is \code{parallel = FALSE}. If \code{TRUE} a parallel backend needs
 #' to be registered, e.g. by using the \code{doParallel} package.
+#' @param atm_comp_minus4offset Logical whether spectra after atmospheric
+#' compensation are read with an offset of \code{-4} bites from Bruker OPUS
+#' files. Default is \code{FALSE}.
 #' @usage read_opus_univ(fnames, extract = c("spc"), parallel = FALSE)
 #' @return out List spectra and metadata (parameters) extracted from
 #' Bruker OPUS spectrometer files. List names are the names of the OPUS
