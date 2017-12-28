@@ -12,9 +12,13 @@ plot_spc_ext(spc_tbl, spc_tbl_l = NULL, lcols_spc = "spc",
 }
 \arguments{
 \item{spc_tbl}{Tibble data frame containing spectra, x-axis values, metadata
-and eventual measured variables as list-columns.
-#' @param spc_tbl_l List of spectral tibbles (data frames). Default is
- \code{NULL} (argument is not used).}
+and eventual measured variables as list-columns.}
+
+\item{spc_tbl_l}{List of spectral tibbles (data frames). Default is
+\code{NULL} (argument is not used).}
+
+\item{lcols_spc}{Character vector of spectral list-columns to be extracted.
+Default is \code{"spc"} (raw spectra).}
 
 \item{lcol_measure}{Character vector of length 1 denoting the column name
 of the measure columns. This argument is optional. Default is \code{NULL},

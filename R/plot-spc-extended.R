@@ -315,8 +315,10 @@ relabel_spc_types <- function(lb_sc_sm = "Reflectance sample (<ScSm>)",
 #' additional measure variable, e.g. determined by chemical reference analysis.
 #' @param spc_tbl Tibble data frame containing spectra, x-axis values, metadata
 #' and eventual measured variables as list-columns.
-#' #' @param spc_tbl_l List of spectral tibbles (data frames). Default is
-#'  \code{NULL} (argument is not used).
+#' @param spc_tbl_l List of spectral tibbles (data frames). Default is
+#' \code{NULL} (argument is not used).
+#' @param lcols_spc Character vector of spectral list-columns to be extracted.
+#' Default is \code{"spc"} (raw spectra).
 #' @param lcol_measure Character vector of length 1 denoting the column name
 #' of the measure columns. This argument is optional. Default is \code{NULL},
 #' which does not extract an additional measure column.
