@@ -1,4 +1,10 @@
-# Split a tibble data.frame into a list of tibbles by a group column
+# Split a tibble data frame into a list of tibbles by a group column
+#' @title Split a tibble data frame into a list of tibbles by a group column
+#' @param tbl_df Tibble data frame
+#' @param group Character vector with name of column based on which tibble
+#' is split into a list of tibbles
+#' @return List of tibbles. Each tibble contains data split by
+#' a group column within \code{tbl_df}.
 #' @export
 split_df2l <- function(tbl_df, group) {
   split(tbl_df, tbl_df[, group])
