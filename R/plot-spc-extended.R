@@ -150,16 +150,33 @@ tolist_spc_xvalues <- function(spc_tbl, lcols_spc,
 }
 
 
-# Merge data tables of for spectra, xunits, metadata and measured variables
+# Merge data tables of spectra, xunits, metadata and measured variables
 # into a single long form data.table -------------------------------------------
 
+#' @title Merge list-columns of spectra, x-axis values, metadata and additional
+#' measured variables into a single long form data.table
+#' @description Helper function that merges all spectra and related data into
+#' a single long form data.table than can subsequently be used for plotting.
+#' @param spc_tbl Tibble data frame containing spectra, x-axis values, metadata
+#' and eventual measured variables as list-columns.
+#' @param lcols_spc Character vector of spectral list-columns to be extracted.
+#' Default is \code{c("spc", "spc_pre")} (raw and preprocessed spectra).
+#' @param lcol_measure Character vector of length 1 denoting the column name
+#' of the measure columns. This argument is optional. Default is \code{NULL},
+#' which does not extract an additional measure column.
+#' @param spc_id Character vector of column that contains a unique spectral
+#' identifier for all spectra. Default is \code{"unique_id"}.
+#' @param group_id Character vector of columns that is used assigning spectra
+#' into groups. Default is \code{"sample_id"}. The \code{group_id} can be
+#' used for later plotting and thereby visually separating spectral groups into
+#' using different colors or panels.
+#' @return A single data.table containing long form aggregated data of
+#' spectra, x-axis values, metadata and an additionally measured variable.
 #' @export
 merge_dts <- function(spc_tbl,
                       lcols_spc = c("spc", "spc_pre"), lcol_measure = NULL,
                       spc_id = "unique_id",
-                      group_id = "sample_id",
-                      variable_name = "variable",
-                      value_name = "value") {
+                      group_id = "sample_id") {
 
   id_long <- NULL
   spc_xvalues <- tolist_spc_xvalues(spc_tbl = spc_tbl,
@@ -203,14 +220,34 @@ merge_dts <- function(spc_tbl,
 # Wrapper function around merge_dts for list of tibbles to aggregate data for
 # plotting ---------------------------------------------------------------------
 
+#' @title Wrapper function around \code{merge_dts()} for list of tibbles to
+#' aggregate data for plotting.
+#' @description Instead of a single spectral tibble (data frame) multiple
+#' spectral tibbles can be merged into a long-form data.table for plotting
+#' spectra and related data. For details, see
+#' \code{\link{merge_dts}}.
+#' @param spc_tbl_l List of spectral tibbles (data frames).
+#' @param lcols_spc Character vector of spectral list-columns to be extracted.
+#' Default is \code{c("spc", "spc_pre")} (raw and preprocessed spectra).
+#' @param lcol_measure Character vector of length 1 denoting the column name
+#' of the measure columns. This argument is optional. Default is \code{NULL},
+#' which does not extract an additional measure column.
+#' @param spc_id Character vector of column that contains a unique spectral
+#' identifier for all spectra. Default is \code{"unique_id"}.
+#' @param group_id Character vector of columns that is used assigning spectra
+#' into groups. Default is \code{"sample_id"}. The \code{group_id} can be
+#' used for later plotting and thereby visually separating spectral groups into
+#' using different colors or panels.
+#' @return A single data.table containing long form aggregated data of
+#' spectra, x-axis values, metadata and an additionally measured variable.
+#' An additional column called \code{group_id_tbl} is appended. It denotes
+#' the name of the spectral tibble supplied with the list \code{spc_tbl_l}.
 #' @export
 merge_dts_l <- function(spc_tbl_l,
                         lcols_spc = c("spc", "spc_pre"),
                         lcol_measure = NULL,
                         spc_id = "unique_id",
-                        group_id = "sample_id",
-                        variable_name = "variable",
-                        value_name = "value") {
+                        group_id = "sample_id") {
 
   group_id_tbl <- NULL
 
