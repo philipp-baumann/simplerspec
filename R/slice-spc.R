@@ -22,6 +22,25 @@ slice_xvalues_idxseq <- function(spc_l, xvalues, xvalues_cut) {
 
 # Use helper functions in final spectrum x unit slicing function ---------------
 
+#' @title Slice spectra into defined wavenumber ranges
+#' @description Slice spectra contained in list-column of spectral tibble
+#' (data frame). A list of x-axis value ranges can be specified. Spectra are
+#' cut based on these ranges.
+#' @param spc_tbl Spectral data in a tibble object (classes "tibble_df", "tbl"
+#' and "data.frame"). The spectra tibble is expected to contain at least
+#' the column  \code{spc} (list-column with spectral matrices stored in a list)
+#' and \code{wavenumbers} or \code{wavelengths} (list-column that contains list
+#' of x-axis values).
+#' @param xunit_lcol Character vector that specifies column name where x-axis
+#' axis units are stored within \code{spc_tbl}. Default is \code{"wavenumber"}.
+#' @param spc_lcol Character vector that specifies which column (list-column)
+#' contains spectra to be sliced. Default is \code{"spc"}.
+#' @param xvalues_cut List of numeric vectors that contains upper and lower bounds of respective regions to keep in spectra. The spectral regions outside
+#' the \code{xvalues_cut} intervals will be cut out in the output spectra.
+#' @return Spectral tibble (data frame with list-columns) with sliced x-axis
+#' column and spectral column. Both the x-axis list-column and the spectral
+#' tibble list-column only contain data specified within the \code{xvalues_cut}
+#' argument (list of numeric vectors).
 #' @export
 slice_xvalues <- function(spc_tbl, xunit_lcol = "wavenumbers", spc_lcol = "spc",
                           xvalues_cut = NULL) {
