@@ -4,7 +4,8 @@
 \alias{read_opus_univ}
 \title{Read a list of Bruker OPUS spectrum binary files.}
 \usage{
-read_opus_univ(fnames, extract = c("spc"), parallel = FALSE)
+read_opus_univ(fnames, extract = c("spc"), parallel = FALSE,
+atm_comp_minus4offset = FALSE)
 }
 \arguments{
 \item{fnames}{List of character vectors containing full path names of spectra}

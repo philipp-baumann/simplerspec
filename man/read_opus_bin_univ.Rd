@@ -5,7 +5,7 @@
 \title{Read a Bruker OPUS spectrum binary file}
 \usage{
 read_opus_bin_univ(file_path, extract = c("spc"),
-print_progress = TRUE)
+print_progress = TRUE, atm_comp_minus4offset = FALSE)
 }
 \arguments{
 \item{file_path}{Character vector with path to file}
