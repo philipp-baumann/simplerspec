@@ -84,6 +84,17 @@ extract_pls_vip <- function(mout) {
   tibble::data_frame_(lazyeval::lazy_dots(wavenumber = wn, vip = vip))
 }
 
+#' @title Create a data frame containing start and end positions (wavenumbers)
+#' where variable importance in projection (VIP) is > 1
+#' @description Given a data frame with VIP outputs (wavenumber and vip
+#' columns), start and end values denoting spectral regions where VIP > 1
+#' are returned as data frame. The functions can be used as helper
+#' function for plotting VIP.
+#' @param df_vip Data frame containing \code{wavenumber} and \code{vip} columns
+#' (numeric)
+#' @return Data.frame containing vectors \code{start} (numeric; wavenumber),
+#' \code{end} (numeric; wavenumber) and group (integer; values are
+#' \code{1:length(start))}.
 #' @export
 create_vip_rects <- function(df_vip) {
 
