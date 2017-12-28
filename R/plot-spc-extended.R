@@ -6,6 +6,22 @@
 ################################################################################
 
 # bind a list-column in a tibble to a list of data.tables ----------------------
+
+#' @title Bind list-columns within a tibble into a list of data.tables
+#' @description Bind one to many list-columns in spectral tibble into a list
+#' of data.tables.
+#' @param spc_tbl Spectral data in a tibble data frame (classes "tibble_df",
+#' "tbl" and "data.frame").
+#' @param lcols Character vector of column names of list-columns to be bound
+#' into a list of data.tables
+#' @param spc_id Character vector denoting column name for a unique spectrum ID.
+#' Default is \code{"unique_id"}.
+#' @param group_id Character vector denoting column name for the spectrum group
+#' ID. Default is \code{"sample_id"}. The group ID can later be used for
+#' plotting spectra by group (e.g. by using different colors or panels).
+#' @return A list of data.tables. Elements contain data from list-columns
+#' specified in \code{lcols} argument as data.tables. All data.tables contain in
+#' addition \code{spc_id} and \code{group_id} columns.
 #' @export
 bind_lcols_dts <- function(spc_tbl, lcols,
                            spc_id = "unique_id",
