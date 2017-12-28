@@ -21,6 +21,10 @@ of the sample), "IgRf" (Interferogram of the reference). Default is
 files are read in parallel (multiple processors or multiple cores)).
 Default is \code{parallel = FALSE}. If \code{TRUE} a parallel backend needs
 to be registered, e.g. by using the \code{doParallel} package.}
+
+\item{atm_comp_minus4offset}{Logical whether spectra after atmospheric
+compensation are read with an offset of \code{-4} bites from Bruker OPUS
+files. Default is \code{FALSE}.}
 }
 \value{
 out List spectra and metadata (parameters) extracted from

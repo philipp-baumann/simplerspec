@@ -21,6 +21,10 @@ code{"ScRf"} (single channel spectrum of the reference measurment),
 
 \item{print_progress}{Logical (default \code{TRUE}) whether a message is
 printed when an OPUS binary file is parsed into an R list entry.}
+
+\item{atm_comp_minus4offset}{Logical whether spectra after atmospheric
+compensation are read with an offset of \code{-4} bites from Bruker OPUS
+files. Default is \code{FALSE}.}
 }
 \description{
 Read single binary file acquired with an
