@@ -116,7 +116,7 @@ require(tidyverse)
 ## Read spectra in list ========================================================
 
 # List of OPUS binary spectra files
-lf <- list.files("data/spectra/soilspec_eth_bin", full.names = TRUE)
+lf <- dir("data/spectra/soilspec_eth_bin", full.names = TRUE)
 
 # Read spectra from files into R list
 spc_list <- read_opus_univ(fnames = lf, extract = c("spc"))
@@ -228,3 +228,4 @@ function from the [soil.spec](https://cran.r-project.org/web/packages/soil.spec/
 * [Hadley Wickham](http://hadley.nz/) for his work and concepts on data science within R
 
 
+       
