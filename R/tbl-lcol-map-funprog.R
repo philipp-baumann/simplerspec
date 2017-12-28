@@ -6,6 +6,16 @@ split_df2l <- function(tbl_df, group) {
 
 # Extract multiple tibble list columns, row bind them separately into
 # single data tables and return a list of data.tables
+#' @title Extract multiple tibble list-columns and return data as list of
+#' data.tables
+#' @description Extract multiple tibble list columns, row bind them separately
+#' into single data tables and return a list of data.tables.
+#' @param spc_tbl Spectral tibble (data frame) with spectral data contained
+#' in list-columns
+#' @param lcols Character vector containing names of list-columns to be
+#' extracted into a list of data.tables
+#' @return List of data.tables. Each element is a data.table derivied from a
+#' list-column specified in the \code{lcols} argument.
 #' @import purrr
 #' @export
 extract_lcols2dts <- function(spc_tbl, lcols) {
