@@ -15,6 +15,8 @@ data and modeling workflow. Data inputs and outputs are stored in `R` objects wi
 2. `average_spc`: Average spectra for replicate scans
 5. `preprocess_spc`: Perform pre-processing of spectra
 6. `join_chem_spc`: Join chemical and spectral data sets by `sample_id`
+7. `plot_spc_ext`: Extended spectral plotting; e.g. group spectra using different
+panels or color spectra based on chemical reference values to explore trends.
 7. `fit_pls`: Perform model tuning and evaluation based on Partial Least Squares (PLS) regression
 8. `predict_from_spc`: Predict multiple chemical properties from a list of calibrated models and new soil spectra
 
