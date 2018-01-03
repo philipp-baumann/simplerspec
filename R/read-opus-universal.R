@@ -540,7 +540,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
       .final = function(i) setNames(i, names(spc_m))) %do% {
       colnames(spc_m[[i]]) <- round(wavenumbers[[i]], 1)
       rownames(spc_m[[i]]) <- unique_id
-      spc_m[[i]]
+      data.table::as.data.table(spc_m[[i]])
       }
 
     # Save all relevant data parameters (metadata)
