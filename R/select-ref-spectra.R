@@ -17,7 +17,6 @@
 #' @export
 select_ref_spc <- function(spc_tbl, ratio_ref = 0.15, pc = 2,
   print = TRUE) {
-  pc_number <- eval(pc, envir = parent.frame())
 
   # Avoid `R CMD check` NOTE: `no visible binding for global variable ...`
   PC1 <- PC2 <- type <- NULL
@@ -32,7 +31,7 @@ select_ref_spc <- function(spc_tbl, ratio_ref = 0.15, pc = 2,
   }
   # Perform Kennard-Stone calibration sampling ---------------------------------
   sel <- prospectr::kenStone(X = spc_pre,
-    k = round(ratio_ref * nrow(spc_pre)), pc = substitute(pc_number))
+    k = round(ratio_ref * nrow(spc_pre)), pc = pc)
   # Select spectra tibble of reference samples based on row indices
   spc_ref <- spc_tbl[sel$model, ]
   # Select spectra tibble of prediction samples based on row indices
