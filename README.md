@@ -161,21 +161,21 @@ soilspec_tbl <- spc_list %>%
   
 soilspec_tbl
 # A tibble: 284 x 11
-                                 unique_id             file_id         sample_id
-                                     <chr>               <chr>             <chr>
- 1 BF_lo_01_soil_cal.0_2015-11-06 14:34:10 BF_lo_01_soil_cal.0 BF_lo_01_soil_cal
- 2 BF_lo_01_soil_cal.1_2015-11-06 14:38:14 BF_lo_01_soil_cal.1 BF_lo_01_soil_cal
- 3 BF_lo_01_soil_cal.2_2015-11-06 14:40:55 BF_lo_01_soil_cal.2 BF_lo_01_soil_cal
- 4 BF_lo_02_soil_cal.0_2015-11-06 17:27:55 BF_lo_02_soil_cal.0 BF_lo_02_soil_cal
- 5 BF_lo_02_soil_cal.1_2015-11-06 17:30:19 BF_lo_02_soil_cal.1 BF_lo_02_soil_cal
- 6 BF_lo_02_soil_cal.2_2015-11-06 17:32:47 BF_lo_02_soil_cal.2 BF_lo_02_soil_cal
- 7 BF_lo_03_soil_cal.0_2015-11-09 11:32:55 BF_lo_03_soil_cal.0 BF_lo_03_soil_cal
- 8 BF_lo_03_soil_cal.1_2015-11-09 11:35:26 BF_lo_03_soil_cal.1 BF_lo_03_soil_cal
- 9 BF_lo_03_soil_cal.2_2015-11-09 11:38:08 BF_lo_03_soil_cal.2 BF_lo_03_soil_cal
-10 BF_lo_04_soil_cal.0_2015-11-06 10:36:13 BF_lo_04_soil_cal.0 BF_lo_04_soil_cal
-# ... with 274 more rows, and 8 more variables: spc <list>, wavenumbers <list>,
-#   metadata <list>, spc_rs <list>, wavenumbers_rs <list>, spc_mean <list>,
-#   spc_pre <list>, xvalues_pre <list>
+#>                                 unique_id             file_id         sample_id
+#>                                     <chr>               <chr>             <chr>
+#> 1 BF_lo_01_soil_cal.0_2015-11-06 14:34:10 BF_lo_01_soil_cal.0 BF_lo_01_soil_cal
+#> 2 BF_lo_01_soil_cal.1_2015-11-06 14:38:14 BF_lo_01_soil_cal.1 BF_lo_01_soil_cal
+#> 3 BF_lo_01_soil_cal.2_2015-11-06 14:40:55 BF_lo_01_soil_cal.2 BF_lo_01_soil_cal
+#> 4 BF_lo_02_soil_cal.0_2015-11-06 17:27:55 BF_lo_02_soil_cal.0 BF_lo_02_soil_cal
+#> 5 BF_lo_02_soil_cal.1_2015-11-06 17:30:19 BF_lo_02_soil_cal.1 BF_lo_02_soil_cal
+#> 6 BF_lo_02_soil_cal.2_2015-11-06 17:32:47 BF_lo_02_soil_cal.2 BF_lo_02_soil_cal
+#> 7 BF_lo_03_soil_cal.0_2015-11-09 11:32:55 BF_lo_03_soil_cal.0 BF_lo_03_soil_cal
+#> 8 BF_lo_03_soil_cal.1_2015-11-09 11:35:26 BF_lo_03_soil_cal.1 BF_lo_03_soil_cal
+#> 9 BF_lo_03_soil_cal.2_2015-11-09 11:38:08 BF_lo_03_soil_cal.2 BF_lo_03_soil_cal
+#> 10 BF_lo_04_soil_cal.0_2015-11-06 10:36:13 BF_lo_04_soil_cal.0 BF_lo_04_soil_cal
+#> # ... with 274 more rows, and 8 more variables: spc <list>, wavenumbers <list>,
+#> #   metadata <list>, spc_rs <list>, wavenumbers_rs <list>, spc_mean <list>,
+#> #   spc_pre <list>, xvalues_pre <list>
   
 
 ## Read chemical reference data and join with spectral data ====================
@@ -235,4 +235,3 @@ function from the [soil.spec](https://cran.r-project.org/web/packages/soil.spec/
 * [Hadley Wickham](http://hadley.nz/) for his work and concepts on data science within R
 
 
-         
