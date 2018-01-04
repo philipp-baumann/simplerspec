@@ -18,7 +18,10 @@ data and modeling workflow. Data inputs and outputs are stored in `R` objects wi
 7. `plot_spc_ext`: Extended spectral plotting; e.g. group spectra using different
 panels or color spectra based on chemical reference values to explore trends.
 8. `fit_pls`: Perform model tuning and evaluation based on Partial Least Squares (PLS) regression
-9. `predict_from_spc`: Predict multiple chemical properties from a list of calibrated models and new soil spectra
+9. `select_ref_spc`: Select a set of reference samples to measured by
+traditional analysis methods when no a priori sample data except spectra are 
+available (based on Kennard-Stones sampling)
+10. `predict_from_spc`: Predict multiple chemical properties from a list of calibrated models and new soil spectra
 
 # Installation
 
