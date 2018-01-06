@@ -1,7 +1,7 @@
 #' @title Predict soil properties of new spectra based on a list of calibration models
 #' @description Append predictions for a set of responses specified by a list
 #' of calibration models and a tibble containing preprocessed spectra as
-#' list-columns
+#' list-columns.
 #' @param model_list List of model output generated from calibration step
 #' (\code{pls_ken_stone()}
 #' @param spc_tbl Tibble of spectra after preprocessing
@@ -13,14 +13,20 @@
 #' @export
 predict_from_spc <- function(model_list, spc_tbl, slice = TRUE) {
 
-  # Helper function that extracts all pls_model elements (outputs from caret)
-  # for a list of models
-  models <- lapply(model_list, function(x) x[["model"]])
+  if (all(sapply(model_list, class) == "train")) {
+    # If model_list is a list of elements of class "train", model_list
+    # can be directly handed over to caret::extractPrediction
+    models <- model_list
+  } else {
+    # Extract pls_model elements (outputs from caret) for a list of models
+    models <- lapply(model_list, function(x) x[["model"]])
+    stopifnot(all(sapply(models, class) == "train"))
+  }
 
   # Group by spectra tibble by sample_id and keep one row per sample_id
   if (slice == TRUE) {
     spc_tbl <- spc_tbl %>% dplyr::group_by(sample_id) %>%
-      slice(1L)
+      dplyr::slice(1L) %>% dplyr::ungroup()
   }
 
   # Collect preprocessed spectra in one data.table
@@ -43,5 +49,5 @@ predict_from_spc <- function(model_list, spc_tbl, slice = TRUE) {
   )
 
   # Join predictions with tibble
-  dplyr::inner_join(spc_tbl, pred_wide)
+  dplyr::inner_join(spc_tbl, pred_wide, by = "sample_id")
 }
