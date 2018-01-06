@@ -49,30 +49,6 @@ install `Rcpp` from source provided on CRAN by
 install.packages("Rcpp", type = "source")
 ```
 
-## Special installation note for Mac OS X El Capitan (10.11) and higher
-
-The current version of simplerspec needs dplyr version 0.7.0 or higher. 
-Currently, there is no  Mac OS X El Capitan (10.11) binaries available on 
-CRAN for dplyr 0.7.1 (current version). Therefore, there are two options to
-install the newest function for dplyr (simplerspec model evaluation won't work
-when using old dplyr 0.5.0 previously available on CRAN):
-
-1.  Install Xcode developer tools via App store on OS X. This will provide the 
-C compiler front end `clang++` required to compile C++ code in the dplyr package.
-After installing Xcode you can install the dplyr package from the CRAN source with 
-```R
-install.packages("dplyr", type = "source")
-```
-2.  *Recommended:* Download the following [precompiled binary of dplyr 0.7.1](https://github.com/philipp-baumann/R-pkg-osx-binaries)
-and install it via `RStudio` > `Tools` > `Install Packages...`: 
-`Install from: Package Archive File (.tgz; .tar.gz)`. Select the downloaded 
-dplyr Mac OS X El Capitan binary file (`dplyr_0.7.1.tgz`).
-
-After successful compilation and installation, you can install simplerspec:
-
-```R
-devtools::install_github("philipp-baumann/simplerspec")
-```
 
 # Key concepts and data analysis workflow
 
