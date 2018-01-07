@@ -46,7 +46,7 @@ First, you need to download and install the latest R tools version from [here](h
 install `Rcpp` from source provided on CRAN by 
 
 ```R
-install.packages("Rcpp", type = "source")
+# install.packages("Rcpp", type = "source")
 ```
 
 
@@ -211,4 +211,3 @@ function from the [soil.spec](https://cran.r-project.org/web/packages/soil.spec/
 * [Hadley Wickham](http://hadley.nz/) for his work and concepts on data science within R
 
 
-            
