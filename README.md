@@ -25,7 +25,7 @@ available (based on Kennard-Stones sampling)
 
 # Installation
 
-The newest version of the package is available on this GitHub repository. Note that the package is still under development. If you find bugs you are highly welcome to report your issues (write me an [email](mailto:philipp.baumann@usys.ethz.ch) or create an [issue](https://github.com/philipp-baumann/simplerspec/issues)). You can install `simplerspec` using the devtools package.
+The newest version of the package is available on this GitHub repository. Note that the package is still under development. If you find bugs you are highly welcome to report issues (write me an [email](mailto:philipp.baumann@usys.ethz.ch) or create an [issue](https://github.com/philipp-baumann/simplerspec/issues)). You can install `simplerspec` using the devtools package.
 
 ```R
 # Uncomment and run the below line if you have not yet installed
@@ -50,7 +50,7 @@ install.packages("Rcpp", type = "source")
 ```
 
 
-# Key concepts and data analysis workflow
+# Motivation and key concepts
 
 The functions are built to work in a pipeline and cover commonly used procedures for spectral model development. Many R packages are available to do tasks in spectral modeling such as pre-processing of spectral data. The motivation to create this package was:
 
@@ -211,3 +211,4 @@ function from the [soil.spec](https://cran.r-project.org/web/packages/soil.spec/
 * [Hadley Wickham](http://hadley.nz/) for his work and concepts on data science within R
 
 
+            
