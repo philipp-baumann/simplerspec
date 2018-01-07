@@ -6,7 +6,7 @@ AppVeyor build status (Windows) [![AppVeyor Build Status](https://ci.appveyor.co
 
 # Short description
 
-The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as FT-IR soil spectroscopy. Different helper functions are designed to create a 
+The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a 
 data and modeling workflow. Data inputs and outputs are stored in `R` objects with specific data structures. The following features are covered in the current version of the package:
 
 1. `read_opus_univ`: Read spectra and metadata from Bruker OPUS binary files into R list
@@ -36,7 +36,7 @@ The newest version of the package is available on this GitHub repository. Note t
 devtools::install_github("philipp-baumann/simplerspec")
 ```
 
-## Special installation note for Windows 8 and R version 3.3 and 3.4
+## Special installation note for Windows 8 and R versions 3.3 and 3.4
 
 For some Windows versions with recent R versions (3.3 and 3.4), there 
 might be an error message that the `Rcpp` package can not be installed because
