@@ -1,4 +1,4 @@
-#' @title Calculate model statistics
+#' @title Calculate model evaluation metrics
 #' @description Calculates model statistics for predicted (y)
 #' vs. observed (y) values
 #' @param df data.frame with predicted and observed data

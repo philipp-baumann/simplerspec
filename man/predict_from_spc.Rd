@@ -22,5 +22,5 @@ column names of model list.
 \description{
 Append predictions for a set of responses specified by a list
 of calibration models and a tibble containing preprocessed spectra as
-list-columns
+list-columns.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/spectra-utils.R
 \name{summary_df}
 \alias{summary_df}
-\title{Calculate model statistics}
+\title{Calculate model evaluation metrics}
 \usage{
 summary_df(df, x, y)
 }
