@@ -130,7 +130,8 @@ split_data_q <- function(
 }
 
 # trainControl generating helper function
-control_train_q <- function(x, response, env = parent.frame()) {
+control_train_q <- function(x, response, resampling_seed,
+                            env = parent.frame()) {
   calibration <- NULL
   # List of calibration and validation samples
   # set up a cross-validation scheme
@@ -145,6 +146,8 @@ control_train_q <- function(x, response, env = parent.frame()) {
   # in Advanced R (Hadley Wickham)
   # !! p. 270
   response <- eval(response, x$calibration, env)
+  # Set seed for creating resampling indices
+  set.seed(eval(resampling_seed, env))
   idx <- caret::createFolds(y = response, k = 10, returnTrain = TRUE)
   # inject the index in the trainControl object
   caret::trainControl(method = "cv", index = idx,
@@ -166,13 +169,16 @@ control_train_loocv_q <- function(x, response, env = parent.frame()) {
 ## Adapt model tuning to repeated k-fold cross-validation ======================
 
 ## trainControl generating helper function
-control_train_rcv_q <- function(x, response, env = parent.frame()) {
+control_train_rcv_q <- function(x, response, resampling_seed,
+                                env = parent.frame()) {
   calibration <- NULL
   # r: response
   response <- eval(response, x$calibration, env)
-  # set up 5 times repeated 10-fold cross-validation
+  # Set seed for creating resampling indices
+  set.seed(eval(resampling_seed, env))
+  # Set up 5 times repeated 10-fold cross-validation
   idx <- caret::createMultiFolds(y = response, k = 10, times = 5) # update ***
-  # inject the index in the trainControl object
+  # Inject the index in the trainControl object
   caret::trainControl(method = "repeatedcv", index = idx,
     savePredictions = TRUE, selectionFunction = "oneSE")
 }
@@ -181,10 +187,13 @@ control_train_rcv_q <- function(x, response, env = parent.frame()) {
 # 5.9; https://topepo.github.io/caret/model-training-and-tuning.html
 
 ## trainControl generating helper function
-control_train_none_q <- function(x, response, env = parent.frame()) {
+control_train_none_q <- function(x, response, resampling_seed,
+                                 env = parent.frame()) {
   calibration <- NULL
   # r: response
   response <- eval(response, x$calibration, env)
+  # Set seed for creating resampling indices
+  set.seed(eval(resampling_seed, env))
   # Set trainControl argument to "none" so that caret::train will only fit
   # one model to the entire training set;
   # use a fixed number of PLS components instead
@@ -690,6 +699,10 @@ evaluate_model_q <- function(x, model, response,
 #' \code{"rep_kfold_cv"} (performs 5-times repeated 10-fold cross-validation),
 #' \code{"loocv"} (performs leave-one-out cross-validation), and \code{"none"}
 #' (if \code{resampling_method = "none"}) are supported.
+#' @param resampling_seed Random seed (integer) that will be used for generating
+#' resampling indices, which will be supplied to \code{caret::trainControl}.
+#' This makes sure that modeling results are constant when re-fitting.
+#' Default is \code{resampling_seed = 123}.
 #' @param cv Depreciated. Use \code{resampling_method} instead.
 #' @param pls_ncomp_max Maximum number of PLS components that are evaluated
 #' by caret::train. Caret will aggregate a performance profile using resampling
@@ -715,6 +728,7 @@ fit_pls <- function(
   invert = TRUE, # only if split_method = "ken_stone"
   tuning_method = "resampling",
   resampling_method = "kfold_cv", cv = NULL, # cv depreciated
+  resampling_seed = 123, # Seed for creating resampling indices
   pls_ncomp_max = 20, # Maximal number of PLS components used by model tuning
   ncomp_fixed = 5, # only fit and evaluate one model, if tuning_method = "none"
   print = TRUE, # print model summary and evaluation graphs
@@ -771,22 +785,25 @@ fit_pls <- function(
   # Check on method for cross-validation to be used in caret model tuning ------
   if(resampling_method == "loocv") {
     # leave-one-out cross-validation
-    tr_control <- control_train_loocv_q(list_sampled,
-      substitute(response), env)
+    tr_control <- control_train_loocv_q(x = list_sampled,
+      response = substitute(response), env = env)
   } else if (resampling_method == "rep_kfold_cv") {
     # repeated k-fold cross-validation
-    tr_control <- control_train_rcv_q(list_sampled,
-      substitute(response), env)
+    tr_control <- control_train_rcv_q(x = list_sampled,
+      response = substitute(response),
+      resampling_seed = substitute(resampling_seed), env = env)
   } else if (resampling_method == "none") {
     # no resampling; calls caret::train(..., method = "none");
     # fixed number of PLS components; tuning_method argument has also
     # to be set to "none"
-    tr_control <- control_train_none_q(list_sampled,
-      substitute(response), env)
+    tr_control <- control_train_none_q(x = list_sampled,
+      response = substitute(response),
+      resampling_seed = substitute(resampling_seed), env = env)
   } else if (resampling_method == "kfold_cv") {
     # k-fold cross validation
-    tr_control <- control_train_q(list_sampled,
-      substitute(response), env)
+    tr_control <- control_train_q(x = list_sampled,
+      response = substitute(response),
+      resampling_seed = substitute(resampling_seed), env = env)
   }
   # Fit a pls calibration model; pls object is output from caret::train() ------
   if(tuning_method == "resampling") {
@@ -867,6 +884,10 @@ pls_ken_stone <- fit_pls
 #' parameter number of PLS components. In this case, the value
 #' supplied by \code{ncomp_fixed}` is used to set model complexity at
 #' a fixed number of components.
+#' @param resampling_seed Random seed (integer) that will be used for generating
+#' resampling indices, which will be supplied to \code{caret::trainControl}.
+#' This makes sure that modeling results are constant when re-fitting.
+#' Default is \code{resampling_seed = 123}.
 #' @param cv Depreciated. Use \code{resampling_method} instead.
 #' @param ratio_val Ratio of number of validation to total samples
 #' @param ntree_max Maximum random forest trees
@@ -886,6 +907,7 @@ fit_rf <- function(spec_chem,
     ken_sto_pc = 2, pc = NULL,
     invert = TRUE, # only if split_method = "ken_stone
     tuning_method = "resampling",
+    resampling_seed = 123,
     cv = NULL, # cv depreciated
     ntree_max = 500,
     print = TRUE,
@@ -921,7 +943,9 @@ fit_rf <- function(spec_chem,
     invert = substitute(invert)
   )
   # Control parameters for caret::train ----------------------------------------
-  tr_control <- control_train_q(list_sampled, substitute(response), env)
+  tr_control <- control_train_q(x = list_sampled,
+    response = substitute(response),
+    resampling_seed = substitute(resampling_seed), env = env)
   # Train random forest model (model tuning) -----------------------------------
   rf <- train_rf_q(x = list_sampled,
     evaluation_method = "test_set",
