@@ -209,5 +209,5 @@ I would like to thank the following people for the inspiration by concepts, code
 * Andrew Sila, Tomislav Hengl, and Thomas Terhoeven-Urselmans for the `read.opus()`
 function from the [soil.spec](https://cran.r-project.org/web/packages/soil.spec/index.html) package developed at ICRAF.
 * [Hadley Wickham](http://hadley.nz/) for his work and concepts on data science within R
-
-
+* [Max Kuhn](https://github.com/topepo) for the creation of the caret package and for his excellent teaching
+materials on [applied predictive modeling](http://appliedpredictivemodeling.com/blog/)
