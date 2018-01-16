@@ -9,15 +9,17 @@ fit_pls(spec_chem, response, variable = NULL, center = TRUE, scale = TRUE,
   evaluation_method = "test_set", validation = TRUE,
   split_method = "ken_stone", ratio_val = 1/3, ken_sto_pc = 2, pc,
   invert = TRUE, tuning_method = "resampling",
-  resampling_method = "kfold_cv", cv = NULL, pls_ncomp_max = 20,
-  ncomp_fixed = 5, print = TRUE, env = parent.frame())
+  resampling_method = "kfold_cv", cv = NULL, resampling_seed = 123,
+  pls_ncomp_max = 20, ncomp_fixed = 5, print = TRUE,
+  env = parent.frame())
 
 pls_ken_stone(spec_chem, response, variable = NULL, center = TRUE,
   scale = TRUE, evaluation_method = "test_set", validation = TRUE,
   split_method = "ken_stone", ratio_val = 1/3, ken_sto_pc = 2, pc,
   invert = TRUE, tuning_method = "resampling",
-  resampling_method = "kfold_cv", cv = NULL, pls_ncomp_max = 20,
-  ncomp_fixed = 5, print = TRUE, env = parent.frame())
+  resampling_method = "kfold_cv", cv = NULL, resampling_seed = 123,
+  pls_ncomp_max = 20, ncomp_fixed = 5, print = TRUE,
+  env = parent.frame())
 }
 \arguments{
 \item{spec_chem}{Tibble that contains spectra, metadata and chemical
@@ -87,6 +89,11 @@ a fixed number of components.}
 (if \code{resampling_method = "none"}) are supported.}
 
 \item{cv}{Depreciated. Use \code{resampling_method} instead.}
+
+\item{resampling_seed}{Random seed (integer) that will be used for generating
+resampling indices, which will be supplied to \code{caret::trainControl}.
+This makes sure that modeling results are constant when re-fitting.
+Default is \code{resampling_seed = 123}.}
 
 \item{pls_ncomp_max}{Maximum number of PLS components that are evaluated
 by caret::train. Caret will aggregate a performance profile using resampling

@@ -7,8 +7,8 @@
 fit_rf(spec_chem, response, variable = NULL, evaluation_method = "test_set",
   validation = NULL, split_method = "ken_stone", ratio_val,
   ken_sto_pc = 2, pc = NULL, invert = TRUE,
-  tuning_method = "resampling", cv = NULL, ntree_max = 500,
-  print = TRUE, env = parent.frame())
+  tuning_method = "resampling", resampling_seed = 123, cv = NULL,
+  ntree_max = 500, print = TRUE, env = parent.frame())
 }
 \arguments{
 \item{spec_chem}{Tibble that contains spectra, metadata and chemical
@@ -61,6 +61,11 @@ caret to compute a final model for a predefined canditate PLS tuning
 parameter number of PLS components. In this case, the value
 supplied by \code{ncomp_fixed}` is used to set model complexity at
 a fixed number of components.}
+
+\item{resampling_seed}{Random seed (integer) that will be used for generating
+resampling indices, which will be supplied to \code{caret::trainControl}.
+This makes sure that modeling results are constant when re-fitting.
+Default is \code{resampling_seed = 123}.}
 
 \item{cv}{Depreciated. Use \code{resampling_method} instead.}
 
