@@ -891,7 +891,6 @@ pls_ken_stone <- fit_pls
 #' This makes sure that modeling results are constant when re-fitting.
 #' Default is \code{resampling_seed = 123}.
 #' @param cv Depreciated. Use \code{resampling_method} instead.
-#' @param ratio_val Ratio of number of validation to total samples
 #' @param ntree_max Maximum random forest trees
 #' by caret::train. Caret will aggregate a performance profile using resampling
 #' for an integer sequence from 1 to \code{ntree_max} trees.
