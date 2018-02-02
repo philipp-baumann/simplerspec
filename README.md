@@ -67,14 +67,16 @@ This package builds mainly upon functions from the following R packages:
 * `ggplot2 `: Alternative plotting system for R, based on the grammar of graphics. See [here](http://ggplot2.org/).
 * `caret `: Classification and regression training. A set of functions that attempt to streamline the process for creating predictive models. See [here](http://topepo.github.io/caret/index.html) for details.
 
-Consistent and reproducible data and metadata management is an important prerequisite for spectral model development. Therefore, different outputs should be stored as R objects in a consistent way using R data structures. Simplerspec functions uses tibble data frames as principal data structures because they allow to store lists within the well-known data frame structures. Lists are flexible data structures and can e.g. contain other lists, vectors, data.frames, or matrices.
+Consistent and reproducible data and metadata management is an important prerequisite for spectral model development. Therefore, simplerspec functions are based on storing spectral data and related data in R data structures which keep their relations within observations (rows, single samples). Simplerspec functions uses tibble data frames as principal data structures because they allow to store lists within the well-known data frame structures. Lists are flexible data structures and can e.g. contain other lists, vectors, data.frames, or matrices.
 
 List-columns features provided within the tibble framework are an excellent base to work with functional programming tools in R, which allows to efficiently write code. 
 Simplerspec internally uses popular functional programming extension tools provided
 by the `purrr` package for processing and transforming spectra. 
 For learning more, I would recommend
 [this nice purrr list-column tutorial](https://jennybc.github.io/purrr-tutorial/ls13_list-columns.html) 
-provided by Jenny Brian.
+provided by Jenny Brian. Further, simplerspec well integrates with the 
+data processing API provided by the dplyr package, which makes spectroscopic
+analysis tidy and easy to understand.
 
 # Example workflow
 
@@ -85,7 +87,7 @@ Simplerspec comes with reader function `read_opus_univ()` that is intended to be
 ```R
 # Load simplerspec package for spectral model development wrapper functions
 require(simplerspec)
-# Load tidyverse package: loads packages frequently used for data manipulation,
+# Load tidyverse packages: loads packages frequently used for data manipulation,
 # data tidying, import, and plotting
 require(tidyverse)
 
@@ -115,7 +117,7 @@ with the magrittr package. It facilitates readability of code
 and avoids to type intermediate objects. The basic behavior of
 the pipe operator is
 that the object on the left hand side is passed as the first argument
-to the function on the right hand side. When loading the tidyverse package, the
+to the function on the right hand side. When loading the tidyverse packages, the
 pipe operator is attached to the current R session.
 More details can be found [here](https://github.com/smbache/magrittr).
 
