@@ -38,7 +38,8 @@ proportion of validation to the total number of samples can be specified
 in the argument \code{ratio_val}.
 \code{split_method = "random"} will create a single random split.}
 
-\item{ratio_val}{Ratio of number of validation to total samples}
+\item{ratio_val}{Ratio of validation (test) samples to
+total number of samples (calibration (training) and validation (test)).}
 
 \item{ken_sto_pc}{Number of component used
 for calculating mahalanobsis distance on PCA scores for computing
@@ -78,6 +79,8 @@ printed}
 
 \item{env}{Environment where function is evaluated. Default is
 \code{parent.frame}.}
+
+\item{ratio_val}{Ratio of number of validation to total samples}
 }
 \description{
 Perform calibration sampling and use selected

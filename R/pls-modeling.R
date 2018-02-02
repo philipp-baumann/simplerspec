@@ -866,6 +866,8 @@ pls_ken_stone <- fit_pls
 #' proportion of validation to the total number of samples can be specified
 #' in the argument \code{ratio_val}.
 #' \code{split_method = "random"} will create a single random split.
+#' @param ratio_val Ratio of validation (test) samples to
+#' total number of samples (calibration (training) and validation (test)).
 #' @param ken_sto_pc Number of component used
 #' for calculating mahalanobsis distance on PCA scores for computing
 #' Kennard-Stone algorithm.
