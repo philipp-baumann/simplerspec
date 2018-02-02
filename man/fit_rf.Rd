@@ -79,8 +79,6 @@ printed}
 
 \item{env}{Environment where function is evaluated. Default is
 \code{parent.frame}.}
-
-\item{ratio_val}{Ratio of number of validation to total samples}
 }
 \description{
 Perform calibration sampling and use selected
