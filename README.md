@@ -67,7 +67,7 @@ This package builds mainly upon functions from the following R packages:
 * `ggplot2 `: Alternative plotting system for R, based on the grammar of graphics. See [here](http://ggplot2.org/).
 * `caret `: Classification and regression training. A set of functions that attempt to streamline the process for creating predictive models. See [here](http://topepo.github.io/caret/index.html) for details.
 
-Consistent and reproducible data and metadata management is an important prerequisite for spectral model development. Therefore, simplerspec functions are based on storing spectral data and related data in R data structures which keep their relations within observations (rows, single samples). Simplerspec functions uses tibble data frames as principal data structures because they allow to store lists within the well-known data frame structures. Lists are flexible data structures and can e.g. contain other lists, vectors, data.frames, or matrices.
+Consistent and reproducible data and metadata management is an important prerequisite for spectral model development. Therefore, simplerspec functions are based on storing spectral data and related data in R data structures which keep related data in rows. Every row representing an observation contains data related to a single spectral measurement. Simplerspec functions uses tibble data frames as principal data structures because they allow to store lists within the well-known data frame structures. Lists are flexible data structures and can e.g. contain other lists, vectors, data.frames, or matrices.
 
 List-columns features provided within the tibble framework are an excellent base to work with functional programming tools in R, which allows to efficiently write code. 
 Simplerspec internally uses popular functional programming extension tools provided
@@ -82,7 +82,7 @@ analysis tidy and easy to understand.
 
 Bruker FTIR spectrometers produce binary files in the OPUS format that can contain different types of spectra and many parameters such as instrument type and settings that were used at the time of data acquisition and internal processing (e.g. Fourier transform operations). Basically, the entire set of setup measurement parameters, selected spectra, supplementary metadata such as the time of measurement are written into OPUS binary files. In contrast to simple text files that contain only plain text with a defined character encoding, binary files can contain any type of data represented as sequences of bytes (a single byte is sequence of 8 bits and 1 bit either represents 0 or 1).
 
-Simplerspec comes with reader function `read_opus_univ()` that is intended to be a universal Bruker OPUS file reader that extract spectra and key metadata from files. Usually, one is mostly interested to extract the final absorbance spectra (shown as *AB* in the OPUS viewer software).
+Simplerspec comes with reader function `read_opus_univ()` that is intended to be a universal Bruker OPUS file reader that extracts spectra and key metadata from files. Usually, one is mostly interested to extract the final absorbance spectra (shown as *AB* in the OPUS viewer software).
 
 ```R
 # Load simplerspec package for spectral model development wrapper functions
