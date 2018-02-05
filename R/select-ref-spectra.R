@@ -70,7 +70,8 @@ select_ref_spc <- function(spc_tbl, ratio_ref = 0.15, pc = 2,
   list(
     spc_ref = spc_ref,
     spc_pred = spc_pred,
-    p_pca = p_pca
+    p_pca = p_pca,
+    scores = scores
   )
 }
 
