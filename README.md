@@ -58,7 +58,7 @@ The functions are built to work in a pipeline and cover commonly used procedures
 2. Provide a reproducible data analysis workflow for FT-IR spectroscopy.
 3. R packages are an ideal way to organize and share R code.
 4. Make soil FT-IR spectroscopy modeling accessible to people that have basic R knowledge.
-5. Provide an integrated data-model framework that features tidy data structures designed for borth user-friendly printing and efficient data processing.
+5. Provide an integrated data-model framework that features tidy data structures designed for both user-friendly printing and efficient data processing.
 
 This package builds mainly upon functions from the following R packages:
 
