@@ -54,11 +54,12 @@ install `Rcpp` from source provided on CRAN by
 
 The functions are built to work in a pipeline and cover commonly used procedures for spectral model development. Many R packages are available to do tasks in spectral modeling such as pre-processing of spectral data. The motivation to create this package was:
 
-1. Avoid repetition of code in model development (common source of errors)
-2. Provide a reproducible data analysis workflow for FT-IR spectroscopy
-3. R packages are an ideal way to organize and share R code
-4. Make soil FT-IR spectroscopy modeling accessible to people that have basic R knowledge
-5. Provide an integrated data-model framework that keeps data with various structures for spectral modeling related in R objects
+1. Avoid repetition of code in model development (common source of errors).
+2. Provide a reproducible data analysis workflow for FT-IR spectroscopy.
+3. R packages are an ideal way to organize and share R code.
+4. Make soil FT-IR spectroscopy modeling accessible to people that have basic R knowledge.
+5. Provide an integrated data-model framework that features tidy data structures designed
+for borth user-friendly printing and efficient spectral data processing.
 
 This package builds mainly upon functions from the following R packages:
 
@@ -213,3 +214,4 @@ function from the [soil.spec](https://cran.r-project.org/web/packages/soil.spec/
 * [Hadley Wickham](http://hadley.nz/) for his work and concepts on data science within R
 * [Max Kuhn](https://github.com/topepo) for the creation of the caret package and for his excellent teaching
 materials on [applied predictive modeling](http://appliedpredictivemodeling.com/blog/)
+  
