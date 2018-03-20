@@ -22,7 +22,7 @@ read_asd <- function(file) {
   asd_tbl <- readr::read_tsv(file = file)
   # Transpose tibble and add Wavelengths as column names
   asd_tbl_t <- tibble::as_tibble(
-    t(dplyr::select(asd_tbl, - rlang::UQS(rlang::syms("Wavelength"))))
+    t(dplyr::select(asd_tbl, - tidyselect::one_of("Wavelength")))
   )
   colnames(asd_tbl_t) <- asd_tbl[["Wavelength"]]
 
