@@ -15,7 +15,6 @@
 #' tab delimited ASD exported text file),
 #' \code{spc} (list-column of spectral matrices)
 #' and \code{wavelengths} (list-column containing wavelength vectors).
-#' @import tidyselect
 #' @export
 read_asd <- function(file) {
 
