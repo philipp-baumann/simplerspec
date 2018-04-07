@@ -35,7 +35,8 @@ Imports:
     tibble,
     magrittr,
     utils,
-    rlang
+    rlang,
+    tidyselect
 License: GPL-2
 LazyData: TRUE
 RoxygenNote: 6.0.1

@@ -10,6 +10,7 @@
 #' as list-column named \code{spc_mean}.
 #' @import stats
 #' @importFrom data.table data.table rbindlist setkey setDT := .SD
+#' @importFrom rlang ensym quo_name
 #' @export
 average_spc <- function(spc_tbl, by = "sample_id") {
 
@@ -39,10 +40,13 @@ average_spc <- function(spc_tbl, by = "sample_id") {
       sample_id_mean
   )
 
+  # Quote the symbol or the string supplied to by argument
+  by <- ensym(by)
+
   # Convert averaged spectra and sample_id to tibble
   spc_mean_tbl <- tibble::tibble(
-    sample_id = sample_id_mean, spc_mean = spc_mean_list
+    !! by := sample_id_mean, spc_mean = spc_mean_list
   )
   # Join mean spectra tibble spc_tbl_mean to spc_tbl
-  spc_tbl <- dplyr::left_join(spc_tbl, spc_mean_tbl)
+  spc_tbl <- dplyr::left_join(spc_tbl, spc_mean_tbl, by = quo_name(by))
 }
