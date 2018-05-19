@@ -97,7 +97,7 @@ match_lcols <- function(spc_tbl, lcols) {
     "spc_mean" = c("wavenumbers_rs", "wavelengths_rs"),
     "spc_nocomp" = c("wavenumbers", "wavelengths"),
     "sc_sm" = c("wavenumbers_sc_sm"),
-    "sc_rf" = c("wavenumbers_sc_sm"),
+    "sc_rf" = c("wavenumbers_sc_rf"),
     "spc_pre" = c("xvalues_pre")
   )
   # Create character vector of spectra type names
