@@ -13,7 +13,7 @@ r:
  script:
   - |
     R CMD build .
-    travis_wait 20 R CMD check simplerspec.tar.gz
+    travis_wait 100 R CMD check simplerspec.tar.gz
 
 # addons:
 #   apt:
