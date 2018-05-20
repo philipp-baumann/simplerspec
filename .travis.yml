@@ -10,6 +10,11 @@ r:
  - release
  - devel
 
+ script:
+  - |
+    R CMD build .
+    travis_wait 20 R CMD check simplerspec.tar.gz
+
 # addons:
 #   apt:
 #     packages:
