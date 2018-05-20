@@ -86,10 +86,10 @@ Simplerspec comes with reader function `read_opus_univ()` that is intended to be
 
 ```R
 # Load simplerspec package for spectral model development wrapper functions
-require(simplerspec)
+library(simplerspec)
 # Load tidyverse packages: loads packages frequently used for data manipulation,
 # data tidying, import, and plotting
-require(tidyverse)
+library(tidyverse)
 
 ################################################################################
 ## Part 1: Read and pre-process spectra, read chemical data, and join
