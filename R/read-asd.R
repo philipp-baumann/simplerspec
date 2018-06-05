@@ -100,6 +100,7 @@ read_asd_bin <- function(fnames) {
   wl_l <- purrr::transpose(purrr::map(data, `[`, "wavelength"))
   spc_dt <- purrr::modify_depth(spc_l, 2,
     function(x) data.table::data.table(t(x)))
+
   spc_tbl <- tibble::tibble(
     unique_id = unique_id,
     file_id = file_id,
@@ -111,3 +112,32 @@ read_asd_bin <- function(fnames) {
     spc = spc_dt[["reflectance"]]
   )
 }
+
+# Helper function to remove the ".asd.xxx" (.xxx for example ".ref" or "")
+# extension in id column (e.g. sample_id) strings in tibble with metadata or
+# reference analysis data ------------------------------------------------------
+
+#' @importFrom stringr str_replace
+#' @importFrom dplyr pull
+
+remove_id_extension <- function(.data,
+                                id_col = "sample_id",
+                                id_new_nm = "sample_id",
+                                extension = "\\.asd.*$") {
+  id_col <- enquo(id_col)
+  id_col_chr <- quo_name(id_col)
+  id_col_rm <- rlang::expr(-!!rlang::sym(id_col_chr))
+  id_new_nm <- quo_name(enquo(id_new_nm))
+
+  id_new <- stringr::str_replace(string = dplyr::pull(.data, !!id_col),
+    pattern = extension, replacement = "")
+
+  # Remove old id column and bind new id column to the remaining columns
+  rest <- dplyr::select(.data, !!id_col_rm)
+  dplyr::bind_cols(!!id_new_nm := id_new, rest)
+}
+
+
+
+
+
