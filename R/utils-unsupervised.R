@@ -6,9 +6,6 @@ pca_append_scores <- function(spc_tbl, y = spc_pre,
                               select_comps = 1:2,
                               scale = TRUE, center = TRUE,
                               .unnest = NULL) {
-
-  # Capture single expressions, if it is a string, it will be converted
-  # to a symbol
   var <- enquo(y)
   var_nm_pca <- paste0(quo_name(var), "_pca_scores")
   slice_by <- enquo(slice_by)
@@ -47,8 +44,6 @@ pca_append_importance <- function(spc_tbl, y = spc_pre,
                                   slice = TRUE, slice_by = sample_id,
                                   select_comps = 1:2,
                                   scale = TRUE, center = TRUE) {
-  # Capture single expressions, if it is a string, it will be converted
-  # to a symbol
   var <- enquo(y)
   slice_by <- enquo(slice_by)
 
