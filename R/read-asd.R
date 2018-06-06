@@ -119,8 +119,7 @@ read_asd_bin <- function(fnames) {
 
 #' @importFrom stringr str_replace
 #' @importFrom dplyr pull
-
-remove_id_extension <- function(.data,
+remove_id_extension <- function(data,
                                 id_col = "sample_id",
                                 id_new_nm = "sample_id",
                                 extension = "\\.asd.*$") {
@@ -129,15 +128,11 @@ remove_id_extension <- function(.data,
   id_col_rm <- rlang::expr(-!!rlang::sym(id_col_chr))
   id_new_nm <- quo_name(enquo(id_new_nm))
 
-  id_new <- stringr::str_replace(string = dplyr::pull(.data, !!id_col),
+  id_new <- stringr::str_replace(string = dplyr::pull(data, !!id_col),
     pattern = extension, replacement = "")
 
   # Remove old id column and bind new id column to the remaining columns
-  rest <- dplyr::select(.data, !!id_col_rm)
+  rest <- dplyr::select(data, !!id_col_rm)
   dplyr::bind_cols(!!id_new_nm := id_new, rest)
 }
-
-
-
-
 
