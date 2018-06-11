@@ -270,7 +270,7 @@ merge_dts_l <- function(spc_tbl_l,
 reorder_factor_num <- function(dt, column) {
   group_id <- NULL
   if(!any(is.na(
-    suppressWarnings(as.numeric(dt[, group_id]))))
+    suppressWarnings(as.numeric(dt[, group_id, with = FALSE]))))
   ) {
     dt[, group_id := as.factor(group_id)]
     sorted_labels <- paste(sort(as.numeric(levels(dt$group_id))))
