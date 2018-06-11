@@ -189,13 +189,16 @@ merge_dts <- function(spc_tbl,
   )
   spc_xvalues <- purrr::map2(spc_xvalues[["spc_dts"]],
     spc_xvalues[["xvalues_dts"]], merge)
-  # Bind metadata and set keys for merging metadata to spectra
+
+  # Bind metadata if present, and set keys for merging metadata to spectra
   metadata <- bind_lcols_dts(spc_tbl = spc_tbl,
     lcols = "metadata", spc_id = spc_id, group_id = group_id)
   dts <- list(
     "data" = spc_xvalues,
     "metadata" = rep(metadata, length(spc_xvalues))
   )
+  if (length(metadata) == 0) dts$metadata <- NULL
+
   # Convert a "measure" tibble column (numeric|character) to list of data.tables
   if (!is.null(lcol_measure)) {
     measure <- bind_lcols_dts(spc_tbl = spc_tbl,
