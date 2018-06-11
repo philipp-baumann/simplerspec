@@ -383,7 +383,7 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
   }
   # Option to order originally numeric group_id factors by group
   if (group_id_order) {
-    dt <- reorder_factor_num(dt = dt, column = "group_id")
+    dt <- reorder_factor_num(dt = dt, column = group_id)
   }
   brk <- pretty(dt[["xvalues_value"]], n = 10) # Pretty x-axis breaks
   p <- ggplot2::ggplot(data = dt,
