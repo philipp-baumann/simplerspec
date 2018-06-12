@@ -359,7 +359,7 @@ relabel_spc_types <- function(lb_sc_sm = "Reflectance sample (<ScSm>)",
 #' @export
 plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
                           lcols_spc = "spc",
-                          lcol_measure = NULL,
+                          lcol_measure = NULL, lcol_measure_col_direction = -1,
                           spc_id = "unique_id",
                           group_id = "sample_id", group_id_order = TRUE,
                           group_color = TRUE,
@@ -411,7 +411,8 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
       ggplot2::aes_string(colour = lcol_measure, group = "spc_id",
         x = "xvalues_value", y = "spc_value"),
         alpha = alpha, size = line_width, inherit.aes = FALSE) +
-      ggplot2::scale_colour_distiller(palette = "Spectral")
+      ggplot2::scale_colour_distiller(palette = "Spectral",
+        direction = lcol_measure_col_direction)
   }
 
   # Plot different spectral types and group_id in panels
