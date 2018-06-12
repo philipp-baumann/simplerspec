@@ -389,7 +389,7 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
       spc_id = spc_id, group_id = group_id)
   }
   # Option to order originally numeric group_id factors by group
-  if (group_id_order) {
+  if (group_id_order && is.numeric(dplyr::pull(spc_tbl, !!group_id))) {
     dt <- reorder_factor_num(dt = dt, column = "group_id")
   }
   brk <- pretty(dt[["xvalues_value"]], n = 10) # Pretty x-axis breaks
