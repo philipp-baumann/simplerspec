@@ -325,6 +325,10 @@ relabel_spc_types <- function(lb_sc_sm = "Reflectance sample (<ScSm>)",
 #' @param lcol_measure Character vector of length 1 denoting the column name
 #' of the measure columns. This argument is optional. Default is \code{NULL},
 #' which does not extract an additional measure column.
+#' @param lcol_measure_col_direction Sets the the order of colours in the scale
+#' that is based on a measure column. Default is \code{-1} which reverses the
+#' scale. Argument is passed on to the function `ggplot2::sclae_colour_brewer()`
+#' as argument `direction`.
 #' @param spc_id Character vector denoting column name for a unique spectrum ID.
 #' Default is \code{"unique_id"}.
 #' @param group_id Character vector denoting column name for the spectrum group
