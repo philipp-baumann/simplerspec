@@ -136,3 +136,72 @@ remove_id_extension <- function(data,
   dplyr::bind_cols(!!id_new_nm := id_new, rest)
 }
 
+
+# Helper to orrect the sensor offset for ASD spectra;
+# shift between VIS and VNIR1, and VNIR1 and VNIR2 ranges;
+# based on subtracting gaps at `Join1Wavelength` and `Join2Wavelength` column
+# positions in `metadata` list-column data frames ------------------------------
+
+correct_join_offset <- function(spc_tbl,
+                                lcol_spc = spc,
+                                lcol_xvalues = wavelengths,
+                                lcol_metadata = metadata) {
+  lcol_spc <- enquo(lcol_spc)
+  lcol_spc_chr <- quo_name(lcol_spc)
+  lcol_spc_rm <- rlang::expr(-!!rlang::sym(lcol_spc_chr))
+  lcol_xvalues <- enquo(lcol_xvalues)
+  lcol_xvalues_chr <- rlang::quo_name(lcol_xvalues)
+  lcol_metadata <- enquo(lcol_metadata)
+
+  spc <- data.table::rbindlist(dplyr::pull(spc_tbl, !!lcol_spc))
+  xvalues <- dplyr::pull(spc_tbl, !!lcol_xvalues)
+  if (!all(sapply(xvalues, identical, xvalues[[1]]))) {
+    stop(paste0("Error: Spectral tibble (`spc_tbl`) contains observations",
+     " with unequal x unit values (`lcol_xvalues`)."))
+  }
+  metadata <- dplyr::pull(spc_tbl, !!lcol_metadata)
+
+  join1_wavelength <- map(metadata, c("Join1Wavelength"))
+  join2_wavelength <- map(metadata, c("Join2Wavelength"))
+
+  join1_idx <- unique(
+    purrr::map2_int(.x = xvalues, .y = join1_wavelength,
+      ~ which.min(abs(.x - .y)))
+  )
+  join2_idx <- unique(
+    purrr::map2_int(.x = xvalues, .y = join2_wavelength,
+    ~ which.min(abs(.x - .y)))
+  )
+  xvalues_max_idx <- unique(map_int(xvalues, which.max))
+
+  join1_col1 <- names(spc)[join1_idx]
+  join1_col2 <- names(spc)[join1_idx + 1]
+  join2_col1 <- names(spc)[join2_idx]
+  join2_col2 <- names(spc)[join2_idx + 1]
+  swir1_cols <- names(spc)[(join1_idx + 1):join2_idx]
+  swir2_cols <- names(spc)[(join2_idx + 1):xvalues_max_idx]
+
+  # Calculate the swir1 and swir2 offsets to shift spectral ranges
+  # https://stackoverflow.com/questions/19276194/data-table-assignment-expressions-with-dynamic-inputs-existing-columns-an
+  spc[, `:=` (
+      swir1_offset = .SD[[join1_col2]] - .SD[[join1_col1]],
+      swir2_offset = .SD[[join2_col2]] - .SD[[join2_col1]]),
+    .SDcols = c(join1_col2, join1_col1, join2_col2, join2_col1)]
+
+  # Substract offset(s) for SWIR1 and SWIR2, remove offset columns
+  spc[, c(swir1_cols) := lapply(.SD,
+    function(x) x - swir1_offset), .SDcols = swir1_cols]
+  spc[, c(swir2_cols) := lapply(.SD,
+    function(x) x - swir1_offset - swir2_offset), .SDcols = swir2_cols]
+  spc[, `:=` (swir1_offset = NULL, swir2_offset = NULL)]
+
+  # Remove old spectra list-column (`lcol_spc`) and
+  # add new sensor join offset corrected spectra as list-column
+  rest <- dplyr::select(spc_tbl, !!lcol_spc_rm)
+  tibble::add_column(rest,
+    # Convert `spc` single data.table back to list of data.tables
+    # much faster than: # data.table:::split.data.table(spc, seq(nrow(spc))
+    !!lcol_spc_chr := map(purrr::transpose(spc), data.table::as.data.table),
+    .after = eval(substitute(lcol_xvalues_chr)))
+}
+
