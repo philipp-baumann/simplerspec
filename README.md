@@ -23,6 +23,10 @@ traditional analysis methods when no a priori sample data except spectra are
 available (based on Kennard-Stones sampling)
 10. `predict_from_spc`: Predict multiple chemical properties from a list of calibrated models and new soil spectra
 
+# Cheatsheet
+
+<a href="https://github.com/philipp-baumann/spc-proc-concepts/blob/master/img/simplerspec_cheatsheet_crop.pdf"><img src="https://github.com/philipp-baumann/spc-proc-concepts/blob/master/img/simplerspec_cheatsheet.png" width="630"/></a>
+
 # Installation
 
 The newest version of the package is available on this GitHub repository. Note that the package is still under development. If you find bugs you are highly welcome to report issues (write me an [email](mailto:philipp.baumann@usys.ethz.ch) or create an [issue](https://github.com/philipp-baumann/simplerspec/issues)). You can install `simplerspec` using the devtools package.
