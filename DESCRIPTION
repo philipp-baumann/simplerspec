@@ -35,7 +35,7 @@ Imports:
     tibble,
     magrittr,
     utils,
-    rlang,
+    rlang (>= 0.2.0),
     tidyselect,
     stringr
 License: GPL-2
