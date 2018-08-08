@@ -230,7 +230,7 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
   if (select == "cr") {
     cr <- prospectr::continuumRemoval(X = spc_raw,
       wav = as.numeric(colnames(spc_raw)), type = "A")}
-  if (select == "cr_refl")
+  if (select == "cr_refl") {
     cr_refl <- prospectr::continuumRemoval(X = spc_raw,
       wav = as.numeric(colnames(spc_raw)), type = "R")}
 
