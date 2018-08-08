@@ -12,13 +12,15 @@
 #' @importFrom data.table data.table rbindlist setkey setDT := .SD
 #' @importFrom rlang ensym quo_name
 #' @export
-average_spc <- function(spc_tbl, by = "sample_id") {
+average_spc <- function(spc_tbl, by = "sample_id", column_in = "spc_rs") {
 
   # Avoid R CMD check note: `no visible binding for global variable`
   spc_rs <- sample_id <- id <- NULL
 
+  column_in <- rlang::enquo(column_in)
+
   # Combine rows of all resampled spectra in one data.table
-  spc <- data.table::rbindlist(spc_tbl$spc_rs)
+  spc <- data.table::rbindlist(dplyr::pull(spc_tbl, !!column_in))
 
   # Add sample_id column to resampled spectra
   spc[, id := spc_tbl[, by][[by]]]
