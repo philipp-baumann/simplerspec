@@ -335,6 +335,9 @@ relabel_spc_types <- function(lb_sc_sm = "Reflectance sample (<ScSm>)",
 #' numbers. Default is \code{TRUE}.
 #' @param group_color Logical defining whether spectra are colored by the column
 #' specified by \code{group_id}.
+#' @param group_color_palette Character (1L) defining the diverging colour
+#' scales from colorbrewer.org; see `?scale_colour_brewer` for supported
+#' diverging colur types (`palette` argument).
 #' @param group_panel Logical defining whether spectra are arranged into panels
 #' by groups specified in \code{group_id}. Default is \code{TRUE}.
 #' @param group_legend Logical defining whether a legend for the \code{group_id}
@@ -358,20 +361,21 @@ relabel_spc_types <- function(lb_sc_sm = "Reflectance sample (<ScSm>)",
 #' @return Object of class \code{"ggplot"} (ggplot2 graph).
 #' @export
 plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
-                          lcols_spc = "spc",
-                          lcol_measure = NULL, lcol_measure_col_direction = -1,
-                          spc_id = "unique_id",
-                          group_id = "sample_id", group_id_order = TRUE,
-                          group_color = TRUE,
-                          group_panel = TRUE,
-                          group_legend = FALSE,
-                          ncol = NULL,
-                          relabel_spc = TRUE,
-                          ylab = "Spectrum value",
-                          alpha = 0.5, line_width = 0.2,
-                          # Further arguments to be passed to functions called
-                          # within this function
-                          ...) {
+                         lcols_spc = "spc",
+                         lcol_measure = NULL, lcol_measure_col_direction = -1,
+                         spc_id = "unique_id",
+                         group_id = "sample_id", group_id_order = TRUE,
+                         group_color = TRUE,
+                         group_color_palette = NULL,
+                         group_panel = TRUE,
+                         group_legend = FALSE,
+                         ncol = NULL,
+                         relabel_spc = TRUE,
+                         ylab = "Spectrum value",
+                         alpha = 0.5, line_width = 0.2,
+                         # Further arguments to be passed to functions called
+                         # within this function
+                         ...) {
 
   # Merge spectral data, additional (measurement data) and metadata into a
   # single long-form data.table
@@ -399,6 +403,12 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
       ggplot2::geom_line(ggplot2::aes_string(colour = "group_id",
         group = "spc_id"),
         alpha = alpha, size = line_width)
+      if (!is.null(group_color_palette)) {
+        p <- p +
+          scale_colour_brewer(type = "div", palette = group_color_palette,
+            direction = -1)
+
+      }
     if (group_legend == FALSE) {
       p <- p + ggplot2::guides(colour = FALSE)
     }
