@@ -9,21 +9,22 @@ summary_df <- function(df, x, y){
   # !!! note that y are predicted values and x are observed values
   x <- df[, x]
   y <- df[, y]
-  b <- lm(x ~ y)$coefficients[2]
+
   data.frame(
-    rmse = sqrt(sum((x - y)^2, na.rm = TRUE) / length(x)),
-    rmsd = mean((y - x)^2)^.5,
-    msd = mean((y - x)^2),
+    n = length(x),
     min = min(x, ra.rm = TRUE),
     max = max(x, na.rm = TRUE),
     mean = mean(x, na.rm = TRUE),
     median = median(x, na.rm = TRUE),
     sdev = sd(x, na.rm = TRUE),
+    rmse = mean((y - x)^2, na.rm = TRUE)^.5,
+    mse = mean((y - x)^2, na.rm = TRUE),
+    r2  = cor(x, y, use = "pairwise.complete.obs")^2,
+    b = lm(x ~ y)$coefficients[2],
     rpd = sd(x, na.rm = TRUE) /
       sqrt(sum((y - x)^2, na.rm = TRUE) / (length(x) - 1)),
     rpiq = (quantile(x, .75, na.rm = TRUE) - quantile(x, .25, na.rm = TRUE)) /
       sqrt(sum((x - y)^2, na.rm = TRUE) / (length(x) - 1)),
-    r2  = cor(x, y, use = "pairwise.complete.obs")^2,
     bias  = mean(y, na.rm = TRUE) - mean(x, na.rm = TRUE),
     SB = (mean(y, na.rm = TRUE) - mean(x, na.rm = TRUE))^2,
     NU = mean((y - mean(y))^2) * (1 - lm(x ~ y)$coefficients[2])^2,
@@ -35,9 +36,7 @@ summary_df <- function(df, x, y){
       / mean((y - x)^2) * 100, 0),
     LC_prop = round(mean((x - mean(x))^2)
       * (1 - cor(x, y, use = "pairwise.complete.obs")^2)
-      / mean((y - x)^2) * 100, 0),
-    n = length(x),
-    b = b
+      / mean((y - x)^2) * 100, 0)
   )
 }
 
