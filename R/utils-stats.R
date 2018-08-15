@@ -5,12 +5,14 @@
 #' @param x column with observed values
 #' @param y column with predicted values
 #' @export
-summary_df <- function(df, x, y){
+summary_df <- function(df, x, y) {
   # !!! note that y are predicted values and x are observed values
-  x <- df[, x]
-  y <- df[, y]
+  x <- rlang::enquo(x)
+  y <- rlang::enquo(y)
+  x <- dplyr::pull(df, !!x)
+  y <- dplyr::pull(df, !!y)
 
-  data.frame(
+  tibble::tibble(
     n = length(x),
     min = min(x, ra.rm = TRUE),
     max = max(x, na.rm = TRUE),
