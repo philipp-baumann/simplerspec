@@ -21,6 +21,7 @@ summary_df <- function(df, x, y) {
     median = median(x, na.rm = TRUE),
     sdev = sd(x, na.rm = TRUE),
     cv = sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE),
+    skewness_b1 = e1071::skewness(x, na.rm = TRUE, type = 3),
     kurtosis = e1071::kurtosis(x, na.rm = TRUE),
     rmse = mean((y - x)^2, na.rm = TRUE)^.5,
     mae = mean(abs(y - x), na.rm = TRUE),
