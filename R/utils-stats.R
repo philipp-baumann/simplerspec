@@ -4,6 +4,7 @@
 #' @param df data.frame with predicted and observed data
 #' @param x column with observed values
 #' @param y column with predicted values
+#' @importFrom e1071 kurtosis
 #' @export
 summary_df <- function(df, x, y) {
   # !!! note that y are predicted values and x are observed values
@@ -19,6 +20,7 @@ summary_df <- function(df, x, y) {
     mean = mean(x, na.rm = TRUE),
     median = median(x, na.rm = TRUE),
     sdev = sd(x, na.rm = TRUE),
+    kurtosis = e1071::kurtosis(x, na.rm = TRUE),
     rmse = mean((y - x)^2, na.rm = TRUE)^.5,
     mse = mean((y - x)^2, na.rm = TRUE),
     r2  = cor(x, y, use = "pairwise.complete.obs")^2,
