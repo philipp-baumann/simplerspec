@@ -325,7 +325,7 @@ evaluate_model_q <- function(x, model, response,
   print = TRUE, env = parent.frame()) {
   # Set global variables to NULL to avoid R CMD check notes
   MIR <- object <- dataType <- obs <- pred_sem_ci <- pred <- NULL
-  ncomp <- finalModel <- rmsd <- r2 <- r2 <- rpd <- n <- NULL
+  ncomp <- finalModel <- rmse <- r2 <- r2 <- rpd <- n <- NULL
   rmse <- calibration <- NULL
   # Collect fitted object into a list
   list_models <- list("final_model" = model)
@@ -479,7 +479,7 @@ evaluate_model_q <- function(x, model, response,
   stats <- plyr::join(stats, df_range, type = "inner")
   annotation <- plyr::mutate(stats,
     rmse = as.character(as.expression(paste0("RMSE == ",
-      round(rmsd, 2)))),
+      round(rmse, 2)))),
     r2 = as.character(as.expression(paste0("italic(R)^2 == ",
       round(r2, 2)))),
     rpd = as.character(as.expression(paste("RPD == ",
