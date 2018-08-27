@@ -6,8 +6,9 @@
 \usage{
 plot_spc_ext(spc_tbl, spc_tbl_l = NULL, lcols_spc = "spc",
   lcol_measure = NULL, lcol_measure_col_direction = -1,
-  spc_id = "unique_id", group_id = "sample_id", group_id_order = TRUE,
-  group_color = TRUE, group_panel = TRUE, group_legend = FALSE,
+  lcol_measure_col_palette = "Spectral", spc_id = "unique_id",
+  group_id = "sample_id", group_id_order = TRUE, group_color = TRUE,
+  group_color_palette = NULL, group_panel = TRUE, group_legend = FALSE,
   ncol = NULL, relabel_spc = TRUE, ylab = "Spectrum value", alpha = 0.5,
   line_width = 0.2, ...)
 }
@@ -30,6 +31,11 @@ that is based on a measure column. Default is \code{-1} which reverses the
 scale. Argument is passed on to the function `ggplot2::sclae_colour_brewer()`
 as argument `direction`.}
 
+\item{lcol_measure_col_palette}{Palette value supplied to
+`ggplot::scale_colour_brewer()`. Default is `"Spectral"`, but you can set
+it to the default argument `1` (will use
+`scale_colour_brewer(..., palette = 1)`).}
+
 \item{spc_id}{Character vector denoting column name for a unique spectrum ID.
 Default is \code{"unique_id"}.}
 
@@ -43,6 +49,10 @@ numbers. Default is \code{TRUE}.}
 
 \item{group_color}{Logical defining whether spectra are colored by the column
 specified by \code{group_id}.}
+
+\item{group_color_palette}{Character (1L) defining the diverging colour
+scales from colorbrewer.org; see `?scale_colour_brewer` for supported
+diverging colur types (`palette` argument).}
 
 \item{group_panel}{Logical defining whether spectra are arranged into panels
 by groups specified in \code{group_id}. Default is \code{TRUE}.}

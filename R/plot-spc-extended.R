@@ -321,6 +321,10 @@ relabel_spc_types <- function(lb_sc_sm = "Reflectance sample (<ScSm>)",
 #' @param lcol_measure Character vector of length 1 denoting the column name
 #' of the measure columns. This argument is optional. Default is \code{NULL},
 #' which does not extract an additional measure column.
+#' @param lcol_measure_col_palette Palette value supplied to
+#' `ggplot::scale_colour_brewer()`. Default is `"Spectral"`, but you can set
+#' it to the default argument `1` (will use
+#' `scale_colour_brewer(..., palette = 1)`).
 #' @param lcol_measure_col_direction Sets the the order of colours in the scale
 #' that is based on a measure column. Default is \code{-1} which reverses the
 #' scale. Argument is passed on to the function `ggplot2::sclae_colour_brewer()`
@@ -362,7 +366,9 @@ relabel_spc_types <- function(lb_sc_sm = "Reflectance sample (<ScSm>)",
 #' @export
 plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
                          lcols_spc = "spc",
-                         lcol_measure = NULL, lcol_measure_col_direction = -1,
+                         lcol_measure = NULL,
+                         lcol_measure_col_direction = -1,
+                         lcol_measure_col_palette = "Spectral",
                          spc_id = "unique_id",
                          group_id = "sample_id", group_id_order = TRUE,
                          group_color = TRUE,
@@ -423,7 +429,7 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
       ggplot2::aes_string(colour = lcol_measure, group = "spc_id",
         x = "xvalues_value", y = "spc_value"),
         alpha = alpha, size = line_width, inherit.aes = FALSE) +
-      ggplot2::scale_colour_distiller(palette = "Spectral",
+      ggplot2::scale_colour_distiller(palette = lcol_measure_col_palette,
         direction = lcol_measure_col_direction)
   }
 
