@@ -51,9 +51,9 @@ summary_df <- function(df, x, y) {
     bias = mean(x, na.rm = TRUE) - mean(y, na.rm = TRUE),
     # Mean squared variation (of the error); difference between the simulation
     # and the measurement with respect to the deviation from the means
-    msv <- mean(((mean(x, na.rm = TRUE) - x) - (mean(y, na.rm = TRUE) - y))^2),
+    msv = mean(((mean(x, na.rm = TRUE) - x) - (mean(y, na.rm = TRUE) - y))^2),
     # Standard deviation of the error := SDE = MSV^0.5
-    sde <- mean(((mean(x, na.rm = TRUE) - x)
+    sde = mean(((mean(x, na.rm = TRUE) - x)
       - (mean(y, na.rm = TRUE) - y))^2)^0.5,
     # Mean absolute error
     mae = mean(abs(x - y), na.rm = TRUE),
