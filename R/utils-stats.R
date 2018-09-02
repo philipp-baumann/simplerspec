@@ -17,7 +17,7 @@
 # and mean squared variation (MSV) (:= SDE^2 := "squared standard deviation of
 # the error"; see e.g. Kobayashi and Salam (2000)
 # Gauch et al. (2003) propose a more sophisticated additive partitioning of the
-# MSE that is more informative on the sources of error and link to the
+# MSE that is more informative about the sources of error and link to the
 # regression parameters; namely, these are squared bias (SB),
 # non-unity slope (NU) and lack of correlation (LC)
 
@@ -29,7 +29,7 @@ summary_df <- function(df, x, y) {
   y <- dplyr::pull(df, !!y)
 
   tibble::tibble(
-    ## Compute descriptive statistics of the observations (measurements)
+    ## Compute descriptive statistics of the observations/measurements
     n = length(x),
     min = min(x, ra.rm = TRUE),
     max = max(x, na.rm = TRUE),
@@ -40,7 +40,8 @@ summary_df <- function(df, x, y) {
     skewness_b1 = e1071::skewness(x, na.rm = TRUE, type = 3),
     kurtosis = e1071::kurtosis(x, na.rm = TRUE),
 
-    ## Compute model evaluation measures
+    ## Compute model evaluation measures to address different aspects
+    ## of how well predictions correspond to observations/measurements
     # Root mean squared error
     rmse = mean((y - x)^2, na.rm = TRUE)^.5,
     # Mean squared error; mse^2 = me^2 + msv = me^2 + sde^2
