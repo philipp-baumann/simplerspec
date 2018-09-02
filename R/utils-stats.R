@@ -62,9 +62,10 @@ summary_df <- function(df, x, y) {
     # Ratio of performance to deviation
     rpd = sd(x, na.rm = TRUE) /
       sqrt(sum((y - x)^2, na.rm = TRUE) / (length(x) - 1)),
-    # Ratio of performance
+    # Ratio of performance to interquartile range
     rpiq = (quantile(x, .75, na.rm = TRUE) - quantile(x, .25, na.rm = TRUE)) /
       sqrt(sum((x - y)^2, na.rm = TRUE) / (length(x) - 1)),
+    # See Gauch et. al., 2003) for MSD decomposition into SB, NU and LC;
     # Squared bias
     SB = (mean(x - y, na.rm = TRUE))^2,
     # Non-unity slope
