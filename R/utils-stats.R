@@ -43,25 +43,25 @@ summary_df <- function(df, x, y) {
     ## Compute model evaluation measures to address different aspects
     ## of how well predictions correspond to observations/measurements
     # Root mean squared error
-    rmse = mean((y - x)^2, na.rm = TRUE)^.5,
+    rmse = mean((x - y)^2, na.rm = TRUE)^.5,
     # Mean squared error; mse^2 = me^2 + msv = me^2 + sde^2
-    mse = mean((y - x)^2, na.rm = TRUE),
+    mse = mean((x - y)^2, na.rm = TRUE),
     # Terms mean error (ME) and bias are equivalent
-    me = mean(y, na.rm = TRUE) - mean(x, na.rm = TRUE),
-    bias = mean(y, na.rm = TRUE) - mean(x, na.rm = TRUE),
+    me = mean(x, na.rm = TRUE) - mean(y, na.rm = TRUE),
+    bias = mean(x, na.rm = TRUE) - mean(y, na.rm = TRUE),
     # Mean squared variation (of the error); difference between the simulation
     # and the measurement with respect to the deviation from the means
-    msv <- mean(((mean(y, na.rm = TRUE) - y) - (mean(x, na.rm = TRUE) - x))^2),
+    msv <- mean(((mean(x, na.rm = TRUE) - x) - (mean(y, na.rm = TRUE) - y))^2),
     # Standard deviation of the error := SDE = MSV^0.5
-    sde <- mean(((mean(y, na.rm = TRUE) - y)
-      - (mean(x, na.rm = TRUE) - x))^2)^0.5,
+    sde <- mean(((mean(x, na.rm = TRUE) - x)
+      - (mean(y, na.rm = TRUE) - y))^2)^0.5,
     # Mean absolute error
-    mae = mean(abs(y - x), na.rm = TRUE),
+    mae = mean(abs(x - y), na.rm = TRUE),
     r2  = cor(x, y, use = "pairwise.complete.obs")^2,
     b = lm(x ~ y)$coefficients[2],
     # Ratio of performance to deviation
     rpd = sd(x, na.rm = TRUE) /
-      sqrt(sum((y - x)^2, na.rm = TRUE) / (length(x) - 1)),
+      sqrt(sum((x - y)^2, na.rm = TRUE) / (length(x) - 1)),
     # Ratio of performance to interquartile range
     rpiq = (quantile(x, .75, na.rm = TRUE) - quantile(x, .25, na.rm = TRUE)) /
       sqrt(sum((x - y)^2, na.rm = TRUE) / (length(x) - 1)),
