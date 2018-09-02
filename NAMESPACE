@@ -3,6 +3,7 @@
 export(average_spc)
 export(bind_lcols_dts)
 export(create_vip_rects)
+export(evaluate_model)
 export(extract_lcols2dts)
 export(extract_pls_vip)
 export(fit_pls)
