@@ -72,6 +72,7 @@ summary_df <- function(df, x, y) {
     # Lack of correlation
     LC = mean((x - mean(x))^2)
       * (1 - cor(x, y, use = "pairwise.complete.obs")^2),
+    # Proportional contributions of SB, NU and LC to MSE in percent
     SB_prop = round((mean(y, na.rm = TRUE) - mean(x, na.rm = TRUE))^2
       / mean((y - x)^2) * 100, 0),
     NU_prop = round(mean((y - mean(y))^2) * (1 - lm(x ~ y)$coefficients[2])^2
