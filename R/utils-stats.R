@@ -81,7 +81,7 @@ evaluate_model <- function(data, obs, pred) {
     LC = mean((obs - mean(obs))^2)
       * (1 - cor(obs, pred, use = "pairwise.complete.obs")^2),
     # Proportional contributions of SB, NU and LC to MSE in percent
-    SB_prop = round((mean(pred, na.rm = TRUE) - mean(obs, na.rm = TRUE))^2
+    SB_prop = round((mean(obs - pred, na.rm = TRUE))^2
       / mean((pred - obs)^2) * 100, 0),
     NU_prop = round(mean((pred - mean(pred))^2)
       * (1 - lm(obs ~ pred)$coefficients[2])^2 / mean((pred - obs)^2) * 100, 0),
