@@ -4,7 +4,7 @@
 \alias{average_spc}
 \title{Average spectra in spectral tibble data frame}
 \usage{
-average_spc(spc_tbl, by = "sample_id")
+average_spc(spc_tbl, by = "sample_id", column_in = "spc_rs")
 }
 \arguments{
 \item{spc_tbl}{Tibble data.frame containing spectra in list-column
