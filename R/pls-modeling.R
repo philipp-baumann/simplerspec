@@ -17,21 +17,21 @@ split_data_q <- function(
   evaluation_method <- eval(evaluation_method, envir = parent.frame())
 
   # Slice based on sample_id if spectral data is in tibble class
-  if(tibble::is_tibble(spec_chem)) {
+  if (tibble::is_tibble(spec_chem)) {
     spec_chem <- spec_chem %>%
       dplyr::group_by(rlang::UQ(rlang::sym("sample_id"))) %>%
       dplyr::slice(1L)
   }
 
-  if(evaluation_method == "test_set") {
+  if (evaluation_method == "test_set") {
     # pc = 0.99 before !!!
     ken_sto_pc <- eval(ken_sto_pc, envir = parent.frame())
 
-    if(invert == FALSE) {
+    if (invert == FALSE) {
     ## Select calibration set by Kennard-Stones algorithm
     # Check if tibble; if yes slice tibble and bind list of data.tables in
     # one data table for spectral data
-      if(tibble::is_tibble(spec_chem)) {
+      if (tibble::is_tibble(spec_chem)) {
         spc_pre <- as.matrix(data.table::rbindlist(spec_chem$spc_pre))
         # k = number of samples to select
         # ken_sto_pc = if provided, the number of principal components
@@ -56,7 +56,7 @@ split_data_q <- function(
       # sets randomly is still experimental and a modification for the
       # PC space projection is not yet implemented for graphical output.
       # p_pc ggplot2 output needs to be updated for split_method = "random"
-      if(split_method == "random") {
+      if (split_method == "random") {
         # Split data sets into test and traing using modelr package
         df_split <- modelr::crossv_mc(spec_chem, n = 1, test = ratio_val)
         # Select train of df_split and convert back into tibble,
@@ -70,7 +70,7 @@ split_data_q <- function(
       sel_df_val <- data.frame(sel$pc[- sel$model, 1:2])
     } else {
 
-        if(tibble::is_tibble(spec_chem)) {
+        if (tibble::is_tibble(spec_chem)) {
           spc_pre <- as.matrix(data.table::rbindlist(spec_chem$spc_pre))
           sel <- prospectr::kenStone(X = spc_pre,
             k = round(ratio_val * nrow(spec_chem)),
@@ -227,13 +227,13 @@ train_pls_q <- function(x,
   ncomp_fixed <- eval(ncomp_fixed, envir = parent.frame())
 
   # Test whether the spectral object has the class "tibble"
-  if(!tibble::is_tibble(x$calibration)) {
+  if (!tibble::is_tibble(x$calibration)) {
     stop("spec_chem needs to be of class tibble")
   }
 
   spc_pre <- data.table::rbindlist(x$calibration$spc_pre)
-  if(scale == TRUE && center == TRUE) {
-    if(tuning_method == "resampling") {
+  if (scale == TRUE && center == TRUE) {
+    if (tuning_method == "resampling") {
       # Fit model with parameter tuning
       pls_model <- caret::train(x = spc_pre, y = r,
         method = "pls",
@@ -336,7 +336,7 @@ evaluate_model_q <- function(x, model, response,
   # Evaluate resampling_method argument in parent.frame
   resampling_method <- eval(resampling_method, envir = parent.frame())
   # Extract best tuning parameters and associated cv predictions
-  if(evaluation_method == "test_set") {
+  if (evaluation_method == "test_set") {
     # Calculate training (calibration) and test (validation) data
     # predictions based on pls model with calibration data
     r <- eval(response, x$validation, env)
@@ -633,7 +633,7 @@ evaluate_model_q <- function(x, model, response,
     ggplot2::coord_fixed()
   }
 
-  if(print == TRUE) {
+  if (print == TRUE) {
     print(p_model)
   }
 
@@ -765,11 +765,11 @@ fit_pls <- function(
     resampling_method <- cv
   }
   # Change values for resampling_method argument
-  if(resampling_method == "LOOCV") {
+  if (resampling_method == "LOOCV") {
     warning("value 'LOOCV' (leave one out cross-validation) for argument resampling_method is depreciated; please use value 'loocv' instead.")
     resampling_method <- "loocv"
   }
-  if(resampling_method == "repeatedcv") {
+  if (resampling_method == "repeatedcv") {
      warning("value 'repeatedcv' (repeated k-fold cross-validation) for argument resampling_method is depreciated; please use value 'rep_kfold_cv' instead.")
     resampling_method <- "rep_kfold_cv"
   }
@@ -783,7 +783,7 @@ fit_pls <- function(
   )
 
   # Check on method for cross-validation to be used in caret model tuning ------
-  if(resampling_method == "loocv") {
+  if (resampling_method == "loocv") {
     # leave-one-out cross-validation
     tr_control <- control_train_loocv_q(x = list_sampled,
       response = substitute(response), env = env)
@@ -806,7 +806,7 @@ fit_pls <- function(
       resampling_seed = substitute(resampling_seed), env = env)
   }
   # Fit a pls calibration model; pls object is output from caret::train() ------
-  if(tuning_method == "resampling") {
+  if (tuning_method == "resampling") {
     pls <- train_pls_q(x = list_sampled,
       evaluation_method = "test_set",
       response = substitute(response), tr_control = tr_control,
