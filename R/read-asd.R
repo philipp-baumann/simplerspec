@@ -100,8 +100,13 @@ read_asd_bin <- function(fnames) {
   wl_l <- purrr::transpose(purrr::map(data, `[`, "wavelength"))
   spc_dt <- purrr::modify_depth(spc_l, 2,
     function(x) data.table::data.table(t(x)))
+  # Change column names of spectral data tables of all spectrum types
+  # by reference, use character converted wavenlengths
+  purrr::map(.x = spc_dt, ~ map2(.x = .x, .y = wl_l[["wavelength"]],
+    ~ data.table::setnames(.x, names(.x), as.character(.y)))
+  )
 
-  spc_tbl <- tibble::tibble(
+  tibble::tibble(
     unique_id = unique_id,
     file_id = file_id,
     sample_id = sample_id,
