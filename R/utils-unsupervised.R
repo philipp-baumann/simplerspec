@@ -9,11 +9,12 @@ pca_append_scores <- function(spc_tbl, y = spc_pre,
   var <- enquo(y)
   var_nm_pca <- paste0(quo_name(var), "_pca_scores")
   slice_by <- enquo(slice_by)
-  sample_id <- spc_tbl %>% dplyr::pull(!!slice_by)
 
   if (slice) {
     spc_tbl <- spc_tbl %>% dplyr::group_by(!!slice_by) %>% dplyr::slice(1L)
   }
+
+  sample_id <- spc_tbl %>% dplyr::pull(!!slice_by)
 
   # Pull the list of preprocessed spectra data.tables into one data.table
   spc <- data.table::rbindlist(dplyr::pull(spc_tbl, !!var))
