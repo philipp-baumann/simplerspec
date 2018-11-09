@@ -590,16 +590,15 @@ evaluate_model_q <- function(x, model, response,
       hjust = 1.15, vjust = -1.25, parse = TRUE) +
     ggplot2::facet_grid(~ dataType,
       labeller = ggplot2::as_labeller(to_string)) +
-    # ggplot2::facet_grid(~ dataType,
-    #   labeller = dataType_labeller) +
-    ggplot2::theme_bw() +
     ggplot2::geom_abline(col = "red") +
     ggplot2::labs(x = x_label, y = y_label) +
     ggplot2::xlim(c(min(xy_min) - 0.05 * xy_range,
       max(xy_max) + 0.05 * xy_range)) +
     ggplot2::ylim(c(min(xy_min) - 0.05 * xy_range,
       max(xy_max) + 0.05 * xy_range)) +
-    ggplot2::coord_fixed()
+    ggplot2::coord_fixed() +
+    ggplot2::theme_bw() +
+    ggplot2::theme(strip.background = ggplot2::element_rect(fill = "white"))
 
     if (evaluation_method == "resampling") {
     p_model <- p_model +
@@ -625,16 +624,14 @@ evaluate_model_q <- function(x, model, response,
       hjust = 1.15, vjust = -1.25, parse = TRUE) +
     ggplot2::facet_grid(~ dataType,
       labeller = ggplot2::as_labeller(to_string)) +
-    # ggplot2::facet_grid(~ dataType,
-    #   labeller = dataType_labeller) +
-    ggplot2::theme_bw() +
     ggplot2::geom_abline(col = "red") +
     ggplot2::labs(x = x_label, y = y_label) +
     ggplot2::xlim(c(min(xy_min) - 0.05 * xy_range,
       max(xy_max) + 0.05 * xy_range)) +
     ggplot2::ylim(c(min(xy_min) -
       0.05 * xy_range, max(xy_max) + 0.05 * xy_range)) +
-    ggplot2::coord_fixed()
+    ggplot2::coord_fixed() +
+    ggplot2::theme_bw()
   }
 
   if (print == TRUE) {
