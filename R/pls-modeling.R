@@ -426,7 +426,11 @@ evaluate_model_q <- function(x, model, response,
     predobs$pred_sd <- NA
     # Desn't work because some columns are turned into numeric;
     # resulting data frame has only two rows
-    predobs <- dplyr::bind_rows(predobs, predobs_cv)
+    # pb_2018-11-09: Model evaluation graph should only show cross-validation
+    #   results when arguments `evaluation_method` == "resampling" &&
+    #   `tuning_method` == "resampling"
+    predobs <- predobs_cv
+    # predobs <- dplyr::bind_rows(predobs, predobs_cv)
     # Calculate model performance indexes by model and dataType
     # uses package plyr and function summary.df of SPECmisc.R
     stats <- plyr::ddply(predobs, c("model", "dataType"),
@@ -515,7 +519,7 @@ evaluate_model_q <- function(x, model, response,
       c(`Calibration` = paste0("Calibration", "~(",
         x[x$dataType == "Calibration", ]$n, ")"
       ),
-        `Cross-validation` = paste0("Repeated~CV", "~(",
+        `Cross-validation` = paste0("5%*%repeated~10*-fold~CV", "~(",
           x[x$dataType == "Cross-validation", ]$n, ")"
         )
       )
@@ -523,7 +527,7 @@ evaluate_model_q <- function(x, model, response,
       c(`Calibration` = paste0("Calibration", "~(",
         x[x$dataType == "Calibration", ]$n, ")"
       ),
-        `Cross-validation` = paste0("Cross-validation", "~(",
+        `Cross-validation` = paste0("10*-fold~CV", "~(",
           x[x$dataType == "Cross-validation", ]$n, ")"
         )
       )
