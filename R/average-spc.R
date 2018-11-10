@@ -35,10 +35,10 @@ average_spc <- function(spc_tbl, by = "sample_id", column_in = "spc_rs") {
   spc_mean_noid <- spc_mean[, id := NULL]
 
   # Create list of averaged spectra, one spectrum is one data.table
-  # Method split.data.table is not yet available in data.table 1.9.7
-  # Wait for v2.0.0
+  # Use best performing alternative:
+  # https://github.com/jennybc/row-oriented-workflows/blob/master/iterate-over-rows.md
   spc_mean_list <- stats::setNames(
-    split(spc_mean_noid, seq(nrow(spc_mean_noid))),
+    purrr::transpose(spc_mean_noid),
       sample_id_mean
   )
 

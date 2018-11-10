@@ -240,7 +240,8 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
   spc_pre <- data.table::as.data.table(get(pre))
 
   # Convert preprocessed spectra in data.table to list of data.table spectra
-  spc_pre_list <- split(spc_pre, seq(nrow(spc_pre)))
+  # https://github.com/jennybc/row-oriented-workflows/blob/master/iterate-over-rows.md
+  spc_pre_list <- purrr::transpose(spc_pre)
   # Convert x-values of preprocessed spectra in list of vectors
   # prospectr only hands over new xunits in matrix colnames of type character
   xvalues_pre_list <- lapply(spc_pre_list,
