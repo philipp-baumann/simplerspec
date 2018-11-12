@@ -38,7 +38,7 @@ average_spc <- function(spc_tbl, by = "sample_id", column_in = "spc_rs") {
   # Use best performing alternative:
   # https://github.com/jennybc/row-oriented-workflows/blob/master/iterate-over-rows.md
   spc_mean_list <- stats::setNames(
-    purrr::transpose(spc_mean_noid),
+    map(purrr::transpose(spc_mean_noid), data.table::as.data.table),
       sample_id_mean
   )
 
