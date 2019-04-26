@@ -578,16 +578,16 @@ evaluate_model_q <- function(x, model, response,
     ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
       shape = 1, size = 2, alpha = 1/2, data = predobs) +
     ggplot2::geom_text(data = annotation,
-      ggplot2::aes(x = Inf, y = -Inf, label = ncomp), size = 3,
+      ggplot2::aes(x = Inf, y = -Inf, label = ncomp), size = 5,
       hjust = 1.15, vjust = -4.5, parse = TRUE) + # !!! additional label
     ggplot2::geom_text(data = annotation,
-      ggplot2::aes(x = Inf, y = -Inf, label = r2), size = 3,
+      ggplot2::aes(x = Inf, y = -Inf, label = r2), size = 5,
       hjust = 1.15, vjust = -3, parse = TRUE) +
     ggplot2::geom_text(data = annotation,
-      ggplot2::aes(x = Inf, y = -Inf, label = rmse), size = 3,
+      ggplot2::aes(x = Inf, y = -Inf, label = rmse), size = 5,
       hjust = 1.12, vjust = -2.5, parse = TRUE) +
     ggplot2::geom_text(data = annotation,
-      ggplot2::aes(x = Inf, y = -Inf, label = rpd), size = 3,
+      ggplot2::aes(x = Inf, y = -Inf, label = rpd), size = 5,
       hjust = 1.15, vjust = -1.25, parse = TRUE) +
     ggplot2::facet_grid(~ dataType,
       labeller = ggplot2::as_labeller(to_string)) +
@@ -615,13 +615,13 @@ evaluate_model_q <- function(x, model, response,
     ggplot2::geom_point(ggplot2::aes(x = obs, y = pred),
       shape = 1, size = 2, alpha = 1/2) + # without ncomp label
     ggplot2::geom_text(data = annotation,
-      ggplot2::aes(x = Inf, y = -Inf, label = r2), size = 3,
+      ggplot2::aes(x = Inf, y = -Inf, label = r2), size = 5,
       hjust = 1.15, vjust = -3, parse = TRUE) +
     ggplot2::geom_text(data = annotation,
-      ggplot2::aes(x = Inf, y = -Inf, label = rmse), size = 3,
+      ggplot2::aes(x = Inf, y = -Inf, label = rmse), size = 5,
       hjust = 1.12, vjust = -2.5, parse = TRUE) +
     ggplot2::geom_text(data = annotation,
-      ggplot2::aes(x = Inf, y = -Inf, label = rpd), size = 3,
+      ggplot2::aes(x = Inf, y = -Inf, label = rpd), size = 5,
       hjust = 1.15, vjust = -1.25, parse = TRUE) +
     ggplot2::facet_grid(~ dataType,
       labeller = ggplot2::as_labeller(to_string)) +
