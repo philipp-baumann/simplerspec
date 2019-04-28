@@ -1,10 +1,8 @@
-# simplerspec
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/simplerspec-logo.png"><img src="https://github.com/philipp-baumann/simplerspec/blob/master/simplerspec-logo.png" width="300"/></a>
 
 Travis-CI build status (Debian Linux) [![Travis Build Status](https://travis-ci.org/philipp-baumann/simplerspec.svg?branch=master)](https://travis-ci.org/philipp-baumann/simplerspec)
 
 AppVeyor build status (Windows) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/philipp-baumann/simplerspec?branch=master&svg=true)](https://ci.appveyor.com/project/philipp-baumann/simplerspec)
-
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/simplerspec-logo.png"><img src="https://github.com/philipp-baumann/simplerspec/blob/master/simplerspec-logo.png" width="200"/></a>
 
 # Short description
 
