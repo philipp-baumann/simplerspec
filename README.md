@@ -4,6 +4,8 @@ Travis-CI build status (Debian Linux) [![Travis Build Status](https://travis-ci.
 
 AppVeyor build status (Windows) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/philipp-baumann/simplerspec?branch=master&svg=true)](https://ci.appveyor.com/project/philipp-baumann/simplerspec)
 
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/simplerspec-logo.png"><img src="https://github.com/philipp-baumann/simplerspec/blob/master/simplerspec-logo.png" width="200"/></a>
+
 # Short description
 
 The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a 
