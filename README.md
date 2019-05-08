@@ -23,6 +23,10 @@ traditional analysis methods when no a priori sample data except spectra are
 available (based on Kennard-Stones sampling)
 10. `predict_from_spc`: Predict multiple chemical properties from a list of calibrated models and new soil spectra
 
+# Projects using simplerspec
+
+* [Spectral platform for soil samples of the Democratic Republic of Congo](https://sae-interactive-data.ethz.ch/simplerspec.drc/)
+
 # Cheatsheet
 
 <a href="https://github.com/philipp-baumann/spc-proc-concepts/blob/master/img/simplerspec_cheatsheet_crop.pdf"><img src="https://github.com/philipp-baumann/spc-proc-concepts/blob/master/img/simplerspec_cheatsheet.png" width="630"/></a>
