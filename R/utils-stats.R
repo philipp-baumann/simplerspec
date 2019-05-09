@@ -13,8 +13,8 @@
 #'
 #' @return Data frame with with summary statistics for measured values and
 #' performance metrics for the pairs of measured and predicted values.
-#' @export
 #' @importFrom purrr modify_depth imap
+#' @export
 assess_multimodels <- function(data,
                                ...,
                                .metrics = c("simplerspec", "yardstick"),
