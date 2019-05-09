@@ -1,3 +1,52 @@
+#' @title Assess multiple pairs of measured and predicted values
+#' @description Return performance metrics for test set predictions and
+#' measured values, e.g. for different model outcome variables.
+#' @param data Data frame with all measured (observed) and predicted variables.
+#' @param ... Multiple arguments with observed (measured)-predicted pairs,
+#' specified with \code{dplyr::vars(o = <column_name>, p = <column_name>)}.
+#' Column names can strings or symbols. The arguments in `...` need to be named.
+#' @param .metrics Character vector with package used for metrics calculation.
+#' Default is \code{"simplerspec"}, which uses
+#' \code{simplerspec::evaluate_model()}.
+#' @param .model_name String with name for the new column that specifies the
+#' model or the outcome variable. Default is \code{"model"}.
+#'
+#' @return Data frame with with summary statistics for measured values and
+#' performance metrics for the pairs of measured and predicted values.
+#' @export
+#' @importFrom purrr modify_depth imap
+assess_multimodels <- function(data,
+                               ...,
+                               .metrics = c("simplerspec", "yardstick"),
+                               .model_name = "model") {
+  args <- rlang::enquos(...)
+  args_tidy <- map(args, rlang::eval_tidy)
+  stopifnot(
+    all(map_int(names(args), nchar)),
+    all(map_lgl(args_tidy, is.list))
+  )
+
+  vars_names <- modify_depth(args_tidy, .depth = 1, names)
+  vars_names_ok <- map_lgl(vars_names, ~ all(c("o", "p") %in% .x))
+  if (!all(vars_names_ok)) {
+    stop("Assessment variables supplied in `vars()` need to be named with
+      'o' (observed) and 'p' (predicted)")}
+
+  metrics <- match.arg(.metrics)
+  # pb 2018-05-09: todo: support yardstick metrics
+  assessment <- switch (metrics,
+    "simplerspec" = map(
+      .x = args_tidy,
+      ~ evaluate_model(data = data,
+        obs = !!.x[["o"]], pred = !!.x[["p"]]))
+  )
+  assessment_models <- imap(assessment,
+    ~ tibble::add_column(.x, !!.model_name := .y, .before = 1))
+
+  dplyr::bind_rows(assessment_models)
+}
+
+
 #' @title Calculate model evaluation metrics
 #' @description Calculate observed summary statistics and model evaluation
 #' statistics for assessing agreement between observed (`obs`) and

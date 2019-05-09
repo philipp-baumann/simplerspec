@@ -2,12 +2,9 @@
 % Please edit documentation in R/utils-stats.R
 \name{evaluate_model}
 \alias{evaluate_model}
-\alias{summary_df}
 \title{Calculate model evaluation metrics}
 \usage{
 evaluate_model(data, obs, pred)
-
-summary_df(df, x, y)
 }
 \arguments{
 \item{data}{`data.frame`` with predicted and observed data in columns.}
