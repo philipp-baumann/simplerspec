@@ -119,8 +119,8 @@ spc_list <- read_opus_univ(fnames = lf, extract = c("spc"))
 #> ...
 ```
 
-Pipes can make R code more readable and fit to the step-wise data processing
-in the context of developing spectral models. The pipe operator (`%>%`, called "then") is a new operator in R that was introduced
+Pipes can make R code more readable and allows step-wise data processing
+when developing spectral models. The pipe operator (`%>%`, called "then") is a new operator in R that was introduced
 with the magrittr package. It facilitates readability of code
 and avoids to type intermediate objects. The basic behavior of
 the pipe operator is
