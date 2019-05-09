@@ -145,7 +145,7 @@ evaluate_model <- function(data, obs, pred) {
 # this is only for backward compatibility;
 # This deviates from the principles that observed (O) should be denoted in the
 # in the y-axis vs. predicted (P) in the x-axis ((OP) regressions), according
-# Pinẽiro et al. (2008)
+# Pineiro et al. (2008)
 #' @rdname evaluate_model
 #' @export
 summary_df <- function(df, x, y) {
