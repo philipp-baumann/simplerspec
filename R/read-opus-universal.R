@@ -18,14 +18,15 @@
 #' files. Default is \code{FALSE}.
 #' @usage read_opus_bin_univ(file_path, extract = c("spc"),
 #' print_progress = TRUE, atm_comp_minus4offset = FALSE)
-#' @export
 # Importing functions `%do%` and foreach::`%dopar%` does not work, see
 # http://stackoverflow.com/questions/30216613/how-to-use-dopar-when-only-import-foreach-in-description-of-a-package
 # Got the following error:
-# "Error : object ‘`%do%`’ is not exported by 'namespace:foreach'"
+# "Error : object '`%do%`' is not exported by 'namespace:foreach'"
 #' @importFrom foreach %dopar% %do%
+#' @export
 read_opus_bin_univ <- function(file_path, extract = c("spc"),
-  print_progress = TRUE, atm_comp_minus4offset = FALSE) {
+                               print_progress = TRUE,
+                               atm_comp_minus4offset = FALSE) {
 
   # Avoid `R CMD check` NOTE: no visible binding for global variable ...
   x <- y <- i <- npt <- NULL
