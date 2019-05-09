@@ -747,7 +747,7 @@ fit_pls <- function(
   }
   # 20170602: revise argument name and values of validation;
   # Replace validation = TRUE or FALSE with
-  # new argument evaluation_method = “test_set” or “resampling”
+  # new argument evaluation_method = "test_set" or "resampling"
   if (!missing(validation)) {
     warning("argument validation is depreciated; please use evaluation_method instead.",
       call. = FALSE)
@@ -920,7 +920,7 @@ fit_rf <- function(spec_chem,
 
   # Warning messages and reassignment for depreciated arguments ----------------
   # Replace validation = TRUE or FALSE with
-  # new argument evaluation_method = “test_set” or “resampling”
+  # new argument evaluation_method = "test_set" or "resampling"
   if (!missing(validation)) {
     warning("argument validation is deprecated; please use evaluation_method instead.",
       call. = FALSE)
