@@ -22,7 +22,7 @@ panels or color spectra based on chemical reference values to explore trends.
 traditional analysis methods when no a priori sample data except spectra are 
 available (based on Kennard-Stones sampling)
 10. `predict_from_spc()`: Predict multiple chemical properties from a list of calibrated models and new soil spectra
-11. `assess_multimodels()`: Assess model performance for multiple pairs of predicted and measured variables.
+11. `assess_multimodels()`: Assess model performance given multiple pairs of predicted and measured variables.
 
 # Projects using simplerspec
 
