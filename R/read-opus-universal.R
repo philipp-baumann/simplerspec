@@ -30,7 +30,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
 
   # Avoid `R CMD check` NOTE: no visible binding for global variable ...
   x <- y <- i <- npt <- NULL
-  if(!file.exists(file_path)) {
+  if (!file.exists(file_path)) {
     stop(paste0("File does not exist"))
   }
 
@@ -64,7 +64,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     # FXV values that don't have LXV values and vice versa
     # (difference between "LXV" and "FXV" for a spectral data block
     # should be 16) ------------------------------------------------------------
-    if(length(fxv_all) > length(lxv_all)) {
+    if (length(fxv_all) > length(lxv_all)) {
       diff_lxv_fxv <- lapply(lxv_all, function(x) x - fxv_all)
       # Return list of logical vectors indicating whether difference of fxv
       # and lxv is 16 (distance of 16 bytes)
@@ -77,7 +77,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
         }
     }
 
-    if(length(lxv_all) > length(fxv_all)) {
+    if (length(lxv_all) > length(fxv_all)) {
       diff_fxv_lxv <- lapply(fxv_all, function(x) x - lxv_all)
       # Return list of logical vectors indicating whether difference of fxv
       # and lxv is 16 (distance of 16 bytes)
@@ -92,7 +92,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
 
     # Reduce size of npt_all -----------------------------------------------------
     # Error in reading file: "data/spc_NABO_error/30014 KB014 1-14A O-1_CN0104.4"
-    if(length(npt_all) != length(fxv_all)) {
+    if (length(npt_all) != length(fxv_all)) {
       diff_npt_fxv <- lapply(npt_all, function(x) fxv_all - x)
       is16 <- lapply(diff_npt_fxv, function(x) x == 16)
       which16 <- sapply(is16, function(x) any(x == TRUE))
@@ -174,7 +174,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
       }
 
       # Test if any difference in list is -164
-      if(any(unlist(isminus164) == TRUE)) {
+      if (any(unlist(isminus164) == TRUE)) {
         # Find all list element that contain TRUE in logical vector
         minus164 <- lapply(isminus164, function(x) Find(isTRUE, x))
         # Return element position of last TRUE in list
@@ -326,7 +326,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     which_AB <- names(spc)[!names(spc) %in%
       c(Ig_assigned[["spc_idx"]], na_assigned[["spc_idx"]],
         Sc_assigned[["spc_idx"]])]
-    AB_assigned <- if(length(which_AB) == 1) {
+    AB_assigned <- if (length(which_AB) == 1) {
       list(
         spc_idx = which_AB,
         spc_code = "spc"
@@ -380,7 +380,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
 
     # Read with new offset when first value of
     # ScSm  single channel sample spectrumspectrum is 0 and replace previous ---
-    if(any(names(spc) %in% "ScSm" & spc[["ScSm"]][1] == 0)) {
+    if (any(names(spc) %in% "ScSm" & spc[["ScSm"]][1] == 0)) {
       spc[["ScSm"]] <-
         hexView::readRaw(file_path, width = NULL,
           offset = end_spc[Sc_assigned$spc_idx[Sc_assigned$spc_code == "ScSm"]],
@@ -488,7 +488,7 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     # in file are not 1 --------------------------------------------------------
     # Set names of CSF elements equal to spectra list element names
     names(CSF) <- names(spc)
-    if(any(unlist(CSF) != 1)) {
+    if (any(unlist(CSF) != 1)) {
       # Return all elements in CSF that have scaling value not equal to 1
       CSF_toscale <- Filter(function(x) x != 1, CSF)
       # Apply scaling for spectra with CSF value not equal to 1;
@@ -586,27 +586,27 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     out <- list(
       'metadata' = metadata,
       'spc' = spc_m[["spc"]],
-      'spc_nocomp' = if("spc_nocomp" %in% extract &&
+      'spc_nocomp' = if ("spc_nocomp" %in% extract &&
         "spc_nocomp" %in% names(spc_m)) {
           spc_m[["spc_nocomp"]]} else {NULL},
-      'sc_sm' = if("ScSm" %in% extract && "ScSm" %in% names(spc_m)) {
+      'sc_sm' = if ("ScSm" %in% extract && "ScSm" %in% names(spc_m)) {
         spc_m[["ScSm"]]} else {NULL},
-      'sc_rf' = if("ScRf" %in% extract && "ScRf" %in% names(spc_m)) {
+      'sc_rf' = if ("ScRf" %in% extract && "ScRf" %in% names(spc_m)) {
 	      spc_m[["ScRf"]]} else {NULL},
-      'ig_sm' = if("IgSm" %in% extract && "IgSm" %in% names(spc_m)) {
+      'ig_sm' = if ("IgSm" %in% extract && "IgSm" %in% names(spc_m)) {
 	      spc_m[["IgSm"]]} else {NULL},
-      'ig_rf' = if("IgRf" %in% extract && "IgRf" %in% names(spc_m)) {
+      'ig_rf' = if ("IgRf" %in% extract && "IgRf" %in% names(spc_m)) {
 	      spc_m[["IgRf"]]} else {NULL},
       # Wavenumbers of final AB spectra
       wavenumbers = wavenumbers[["spc"]],
-      wavenumbers_sc_sm = if("ScSm" %in% extract) {
+      wavenumbers_sc_sm = if ("ScSm" %in% extract) {
         wavenumbers[["ScSm"]]} else {NULL},
-      wavenumbers_sc_rf = if("ScRf" %in% extract) {
+      wavenumbers_sc_rf = if ("ScRf" %in% extract) {
         wavenumbers[["ScRf"]]} else {NULL}
     )
 
     # Print message that file was read if option is set
-    if(print_progress == TRUE) {
+    if (print_progress == TRUE) {
       message(
         paste0("Extracted spectra data from file: <", file_name_nopath, ">")
       )
@@ -649,7 +649,7 @@ read_opus_univ <- function(fnames, extract = c("spc"), parallel = FALSE,
   # Avoid `R CMD check` NOTE: ``no visible binding for variable ...
   i <- NULL
 
-  if(parallel == TRUE) {
+  if (parallel == TRUE) {
     foreach::foreach(i = 1:length(fnames),
       .export = "read_opus_bin_univ",
       .errorhandling = "pass", # error object generated by task evaluation will
