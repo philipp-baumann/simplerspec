@@ -45,7 +45,7 @@ read_asd <- function(file) {
   names(wavelengths_list) <- names(asd_listofm)
 
   # Return spectra as tibble
-  tibble::data_frame(
+  tibble::tibble(
     sample_id = names(asd_listofm),
     spc = asd_listofm,
     wavelengths = wavelengths_list
