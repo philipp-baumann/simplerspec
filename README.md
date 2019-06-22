@@ -14,15 +14,16 @@ data and modeling workflow. Data inputs and outputs are stored in common S3 `R` 
 4. `resample_spc()`: Resample spectra to new wavenumber intervals
 2. `average_spc()`: Average spectra for replicate scans
 5. `preprocess_spc()`: Perform pre-processing of spectra
-6. `join_chem_spc()`: Join chemical and spectral data sets by `sample_id`
-7. `plot_spc_ext()`: Extended spectral plotting; e.g. group spectra using different
+6. `select_spc_vars()`: Select every `n`-th spectral variable and corresponding x-units.
+7. `join_chem_spc()`: Join chemical and spectral data sets by `sample_id`
+8. `plot_spc_ext()`: Extended spectral plotting; e.g. group spectra using different
 panels or color spectra based on chemical reference values to explore trends.
-8. `fit_pls()`: Perform model tuning and evaluation based on Partial Least Squares (PLS) regression
-9. `select_ref_spc()`: Select a set of reference samples to measured by
+9. `fit_pls()`: Perform model tuning and evaluation based on Partial Least Squares (PLS) regression
+10. `select_ref_spc()`: Select a set of reference samples to measured by
 traditional analysis methods when no a priori sample data except spectra are 
 available (based on Kennard-Stones sampling)
-10. `predict_from_spc()`: Predict multiple chemical properties from a list of calibrated models and new soil spectra
-11. `assess_multimodels()`: Assess model performance given multiple pairs of predicted and measured variables.
+11. `predict_from_spc()`: Predict multiple chemical properties from a list of calibrated models and new soil spectra
+12. `assess_multimodels()`: Assess model performance given multiple pairs of predicted and measured variables.
 
 # Projects using simplerspec
 
