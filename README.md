@@ -4,10 +4,12 @@ Travis-CI build status (Debian Linux) [![Travis Build Status](https://travis-ci.
 
 AppVeyor build status (Windows) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/philipp-baumann/simplerspec?branch=master&svg=true)](https://ci.appveyor.com/project/philipp-baumann/simplerspec)
 
+[![DOI](https://zenodo.org/badge/67121732.svg)](https://zenodo.org/badge/latestdoi/67121732)
+
 # Short description
 
 The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a 
-data and modeling workflow. Data inputs and outputs are stored in common S3 `R` objects (`lists` and `data frames`), using in addition `data.table` and `tibble` extensions. The following features are covered in the current version of the package:
+data and modeling workf low. Data inputs and outputs are stored in common S3 `R` objects (`lists` and `data frames`), using in addition `data.table` and `tibble` extensions. The following features are covered in the current version of the package:
 
 1. `read_opus_univ()`: Read spectra and metadata from Bruker OPUS binary files into R list
 2. `gather_spc()`: Gather spectra and metadata from list into a tibble object (list-columns)
