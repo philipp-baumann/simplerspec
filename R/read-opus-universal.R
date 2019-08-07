@@ -120,7 +120,11 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
 
     # Figure out how many spectral blocks exist and select final spectra
     # positions; end_spc is vector of offsets where spectra start
-    end_spc <- end[diff(end) > 4 * min(NPT)]
+    if (length(end) == 1) {
+      end_spc <- end
+    } else {
+      end_spc <- end[diff(end) > 4 * min(NPT)]
+    }
 
     ## Find final spectra information block positions
     ## that belong to spectra data =============================================
@@ -148,9 +152,10 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
       isminus164 <- lapply(diff_l, function(x) x == -164)
 
       # Find minimum positive difference within each list
-      sel_min <- lapply(diff_l,
-        function(x) {if (any(x > 0)) {x == min(x[x > 0])} else {x == -164}}
-      )
+      if (length(diff_l) == 1) {sel_min <- list(TRUE)} else {
+        sel_min <- lapply(diff_l,
+          function(x) {if (any(x > 0)) {x == min(x[x > 0])} else {x == -164}})
+      }
       # Set FALSE repeated vector in sel_min element where TRUE positions are
       # duplicated
       which_elem_dupl <- which(duplicated(sapply(sel_min, which)))
@@ -295,17 +300,35 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     # interferograms
     notIg <- names(spc)[!names(spc) %in%
       c(Ig_assigned$spc_idx, na_assigned$spc_idx)]
-    # Calculate peak ratio for absorbance at around 2392 cm^(-1)
-    # and 2358 cm^(-1)
-    peak_ratio <- lapply(
-      lapply(names(wavenumbers[notIg]),
-        function(i) spc[[i]][wavenumbers[notIg][[i]] < 2392 &
-          wavenumbers[notIg][[i]] > 2358]),
-      function(j) j[[1]] / j[[length(j)]]
-    )
-    names(peak_ratio) <- names(spc[notIg])
-    # Single channel (Sc) assignment list
-    which_Sc <- names(which(peak_ratio > 2))
+    # Check if the MIR range was measured
+    wavenumbers_mir <- lapply(names(wavenumbers[notIg]),
+      function(i) spc[[i]][wavenumbers[notIg][[i]] < 2392 &
+        wavenumbers[notIg][[i]] > 2358])
+    is_mir <- any(sapply(wavenumbers_mir, function(x) length(x) != 0))
+    if (isTRUE(is_mir)) {
+      # Calculate peak ratio for absorbance at around 2392 cm^(-1)
+      # and 2358 cm^(-1)
+      peak_ratio <- lapply(
+        lapply(names(wavenumbers[notIg]),
+          function(i) spc[[i]][wavenumbers[notIg][[i]] < 2392 &
+            wavenumbers[notIg][[i]] > 2358]),
+        function(j) j[[1]] / j[[length(j)]]
+      )
+      names(peak_ratio) <- names(spc[notIg])
+      # Single channel (Sc) assignment list
+      which_Sc <- names(which(peak_ratio > 2))
+    } else {
+      peak_ratio <- lapply(
+        lapply(names(wavenumbers[notIg]),
+          function(i) spc[[i]][wavenumbers[notIg][[i]] < 5340 &
+            wavenumbers[notIg][[i]] > 5318]),
+        function(j) j[[1]] / j[[length(j)]]
+      )
+      names(peak_ratio) <- names(spc[notIg])
+      # Single channel (Sc) assignment list
+      which_Sc <- names(which(peak_ratio < 0.9))
+    }
+
     # Check for single channel, exclude spectral blocks already assigned to
     # interferograms
     Sc_assigned <- if (length(which_Sc) == 0) {
