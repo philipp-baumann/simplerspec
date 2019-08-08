@@ -91,12 +91,18 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
     }
 
     # Reduce size of npt_all -----------------------------------------------------
-    # Error in reading file: "data/spc_NABO_error/30014 KB014 1-14A O-1_CN0104.4"
+    # Some files have an extra "NPT" string without FXV, LXV, and spectral block
     if (length(npt_all) != length(fxv_all)) {
       diff_npt_fxv <- lapply(npt_all, function(x) fxv_all - x)
-      is16 <- lapply(diff_npt_fxv, function(x) x == 16)
-      which16 <- sapply(is16, function(x) any(x == TRUE))
-      npt_all <- npt_all[which16]
+      min_bigger0_smallerequal40 <- lapply(diff_npt_fxv, function(x) {
+          which_min_bigger0 <- x == min(x[x > 0])
+          which_smallerequal40 <- x <= 40
+          which_min_bigger0 & which_smallerequal40
+        }
+      )
+      which_npt_valid <- sapply(min_bigger0_smallerequal40,
+        function(x) any(x == TRUE))
+      npt_all <- npt_all[which_npt_valid]
     }
 
     # --------------------------------------------------------------------------
