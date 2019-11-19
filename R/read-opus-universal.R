@@ -586,7 +586,11 @@ read_opus_bin_univ <- function(file_path, extract = c("spc"),
       instr_name_range = instr_range,
       resolution_wn = RES,
       # Result spectrum; e.g. "AB" = Absorbance
-      result_spc = ifelse(length(unique(PLF)) == 1, unique(PLF), unique(PLF)[2]),
+      # result_spc = ifelse(length(unique(PLF)) == 1, unique(PLF), unique(PLF)[2]),
+      # // pb: 2019-11-19: allow NULL value for PLF
+      result_spc <- if (length(unique(PLF)) == 1) {
+        unique(PLF)} else if (length(unique(PLF)) > 1) {
+        unique(PLF)[2]} else { NA },
       beamspl = BMS,
       laser_wn = LWN,
       # `spc_in_file`: character vector of spectra found in OPUS file
