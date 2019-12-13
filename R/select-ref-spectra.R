@@ -23,7 +23,7 @@ select_ref_spc <- function(spc_tbl, ratio_ref = 0.15, pc = 2,
 
   if(tibble::is_tibble(spc_tbl)) {
     # Slice based on sample_id if spectral data is in tibble class
-    spc_tbl <- dplyr::group_by(spc_tbl, rlang::UQ(rlang::sym("sample_id"))) %>%
+    spc_tbl <- dplyr::group_by(spc_tbl, !!rlang::sym("sample_id")) %>%
       dplyr::slice(1L)
     # Bind list of data.tables in list-column spc_pre to one data table
     # containing spectral data
