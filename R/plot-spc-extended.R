@@ -288,6 +288,7 @@ relabel_spc_types <- function(lb_sc_sm = "Reflectance sample (<ScSm>)",
                               lb_spc_nocomp = "Abs. before atm. comp.",
                               lb_spc = "Absorbance",
                               lb_spc_rs = "Resampled Abs.",
+                              lb_spc_mean = "Mean Abs.",
                               lb_spc_pre = "Preprocessed Abs.") {
   ggplot2::as_labeller(
     x = c(
@@ -297,6 +298,7 @@ relabel_spc_types <- function(lb_sc_sm = "Reflectance sample (<ScSm>)",
       "spc_nocomp" = lb_spc_nocomp,
       "spc" = lb_spc,
       "spc_rs" = lb_spc_rs,
+      "spc_mean" = lb_spc_mean,
       "spc_pre" = lb_spc_pre
     )
   )
