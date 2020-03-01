@@ -11,21 +11,21 @@ AppVeyor build status (Windows) [![AppVeyor Build Status](https://ci.appveyor.co
 The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a 
 data and modeling workf low. Data inputs and outputs are stored in common S3 `R` objects (`lists` and `data frames`), using in addition `data.table` and `tibble` extensions. The following features are covered in the current version of the package:
 
-1. `read_opus_univ()`: Read spectra and metadata from Bruker OPUS binary files into R list
-2. `gather_spc()`: Gather spectra and metadata from list into a tibble object (list-columns)
-4. `resample_spc()`: Resample spectra to new wavenumber intervals
-2. `average_spc()`: Average spectra for replicate scans
-5. `preprocess_spc()`: Perform pre-processing of spectra
-6. `select_spc_vars()`: Select every `n`-th spectral variable and corresponding x-units.
-7. `join_chem_spc()`: Join chemical and spectral data sets by `sample_id`
-8. `plot_spc_ext()`: Extended spectral plotting; e.g. group spectra using different
+1. [`read_opus_univ()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/read-opus-universal.R): Read spectra and metadata from Bruker OPUS binary files into R list
+2. [`gather_spc()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/gather-spc.R): Gather spectra and metadata from list into a tibble object (list-columns)
+4. [`resample_spc()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/resample-spc.R): Resample spectra to new wavenumber intervals
+2. [`average_spc()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/average-spc.R): Average spectra for replicate scans
+5. [`preprocess_spc()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/preprocess-spc.R): Perform pre-processing of spectra
+6. [`select_spc_vars()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/select-spc.R): Select every `n`-th spectral variable and corresponding X-unit values.
+7. [`join_spc_chem()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/join-chem-spectra.R): Join chemical and spectral data sets by `sample_id`
+8. [`plot_spc_ext()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/plot-spc-extended.R): Extended spectral plotting; e.g. group spectra using different
 panels or color spectra based on chemical reference values to explore trends.
-9. `fit_pls()`: Perform model tuning and evaluation based on Partial Least Squares (PLS) regression
-10. `select_ref_spc()`: Select a set of reference samples to measured by
+9. [`fit_pls()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/pls-modeling.R): Perform model tuning and evaluation based on Partial Least Squares (PLS) regression
+10. [`select_ref_spc()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/select-ref-spectra.R): Select a set of reference samples to measured by
 traditional analysis methods when no a priori sample data except spectra are 
 available (based on Kennard-Stones sampling)
-11. `predict_from_spc()`: Predict multiple chemical properties from a list of calibrated models and new soil spectra
-12. `assess_multimodels()`: Assess model performance given multiple pairs of predicted and measured variables.
+11. [`predict_from_spc()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/predict-spc.R): Predict multiple chemical properties from a list of calibrated models and new soil spectra
+12. [`assess_multimodels()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/utils-stats.R): Assess model performance given multiple pairs of predicted and measured variables.
 
 # Projects using simplerspec
 
