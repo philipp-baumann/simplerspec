@@ -8,7 +8,7 @@ AppVeyor build status (Windows) [![AppVeyor Build Status](https://ci.appveyor.co
 
 # Short description
 
-The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a data and modeling workflow. Data inputs and outputs are stored in common S3 `R` objects (`lists` and `data frames`), using in addition `data.table` and `tibble` extensions. The following features are covered in the current version of the package:
+The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a data and modeling workflow. Data inputs and outputs are stored in common S3 `R` objects (`lists` and `data frames`), using in addition [`data.table`](https://rdatatable.gitlab.io/data.table/) and `tibble`[https://tibble.tidyverse.org/index.html] extensions. The following features are covered in the current version of the package:
 
 1. [`read_opus_univ()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/read-opus-universal.R): Read spectra and metadata from Bruker OPUS binary files into R list
 2. [`gather_spc()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/gather-spc.R): Gather spectra and metadata from list into a tibble object (list-columns)
@@ -69,8 +69,8 @@ The functions are built to work in a pipeline and cover commonly used procedures
 
 This package builds mainly upon functions from the following R packages:
 
-* `prospectr `: Various utilities for pre-processing and sample selection based on spectroscopic data. An introduction to the package with examples can be found [here](http://antoinestevens.github.io/prospectr/).
-* `plyr` and `dplyr `: Fast data manipulation tools with an unified interface. See [here](https://github.com/hadley/dplyr) for details.
+* [`prospectr`](https://cran.r-project.org/web/packages/prospectr/index.html): Various utilities for pre-processing and sample selection based on spectroscopic data. An introduction to the package with examples can be found [here](http://antoinestevens.github.io/prospectr/).
+* `plyr` and [`dplyr`](https://dplyr.tidyverse.org/): Fast data manipulation tools with an unified interface. See [here](https://github.com/hadley/dplyr) for details.
 * `ggplot2 `: Alternative plotting system for R, based on the grammar of graphics. See [here](http://ggplot2.org/).
 * `caret `: Classification and regression training. A set of functions that attempt to streamline the process for creating predictive models. See [here](http://topepo.github.io/caret/index.html) for details.
 
@@ -78,7 +78,7 @@ Consistent and reproducible data and metadata management is an important prerequ
 
 List-columns features provided within the tibble framework are an excellent base to work with functional programming tools in R, which allows to efficiently write code. 
 Simplerspec internally uses popular functional programming extension tools provided
-by the `purrr` package for processing and transforming spectra. 
+by the [`purrr`](https://purrr.tidyverse.org/) package for processing and transforming spectra. 
 For learning more, I would recommend
 [this nice purrr list-column tutorial](https://jennybc.github.io/purrr-tutorial/ls13_list-columns.html) 
 provided by Jenny Brian. Further, simplerspec well integrates with the 
@@ -215,7 +215,7 @@ I would like to thank the following people for the inspiration by concepts, code
 
 * Antoine Stevens and Leonardo Ramirez-Lopez for their contributions to the [prospectr package](https://cran.r-project.org/web/packages/prospectr/index.html) and the
 *Guide to Diffuse Reflectance Spectroscopy & Multivariate Calibration*
-* Andrew Sila, Tomislav Hengl, and Thomas Terhoeven-Urselmans for the `read.opus()`
+* Andrew Sila, Tomislav Hengl, and Thomas Terhoeven-Urselmans for the [`read.opus()`](https://github.com/cran/soil.spec/blob/master/R/read.opus.R)
 function from the [soil.spec](https://cran.r-project.org/web/packages/soil.spec/index.html) package developed at ICRAF.
 * [Hadley Wickham](http://hadley.nz/) for his work and concepts on data science within R
 * [Max Kuhn](https://github.com/topepo) for the creation of the caret package and for his excellent teaching
