@@ -59,7 +59,7 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
   if (select == "sg_1_w5") {
     sg_1_w5 <- prospectr::savitzkyGolay(X = spc_raw,
       m = 1, p = 3, w = 5)}
-  if(select == "sg_1_w9") {
+  if (select == "sg_1_w9") {
     sg_1_w9 <- prospectr::savitzkyGolay(X = spc_raw,
       m = 1, p = 3, w = 9)}
   if (select == "sg_1_w11") {
@@ -68,10 +68,13 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
   if (select == "sg_1_w13") {
     sg_1_w13 <- prospectr::savitzkyGolay(X = spc_raw,
       m = 1, p = 3, w = 13)}
+  if (select == "sg_1_p2_w13") {
+    sg_1_p2_w13 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 1, p = 2, w = 13)}
   if (select == "sg_1_w15") {
     sg_1_w15 <- prospectr::savitzkyGolay(X = spc_raw,
       m = 1, p = 3, w = 15)}
-  if(select == "sg_1_w17") {
+  if (select == "sg_1_w17") {
     sg_1_w17 <- prospectr::savitzkyGolay(X = spc_raw,
       m = 1, p = 3, w = 17)}
   if (select == "sg_1_w19") {
@@ -85,7 +88,7 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
   if (select == "sg_1_w23") {
     sg_1_w23 <- prospectr::savitzkyGolay(X = spc_raw,
       m = 1, p = 3, w = 23)}
-  if(select == "sg_1_w25") {
+  if (select == "sg_1_w25") {
     sg_1_w25 <- prospectr::savitzkyGolay(X = spc_raw,
       m = 1, p = 3, w = 25)}
   if (select == "sg_1_w27") {
@@ -131,6 +134,10 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
     sg_0_snv <- prospectr::standardNormalVariate(sg_0_w9)}
   if (select == "sg_1_snv") {
     sg_1_snv <- prospectr::standardNormalVariate(sg_1_w5)}
+  if (select == "sg_1_p2_w13_snv") {
+    sg_1_p2_w13 <- prospectr::savitzkyGolay(X = spc_raw,
+      m = 1, p = 2, w = 13)
+    sg_1_p2_w13_snv <- prospectr::standardNormalVariate(sg_1_p2_w13)}
   # Standard normal variate (SNV) and first gap-segment derivative
   if (select == "snv_gsd_m1_w11_s1") {
     sg_0_w9 <- prospectr::savitzkyGolay(X = spc_raw,
@@ -248,6 +255,7 @@ preprocess_spc <- function(spc_tbl, select, column_in = "spc_mean",
     function(x) as.numeric(colnames(x)))
 
   # Add list of preprocessed spectra and correspoding wavenumbers to tibble
-  spc_tbl <- tibble::add_column(spc_tbl,
+  spc_tbl_out <- tibble::add_column(spc_tbl,
     spc_pre = spc_pre_list, xvalues_pre = xvalues_pre_list)
+  return(spc_tbl_out)
 }
