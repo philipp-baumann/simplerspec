@@ -21,7 +21,7 @@ select_ref_spc <- function(spc_tbl, ratio_ref = 0.15, pc = 2,
   # Avoid `R CMD check` NOTE: `no visible binding for global variable ...`
   PC1 <- PC2 <- type <- NULL
 
-  if(tibble::is_tibble(spc_tbl)) {
+  if (tibble::is_tibble(spc_tbl)) {
     # Slice based on sample_id if spectral data is in tibble class
     spc_tbl <- dplyr::group_by(spc_tbl, !!rlang::sym("sample_id")) %>%
       dplyr::slice(1L)
