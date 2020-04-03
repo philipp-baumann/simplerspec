@@ -11,7 +11,6 @@
 #' @return
 #' @export
 #'
-#' @examples
 select_spc_vars <- function(spc_tbl,
                             lcol_spc = spc_pre,
                             lcol_xvalues = xvalues_pre,
@@ -40,6 +39,6 @@ select_spc_vars <- function(spc_tbl,
   xvalues <- dplyr::pull(spc_tbl, !!lcol_xvalues)
   xvalues_sel <- map(xvalues, ~ .x[pos_sel])
 
-  dplyr::mutate(spc_tbl,
+  dplyr::mutate(spc_tbl %>% dplyr::ungroup(),
     !!lcol_spc_nm := spc_lst_out, !!lcol_xvalues_nm := xvalues_sel)
 }
