@@ -2,62 +2,109 @@
 % Please edit documentation in R/resample-spc.R
 \name{resample_spc}
 \alias{resample_spc}
-\title{Resample spectra from spectral data object (tibble)}
+\title{Resample spectra to new x-axis interval}
 \usage{
-resample_spc(spc_tbl, x_unit = "wavenumber", wn_lower = 510,
-  wn_upper = 3988, wn_interval = 2, wl_lower = 350, wl_upper = 2500,
-  wl_interval = 1)
+resample_spc(
+  spc_tbl,
+  column_in = "spc",
+  x_unit = c("wavenumber", "wavelength"),
+  wn_lower = 500,
+  wn_upper = 4000,
+  wn_interval = 2,
+  wl_lower = 350,
+  wl_upper = 2500,
+  wl_interval = 1,
+  interpol_method = c("linear", "spline")
+)
 }
 \arguments{
-\item{spc_tbl}{Spectra data in a tibble object (classes "tibble_df", "tbl"
-and "data.frame"). The spectra tibble is expected to contain at least
-the columns 'spc' (list-column with spectral matrices stored in a list) and
-`wavenumbers` or `wavelengths` (list-column that contains list of x-axis values
-corresponding to each spectrum in `spc` as wavenumber or wavelength in
-numeric values).}
+\item{spc_tbl}{Spectra data embedded in a tibble object (classes
+\verb{"tbl_df", "tbl", "data.frame"}). The spectra tibble needs to contain at
+least of one of the the spectra columns \code{spc}, \code{spc_rs}, \code{spc_mean},
+\code{spc_nocomp}, \code{sc_sm}, \code{sc_rf}, or \code{spc_pre} (list-colums with spectral
+\code{data.table}s), and \code{wavenumbers} or \code{wavelengths} (list-column with vectors
+of x-axis values corresponding to each spectrum). The section \emph{"Matching
+spectrum type and corresponding x-axis type"} describes the spectra types
+and corresponding x-axis types.}
 
-\item{x_unit}{Character vector of the x-axis unit of the spectra in
-within \code{spc_tbl}. Default is \code{"wavenumber"}. A further possible
-argument is \code{"wavelength"}, which is usually the unit reported for
-VIS/NIR spectrometers such as ASD field spectrometers.}
+\item{column_in}{Character vector of length 1L or symbol/name
+specifying the name of list-column that contains the spectra to be resampled.}
 
-\item{wn_lower}{Numeric (integer or float) value of lowest wavenumber.
-This argument will only be used if \code{x_unit = "wavenumber"}. The value
-will be used as starting value when creating the new wavenumber sequence
-that the spectra will be resampled upon. Default value is 510.}
+\item{x_unit}{Character vector of length 1L specifying the measurement unit
+of the x-axis values (list-column) of the input spectra in \code{spc_tbl}.
+Possible values are \code{"wavenumber"} (default) or \code{"wavelength"}. Wavenumber
+is a convenient unit of frequency in the mid-infrared spectral range,
+where wavelength is often used as spatial period for the visible and
+near-infrared range.}
 
-\item{wn_upper}{Numeric (integer or float) value of highest wavenumber.
-This argument will only be used if \code{x_unit = "wavenumber"}. The value
-will be used as last value when creating the new wavenumber sequence
-that the spectra will be resampled upon. Default value is 3988.}
+\item{wn_lower}{Numeric value of lowest wavenumber. This argument will only
+be used if \code{x_unit = "wavenumber"}. The value serves as starting value for
+the new wavenumber sequence that the spectra will be resampled upon. Default
+value is 500 (i.e., in reciprocal centimeters).}
 
-\item{wn_interval}{Numeric value (integer or float) value of the wavenumber
-increment when creating the new wavenumber sequence that the spectra will be
-resampled upon. Default value is 2.}
+\item{wn_upper}{Numeric value of highest wavenumber. This argument will only
+be used if \verb{x_unit = "wavenumber}. The value will be used as last value of
+the new wavenumber sequence that the spectra will be resampled upon. Default
+value is 4000 (i.e., in reciprocal centimeters).}
 
-\item{wl_lower}{Numeric (integer or float) value of lowest wavelength.
-This argument will only be used if \code{x_unit = "wavelength"}. The value
-will be used as starting value when creating the new wavenumber sequence
-that the spectra will be resampled upon. Default value is 350.}
+\item{wn_interval}{Numeric value of the wavenumber increment for the new
+wavenumber sequence that the spectra will be resampled upon. Default value
+is 2 (i.e., in reciprocal centimeters).}
 
-\item{wl_upper}{Numeric (integer or float) value of highest wavelength.
-This argument will only be used if \code{x_unit = "wavelength"}. The value
-will be used as last value when creating the new wavenumber sequence
-that the spectra will be resampled upon. Default value is 2500.}
+\item{wl_lower}{Numeric value of lowest wavelength. This argument will only
+be used if \code{x_unit = "wavelength"}. The value serves as starting value of
+the new wavenumber sequence that the spectra will be resampled upon.
+Default value is 350 (i.e. in nanometers).}
 
-\item{wl_interval}{Numeric value (integer or float) value of the wavelength
-increment when creating the new wavenumber sequence that the spectra will be
-resampled upon. This argument will only be used if \code{x_unit = "wavelength"}.
-Default value is 1.}
+\item{wl_upper}{Numeric value of highest wavelength. This argument will only
+be used if \code{x_unit = "wavelength"}. The value will be used as last value of
+the new wavenumber sequence that the spectra will be resampled upon. Default
+value is 2500 (i.e., in nanometers).}
+
+\item{wl_interval}{Numeric value of the wavelength increment for the new
+wavenumber sequence that the spectra will be resampled upon. This argument
+will only be used if \code{x_unit = "wavelength"}. Default value is 1 (i.e., in
+nanometers).}
+
+\item{interpol_method}{Character of \code{"linear"} (default) or \code{"spline"} with
+the interpolation method. \code{"spline"} uses a cubic spline to interpolate the
+input spectra at given x-axis values to new equispaced x-axis intervals.}
 }
 \value{
-A spectra tibble containing the following additional columns
-added to the input spectra tibble (`spc_tbl`): \code{wavenumbers_rs} or
-\code{wavelengths_rs} as list-columns containing the resampled wavenumbers
-or wavelengths, \code{spc_rs} list-column of resampled spectra returned
-as list of data.tables (class "data.table" and "data.frame").
+A spectra tibble (\code{spc_tbl}) containing two added list-columns:
+\itemize{
+\item \verb{spc_rs:} Resampled spectra as list of \code{data.table}s
+\item \code{wavenumbers_rs} or \code{wavelengths_rs}: Resampled x-axis values as list of
+numeric vectors
+}
 }
 \description{
-Resamples spectra stored in tibble column after
-gathering spectra by \code{simplerspec::gather_spc()}.
+Resamples (interpolates) different spectra types with
+corresponding x-axis values that are both stored in list-columns of a spectra
+tibble. A spectra tibble hosts spectra, x-unit vectors, metadata, and
+further linked data with standardized naming conventions. Data input for
+resampling can for example be generated with \code{simplerspec::gather_spc()}.
+Resampling is a key harmonizing step to process and later model spectra
+measured at different resolutions and spectral ranges (i.e., different
+spectrometer devices and/or measurement settings).
 }
+\section{Matching spectrum type and corresponding x-axis type}{
+
+The combinations of input spectrum types (\code{column_in}) and
+corresponding x-axis types are generated from a simple lookup list. The
+following key-value(s) pairs can be matched at given key, which is the column
+name from \code{column_in} containing the spectra.
+\itemize{
+\item \code{"spc"} : \code{"wavenumbers"} or \code{"wavelengths"} (raw spectra)
+\item \code{"spc_rs"} : \code{"wavenumbers_rs"} or \code{"wavelengths_rs"}) (resampled spectra)
+\item \code{"spc_mean"} : \code{"wavenumbers_rs"} or \code{"wavelengths_rs"} (mean spectra)
+\item \code{"spc_nocomp"} \code{"wavenumbers"} or \code{"wavelengths"} (spectra prior
+atmospheric compensation)
+\item \code{"sc_sm" : c("wavenumbers_sc_sm", "wavelengths_sc_sm")} (single channel
+sample spectra)
+\item \code{"sc_rf" : c("wavenumbers_sc_rf", "wavelengths_sc_rf")} (single channel
+reference spectra)
+\item \code{"spc_pre" : "xvalues_pre"} (preprocessed spectra)
+}
+}
+
