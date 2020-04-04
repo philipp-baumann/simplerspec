@@ -21,9 +21,9 @@ resample_spc(
 \item{spc_tbl}{Spectra data embedded in a tibble object (classes
 \verb{"tbl_df", "tbl", "data.frame"}). The spectra tibble needs to contain at
 least of one of the the spectra columns \code{spc}, \code{spc_rs}, \code{spc_mean},
-\code{spc_nocomp}, \code{sc_sm}, \code{sc_rf}, or \code{spc_pre} (list-colums with spectral
+\code{spc_nocomp}, \code{sc_sm}, \code{sc_rf}, or \code{spc_pre} (list-columns with spectral
 \code{data.table}s), and \code{wavenumbers} or \code{wavelengths} (list-column with vectors
-of x-axis values corresponding to each spectrum). The section \emph{"Matching
+of x-axis values corresponding to each spectrum). The help section \emph{"Matching
 spectrum type and corresponding x-axis type"} describes the spectra types
 and corresponding x-axis types.}
 

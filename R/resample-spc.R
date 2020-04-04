@@ -10,9 +10,9 @@
 #' @param spc_tbl Spectra data embedded in a tibble object (classes
 #' `"tbl_df", "tbl", "data.frame"`). The spectra tibble needs to contain at
 #' least of one of the the spectra columns `spc`, `spc_rs`, `spc_mean`,
-#' `spc_nocomp`, `sc_sm`, `sc_rf`, or `spc_pre` (list-colums with spectral
+#' `spc_nocomp`, `sc_sm`, `sc_rf`, or `spc_pre` (list-columns with spectral
 #' `data.table`s), and `wavenumbers` or `wavelengths` (list-column with vectors
-#' of x-axis values corresponding to each spectrum). The section *"Matching
+#' of x-axis values corresponding to each spectrum). The help section *"Matching
 #' spectrum type and corresponding x-axis type"* describes the spectra types
 #' and corresponding x-axis types.
 #' @param column_in Character vector of length 1L or symbol/name
