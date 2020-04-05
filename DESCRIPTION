@@ -28,7 +28,6 @@ Imports:
     plyr,
     prospectr,
     purrr,
-    readr,
     reshape2,
     rlang (>= 0.2.0),
     tibble,
