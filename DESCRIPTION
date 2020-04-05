@@ -31,11 +31,12 @@ Imports:
     readr,
     reshape2,
     rlang (>= 0.2.0),
-    stringr,
     tibble,
     tidyselect,
     tidyr,
     utils,
+    glue,
+    broom
 License: GPL-2
 LazyData: TRUE
 RoxygenNote: 7.1.0

@@ -128,13 +128,13 @@ remove_id_extension <- function(data,
                                 id_col = "sample_id",
                                 id_new_nm = "sample_id",
                                 extension = "\\.asd.*$") {
-  id_col <- enquo(id_col)
-  id_col_chr <- quo_name(id_col)
+  id_col <- rlang::enquo(id_col)
+  id_col_chr <- rlang::quo_name(id_col)
   id_col_rm <- rlang::expr(-!!rlang::sym(id_col_chr))
-  id_new_nm <- quo_name(enquo(id_new_nm))
+  id_new_nm <- rlang::quo_name(rlang::enquo(id_new_nm))
 
-  id_new <- stringr::str_replace(string = dplyr::pull(data, !!id_col),
-    pattern = extension, replacement = "")
+  id_new <- gsub(pattern = extension, replacement = "",
+    x = dplyr::pull(data, !!id_col))
 
   # Remove old id column and bind new id column to the remaining columns
   rest <- dplyr::select(data, !!id_col_rm)
@@ -151,12 +151,13 @@ correct_join_offset <- function(spc_tbl,
                                 lcol_spc = spc,
                                 lcol_xvalues = wavelengths,
                                 lcol_metadata = metadata) {
-  lcol_spc <- enquo(lcol_spc)
-  lcol_spc_chr <- quo_name(lcol_spc)
+  swir2_offset <- swir1_offset <- wavelengths <- NULL
+  lcol_spc <- rlang::enquo(lcol_spc)
+  lcol_spc_chr <- rlang::quo_name(lcol_spc)
   lcol_spc_rm <- rlang::expr(-!!rlang::sym(lcol_spc_chr))
-  lcol_xvalues <- enquo(lcol_xvalues)
+  lcol_xvalues <- rlang::enquo(lcol_xvalues)
   lcol_xvalues_chr <- rlang::quo_name(lcol_xvalues)
-  lcol_metadata <- enquo(lcol_metadata)
+  lcol_metadata <- rlang::enquo(lcol_metadata)
 
   spc <- data.table::rbindlist(dplyr::pull(spc_tbl, !!lcol_spc))
   xvalues <- dplyr::pull(spc_tbl, !!lcol_xvalues)
