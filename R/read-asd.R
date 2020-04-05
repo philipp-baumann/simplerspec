@@ -16,14 +16,15 @@
 #' \code{spc} (list-column of spectral matrices)
 #' and \code{wavelengths} (list-column containing wavelength vectors).
 #' @importFrom tidyselect one_of
+#' @importFrom data.table fread
 #' @export
 read_asd <- function(file) {
 
   # Read fixed with file into a tibble
-  asd_tbl <- readr::read_tsv(file = file)
+  asd_tbl <- tibble::as_tibble(data.table::fread(file = file))
   # Transpose tibble and add Wavelengths as column names
   asd_tbl_t <- tibble::as_tibble(
-    t(dplyr::select(asd_tbl, - one_of("Wavelength")))
+    t(dplyr::select(asd_tbl, - tidyselect::one_of("Wavelength")))
   )
   colnames(asd_tbl_t) <- asd_tbl[["Wavelength"]]
 
