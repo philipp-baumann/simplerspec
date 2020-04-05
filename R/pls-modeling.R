@@ -1,6 +1,5 @@
 ## Perform calibration sampling based on spectral PCA
 ## or random split -------------------------------------------------------------
-#' @importFrom magrittr %>%
 split_data_q <- function(
   spec_chem,
   split_method,
