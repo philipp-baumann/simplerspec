@@ -23,7 +23,6 @@ Imports:
     hexView,
     magrittr,
     mvoutlier,
-    lazyeval,
     modelr,
     pls,
     plyr,

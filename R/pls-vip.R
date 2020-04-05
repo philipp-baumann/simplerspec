@@ -81,7 +81,7 @@ extract_pls_vip <- function(mout) {
   # Collect wavenumbers from preprocessed spectra
   wn <- as.numeric(colnames(mout$data$calibration$spc_pre[[1]]))
   # Create a data frame with wavenumbers and VIP scores
-  tibble::data_frame_(lazyeval::lazy_dots(wavenumber = wn, vip = vip))
+  tibble::tibble(wavenumber = wn, vip = vip)
 }
 
 #' @title Create a data frame containing start and end positions (wavenumbers)
