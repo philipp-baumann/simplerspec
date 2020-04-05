@@ -2,41 +2,104 @@
 % Please edit documentation in R/gather-spc.R
 \name{gather_spc}
 \alias{gather_spc}
-\title{Gather spectra of different types from nested list of spectral data
-into a tibble object}
+\title{Gather measurements of different spectra types, corresponding
+x-axis values and metadata from nested list.}
 \usage{
-gather_spc(data = data, spc_types = c("spc", "spc_nocomp", "sc_sm",
-"sc_rf", "ig_sm", "ig_rf"))
+gather_spc(data, spc_types = "spc")
 }
 \arguments{
-\item{data}{list with file name (`file_id`) elements that contain spectum
-types, corresponding x unit type values and metadata; The `data` list
-is commonly the output after reading binary OPUS files with
-\code{simplerspec::read_opus_univ()}.}
+\item{data}{Recursive list named with filename (\code{file_id}) at first level
+entries, where each element containing a sample measurement has nested
+metadata (\code{"metadata"}), spectra types (see \code{spc_types}), corresponding
+x-axis values (see section \emph{"Details on spectra data checks and matching"}).
+The \code{data} list is a structural convention to organize spectra and their
+metadata. It follows for example the list structure returned from the Bruker
+OPUS binary reader \code{simplerspec::read_opus_univ()}.}
 
-\item{spc_types}{Character vector with the spectum types to be extracted
-and gathered into list columns. The spectrum type names need to match exactly
-the standardised spectrum type names, which are also names of the second list
-hierarchy elements of `data`. These values are allowed: `"spc"`: final
-spectrum after atmospheric compensation if performed, otherwise spectrum
-after ratioing sample and reference single channel reflectance -- referred to
-as `AB` in Bruker OPUS software; `"spc_nocomp"`: Spectrum prior to
-atmospheric compensation if performed; `"sc_sm"`: Single channel reflectance
-spectrum of the sample; `"sc_rf"`: Single channel reflectance spectrum of
-the reference (background spectrum); `"ig_sm"`: Interferogram of the sample;
-`"ig_rf"`: Interferogram of the reference. Default is only extracting final
-spectra, `spc_types = c("spc")`}
+\item{spc_types}{Character vector with the spectra types to be extracted
+from \code{data} list and gathered into list-columns. The spectra type names need
+to exactly follow the naming conventions, and the element names and contents
+need to be present at the second list hierarchy of \code{data}. These values are
+allowed:
+\itemize{
+\item \code{"spc"} (default): final raw spectra after atmospheric compensation, if
+performed (named \code{AB} in Bruker OPUS software; results from referencing
+sample to reference single channel reflectance and transforming to
+absorbance).
+\item \code{"spc_nocomp"}: raw spectra without atmospheric correction
+\item \code{"sc_sm"}: Single channel reflectance spectra of the samples
+\item \code{"sc_rf"}: Single channel reflectance spectra of the reference (background
+spectra)
+\item \code{"ig_sm"}: Interferograms of the sample spectra (currently only spectra
+without x-axis list-columns are matched and returned)
+\item \code{"ig_rf"}: Interferograms of the reference spectra (currently only spectra
+without x-axis list-columns are matched and returned)
+}}
 }
 \value{
-Spectra related spectral data transformed into (list-)columns
-of object of class tibble.
+Spectra tibble (\code{spc_tbl} with classes \code{"tbl_df"}, \code{"tbl"}, and
+\code{"data.frame"}) with the following (list-)columns:
+\itemize{
+\item \code{"unique_id"}: Character vector with unique measurement identifier, likely
+a string with file names in combination with date and time (extracted from
+each \code{"metadata"} data frame column).
+\item \code{"file_id"} : Character vector with file name including the extension
+(extracted from each \code{"metadata"} data frame column).
+\item \code{"sample_id"}: Character vector with sample identifier. For Bruker OPUS
+binary files, this corresponds to the file name without the file extension
+in integer increments of sample replicate measurements.
+\item One or multiple of \code{"spc"}, \code{"spc_nocomp"}, \code{"sc_sm"}, or \code{"sc_rf"}:
+List(s) of data.table's containing spectra type(s).
+\item One or multiple of \code{"wavenumbers"}, \code{"wavelengths"}, \code{"x_values"},
+\code{"wavenumbers_sc_sm"}, \code{"wavelengths_sc_sm"}, \code{"x_values_sc_sm"},
+\code{"wavenumbers_sc_rf"}, \code{"wavelengths_sc_rf"}, or \code{"x_values_sc_rf"}:
+List(s) of numeric vectors with matched x-axis values (see \emph{"Details on
+spectra data checks and matching"} below).
+}
 }
 \description{
-Gather specta, spectrometer metadata, measurment id's,
-x unit values from list into a tibble, one row per spectrum replicate
-measurement. Spectra, x values and metadata are stored in list-columns.
-A tibble is an extende data frame and each spectrum can contain complex data
-and metadata that are in a rectangular data structure. List-columns is tidy
-data structure concept that can be combined with functional programming
-frameworks provided by e.g. the purrr package.
+Gather spectra, corresponding x-axis values, and device and
+measurement metadata from a nested list into a spectra tibble, so that one
+row represents one spectral measurement. Spectra, x-axis values and metadata
+are mapped from the individual list elements (named after file name including
+the extension) and transformed into (list-)columns of a spectra tibble,
+which is an extended data frame. For each measurement, spectral data and
+metadata are combined into one row of the tidy data frame. In addition, the ID
+columns \code{unique_id}, \code{file_id}, and \code{sample_id} are extracted from
+\code{"metadata"} (data frame) list entries and returned as identifier columns of
+the spectra tibble. List-columns facilitate keeping related data together in
+a rectangular data structure. They can be manipulated easily during
+subsequent transformations, for example using the standardized functions of
+the simplerspec data processing pipeline.
 }
+\section{Details on spectra data checks and matching}{
+
+\code{gather_spc()} checks whether these conditions are met for each measurement
+in the list \code{data}:
+\enumerate{
+\item Make sure that the first level \code{data} elements are named (assumed to be
+the file name the data originate from), and remove missing measurements with
+an informative message.
+\item Remove any duplicated file names and raise a message if there are
+name duplicates at first level.
+\item Check whether \code{spc_types} inputs are supported (see argument \code{spc_types})
+and present at the second level of the \code{data} list. If not, remove
+all data elements for incomplete spectral measurements.
+\item Match spectra types and possible corresponding x-axis types from
+a lookup list. For each selected spectrum type (left), at least one of
+the element names of the x-axis type (right) needs to be present for each
+measurement in the list \code{data}:
+\itemize{
+\item \code{"spc"}  : \code{"wavenumbers"}, \code{"wavelengths"}, or \code{"x_values"}
+\item \code{"spc_nocomp"} : \code{"wavenumbers"}, \code{"wavelengths"}, or \code{"x_values"}
+\item \code{"sc_sm"} : \code{"wavenumbers_sc_sm"}, \code{"wavelengths_sc_sm"}, or
+\code{"x_values_sc_sm"}
+\item \code{"sc_rf"} : \code{"wavenumbers_sc_rf"}, \code{"wavelengths_sc_rf"}, or
+\code{"x_values_sc_rf"}
+}
+\item Check if \code{"metadata"} elements are present and remove data elements for
+measurements with missing or incorrectly named metadata elements
+(message).
+}
+}
+

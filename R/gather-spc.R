@@ -1,36 +1,88 @@
-#' @title Gather spectra of different types from nested list of spectral data
-#' into a tibble object
-#' @description Gather specta, spectrometer metadata, measurment id's,
-#' x unit values from list into a tibble, one row per spectrum replicate
-#' measurement. Spectra, x values and metadata are stored in list-columns.
-#' A tibble is an extende data frame and each spectrum can contain complex data
-#' and metadata that are in a rectangular data structure. List-columns is tidy
-#' data structure concept that can be combined with functional programming
-#' frameworks provided by e.g. the purrr package.
-#' @param data list with file name (`file_id`) elements that contain spectum
-#' types, corresponding x unit type values and metadata; The `data` list
-#' is commonly the output after reading binary OPUS files with
-#' \code{simplerspec::read_opus_univ()}.
-#' @param spc_types Character vector with the spectum types to be extracted
-#' and gathered into list columns. The spectrum type names need to match exactly
-#' the standardised spectrum type names, which are also names of the second list
-#' hierarchy elements of `data`. These values are allowed: `"spc"`: final
-#' spectrum after atmospheric compensation if performed, otherwise spectrum
-#' after ratioing sample and reference single channel reflectance -- referred to
-#' as `AB` in Bruker OPUS software; `"spc_nocomp"`: Spectrum prior to
-#' atmospheric compensation if performed; `"sc_sm"`: Single channel reflectance
-#' spectrum of the sample; `"sc_rf"`: Single channel reflectance spectrum of
-#' the reference (background spectrum); `"ig_sm"`: Interferogram of the sample;
-#' `"ig_rf"`: Interferogram of the reference. Default is only extracting final
-#' spectra, `spc_types = c("spc")`
-#' @usage gather_spc(data = data, spc_types = c("spc", "spc_nocomp", "sc_sm",
-#' "sc_rf", "ig_sm", "ig_rf"))
-#' @return Spectra related spectral data transformed into (list-)columns
-#' of object of class tibble.
+#' @title Gather measurements of different spectra types, corresponding
+#' x-axis values and metadata from nested list.
+#' @description Gather spectra, corresponding x-axis values, and device and
+#' measurement metadata from a nested list into a spectra tibble, so that one
+#' row represents one spectral measurement. Spectra, x-axis values and metadata
+#' are mapped from the individual list elements (named after file name including
+#' the extension) and transformed into (list-)columns of a spectra tibble,
+#' which is an extended data frame. For each measurement, spectral data and
+#' metadata are combined into one row of the tidy data frame. In addition, the ID
+#' columns `unique_id`, `file_id`, and `sample_id` are extracted from
+#' `"metadata"` (data frame) list entries and returned as identifier columns of
+#' the spectra tibble. List-columns facilitate keeping related data together in
+#' a rectangular data structure. They can be manipulated easily during
+#' subsequent transformations, for example using the standardized functions of
+#' the simplerspec data processing pipeline.
+#' @param data Recursive list named with filename (`file_id`) at first level
+#' entries, where each element containing a sample measurement has nested
+#' metadata (`"metadata"`), spectra types (see `spc_types`), corresponding
+#' x-axis values (see section *"Details on spectra data checks and matching"*).
+#' The `data` list is a structural convention to organize spectra and their
+#' metadata. It follows for example the list structure returned from the Bruker
+#' OPUS binary reader `simplerspec::read_opus_univ()`.
+#' @param spc_types Character vector with the spectra types to be extracted
+#' from `data` list and gathered into list-columns. The spectra type names need
+#' to exactly follow the naming conventions, and the element names and contents
+#' need to be present at the second list hierarchy of `data`. These values are
+#' allowed:
+#' * `"spc"` (default): final raw spectra after atmospheric compensation, if
+#'   performed (named `AB` in Bruker OPUS software; results from referencing
+#'   sample to reference single channel reflectance and transforming to
+#'   absorbance).
+#' * `"spc_nocomp"`: raw spectra without atmospheric correction
+#' * `"sc_sm"`: Single channel reflectance spectra of the samples
+#' * `"sc_rf"`: Single channel reflectance spectra of the reference (background
+#'   spectra)
+#' * `"ig_sm"`: Interferograms of the sample spectra (currently only spectra
+#'   without x-axis list-columns are matched and returned)
+#' * `"ig_rf"`: Interferograms of the reference spectra (currently only spectra
+#'   without x-axis list-columns are matched and returned)
+#' @usage gather_spc(data, spc_types = "spc")
+#' @section Details on spectra data checks and matching:
+#' `gather_spc()` checks whether these conditions are met for each measurement
+#' in the list `data`:
+#' 1. Make sure that the first level `data` elements are named (assumed to be
+#' the file name the data originate from), and remove missing measurements with
+#' an informative message.
+#' 2. Remove any duplicated file names and raise a message if there are
+#'    name duplicates at first level.
+#' 3. Check whether `spc_types` inputs are supported (see argument `spc_types`)
+#'    and present at the second level of the `data` list. If not, remove
+#'    all data elements for incomplete spectral measurements.
+#' 4. Match spectra types and possible corresponding x-axis types from
+#'    a lookup list. For each selected spectrum type (left), at least one of
+#'    the element names of the x-axis type (right) needs to be present for each
+#'    measurement in the list `data`:
+#'    * `"spc"`  : `"wavenumbers"`, `"wavelengths"`, or `"x_values"`
+#'    * `"spc_nocomp"` : `"wavenumbers"`, `"wavelengths"`, or `"x_values"`
+#'    * `"sc_sm"` : `"wavenumbers_sc_sm"`, `"wavelengths_sc_sm"`, or
+#'      `"x_values_sc_sm"`
+#'    * `"sc_rf"` : `"wavenumbers_sc_rf"`, `"wavelengths_sc_rf"`, or
+#'      `"x_values_sc_rf"`
+#' 5. Check if `"metadata"` elements are present and remove data elements for
+#'    measurements with missing or incorrectly named metadata elements
+#'    (message).
+#' @return Spectra tibble (`spc_tbl` with classes `"tbl_df"`, `"tbl"`, and
+#' `"data.frame"`) with the following (list-)columns:
+#' * `"unique_id"`: Character vector with unique measurement identifier, likely
+#'   a string with file names in combination with date and time (extracted from
+#'   each `"metadata"` data frame column).
+#' * `"file_id"` : Character vector with file name including the extension
+#'   (extracted from each `"metadata"` data frame column).
+#' * `"sample_id"`: Character vector with sample identifier. For Bruker OPUS
+#'   binary files, this corresponds to the file name without the file extension
+#'   in integer increments of sample replicate measurements.
+#' * One or multiple of `"spc"`, `"spc_nocomp"`, `"sc_sm"`, or `"sc_rf"`:
+#'   List(s) of data.table's containing spectra type(s).
+#' * One or multiple of `"wavenumbers"`, `"wavelengths"`, `"x_values"`,
+#'   `"wavenumbers_sc_sm"`, `"wavelengths_sc_sm"`, `"x_values_sc_sm"`,
+#'   `"wavenumbers_sc_rf"`, `"wavelengths_sc_rf"`, or `"x_values_sc_rf"`:
+#'   List(s) of numeric vectors with matched x-axis values (see *"Details on
+#'   spectra data checks and matching"* below).
 #' @importFrom rlang set_names
 #' @export
 gather_spc <- function(data,
-                       spc_types = c("spc")) {
+                       spc_types = "spc") {
   spc_types <- map(spc_types, rlang::sym)
   spc_types_chr <- map_chr(spc_types, rlang::quo_name)
 
@@ -41,8 +93,8 @@ gather_spc <- function(data,
 
   if (any(names(data) %in% "")) {
     which_missing <- which(names(data) %in% "")
-    idx_nm_missing <- rlang::set_names(names(data)[which_missing],
-      which_missing)
+    idx_nm_missing <- rlang::set_names(
+      names(data)[which_missing], which_missing)
     message(paste0(length(which_missing), " `data` ",
       ifelse(length(which_missing) > 1, "elements", "element"),
       ifelse(length(which_missing) > 1, " have", " has"),
@@ -122,16 +174,16 @@ gather_spc <- function(data,
   spc_mapped <- map(rlang::set_names(spc_types_chr),
     ~ pluck_depth(data = data, .depth = 1, .string = .x))
 
-  ## Match and extract the values for the x unit types
+  ## Match and extract the values for the x-axis types
 
-  spc_type_x_unit <- list(
+  spc_type_x_axis <- list(
     "spc" = c("wavenumbers", "wavelengths", "x_values"),
     "spc_nocomp" = c("wavenumbers", "wavelengths", "x_values"),
     "sc_sm" = c("wavenumbers_sc_sm", "wavelengths_sc_sm", "x_values_sc_sm"),
     "sc_rf" = c("wavenumbers_sc_rf", "wavelengths_sc_rf", "x_values_sc_rf")
   )
 
-  lcols_x_values_matching <- purrr::flatten_chr(spc_type_x_unit[spc_types_chr])
+  lcols_x_values_matching <- purrr::flatten_chr(spc_type_x_axis[spc_types_chr])
   x_values_matching <- lcols_x_values_matching[lcols_x_values_matching
     %in% unique(purrr::flatten_chr(data_types_byfile))]
 
@@ -146,7 +198,7 @@ gather_spc <- function(data,
     rm_origin_lgl <- names(data_origin) %in% rm_origin
     which_rm_origin <- rlang::set_names(rm_origin, which(rm_origin_lgl))
 
-    message(paste0("These x unit types (second list level names)",
+    message(paste0("These x-axis types (second list level names)",
       " corresponding to \nspecified `spc_types` spectrum types were not",
       " found within\nall first level elements or are NULL",
       " (spectra data by `file_id`) of list `data`: \n\n",
@@ -161,22 +213,22 @@ gather_spc <- function(data,
     spc_mapped <- map(spc_mapped, ~ .x[- which_rm])
   }
 
-  x_values_mapped <- map(set_names(x_values_matching),
+  x_values_mapped <- map(rlang::set_names(x_values_matching),
     ~ pluck_depth(data = data, .depth = 1, .string = .x))
 
-  ## Combine the mapped spectra and correspoding x unit types, and order
+  ## Combine the mapped spectra and correspoding x-axis types, and order
   ## list before returning spectral tibble (`spc_tbl`)
 
-  spc_x_unit_types_order <- c("spc", "wavenumbers", "wavelengths", "x_values",
+  spc_x_axis_types_order <- c("spc", "wavenumbers", "wavelengths", "x_values",
     "spc_nocomp",
     "sc_sm", "wavenumbers_sc_sm", "wavelengths_sc_sm", "x_values_sc_sm",
     "sc_rf", "wavenumbers_sc_rf", "wavelengths_sc_rf", "x_values_sc_rf",
     "ig_sm", "ig_rf")
 
   spc_x_values_mapped <- c(spc_mapped, x_values_mapped)
-  spc_x_unit_types_matched <- spc_x_unit_types_order[spc_x_unit_types_order %in%
+  spc_x_axis_types_matched <- spc_x_axis_types_order[spc_x_axis_types_order %in%
     names(spc_x_values_mapped)]
-  spc_x_values_mapped <- spc_x_values_mapped[spc_x_unit_types_matched]
+  spc_x_values_mapped <- spc_x_values_mapped[spc_x_axis_types_matched]
 
   ## Check if `metadata` elements are present for all list first level elements
 
@@ -206,15 +258,15 @@ gather_spc <- function(data,
 
   ## Extract metadata list elements and combine into tibble
 
-  metadata_mapped <- map(set_names(list("metadata")),
+  metadata_mapped <- map(rlang::set_names(list("metadata")),
     ~ pluck_depth(data = data, .depth = 1, .string = .x))
-  metadata_df <- map_df(data, "metadata")
+  metadata_df <- purrr::map_df(data, "metadata")
   id_tbl <- tibble::as_tibble(
     metadata_df[c("unique_id", "file_id", "sample_id")]
   )
 
   ## Column bind all tibbles of metadata id's, metadata, spectra, and
-  ## x unit type values; return on combined spectral tibble (`spc_tbl`)
+  ## x-axis type values; return on combined spectral tibble (`spc_tbl`)
 
   spc_tbl <- tibble::as_tibble(spc_x_values_mapped)
   metadata_tbl <- tibble::as_tibble(metadata_mapped)
