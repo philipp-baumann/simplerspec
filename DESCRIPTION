@@ -21,7 +21,6 @@ Imports:
     e1071,
     ggplot2 (>= 2.0.0),
     hexView,
-    hyperSpec,
     magrittr,
     mvoutlier,
     lazyeval,
