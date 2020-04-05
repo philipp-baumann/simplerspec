@@ -1,6 +1,7 @@
 Type: Package
 Package: simplerspec
 Version: 0.1.0.9001
+Date: 2020-04-05
 Title: Soil and plant spectroscopic model building and prediction
 Description: Functions that cover
     reading of spectral data, outlier removal,
