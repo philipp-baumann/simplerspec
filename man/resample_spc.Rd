@@ -2,7 +2,7 @@
 % Please edit documentation in R/resample-spc.R
 \name{resample_spc}
 \alias{resample_spc}
-\title{Resample spectra to new x-axis interval}
+\title{Resample spectra in list-column to new x-axis interval}
 \usage{
 resample_spc(
   spc_tbl,
@@ -81,7 +81,7 @@ numeric vectors
 \description{
 Resamples (interpolates) different spectra types with
 corresponding x-axis values that are both stored in list-columns of a spectra
-tibble. A spectra tibble hosts spectra, x-unit vectors, metadata, and
+tibble. A spectra tibble hosts spectra, x-axis vectors, metadata, and
 further linked data with standardized naming conventions. Data input for
 resampling can for example be generated with \code{simplerspec::gather_spc()}.
 Resampling is a key harmonizing step to process and later model spectra
