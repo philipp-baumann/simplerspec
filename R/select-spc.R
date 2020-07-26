@@ -12,8 +12,8 @@
 #' @export
 #'
 select_spc_vars <- function(spc_tbl,
-                            lcol_spc = spc_pre,
-                            lcol_xvalues = xvalues_pre,
+                            lcol_spc = "spc_pre",
+                            lcol_xvalues = "xvalues_pre",
                             every = NULL) {
   lcol_spc <- rlang::enquo(lcol_spc)
   lcol_spc_nm <- rlang::quo_name(lcol_spc)
@@ -30,7 +30,7 @@ select_spc_vars <- function(spc_tbl,
 
   pos_sel <- seq(1L, ncol(spc), every)
 
-  spc_sel <- spc[, ..pos_sel]
+  spc_sel <- spc[, pos_sel, with = FALSE]
 
   spc_lst_out <- stats::setNames(
     map(purrr::transpose(spc_sel), data.table::as.data.table),
