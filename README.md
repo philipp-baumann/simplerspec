@@ -6,6 +6,15 @@
 [![DOI](https://zenodo.org/badge/67121732.svg)](https://zenodo.org/badge/latestdoi/67121732)
 <!-- badges: end -->
 
+## Installation
+
+The newest version of the package is available on this GitHub repository. Note that the package is still under development. If you find bugs you are highly welcome to report issues (write me an [email](mailto:philipp.baumann@usys.ethz.ch) or create an [issue](https://github.com/philipp-baumann/simplerspec/issues)). You can install `simplerspec` using the devtools package.
+
+```R
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("philipp-baumann/simplerspec")
+```
+
 ## Short description
 
 The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a data and modeling workflow. Data inputs and outputs are stored in common S3 `R` objects (`lists` and `data frames`), using in addition [`data.table`](https://rdatatable.gitlab.io/data.table/) and [`tibble`](https://tibble.tidyverse.org/index.html) extensions. The following features are covered in the current version of the package:
@@ -26,36 +35,9 @@ available (based on Kennard-Stones sampling)
 11. [`predict_from_spc()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/predict-spc.R): Predict multiple chemical properties from a list of calibrated models and new soil spectra
 12. [`assess_multimodels()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/utils-stats.R): Assess model performance given multiple pairs of predicted and measured variables.
 
-## Projects using simplerspec
-
-* [Spectral platform for soil samples of the Democratic Republic of Congo](https://sae-interactive-data.ethz.ch/simplerspec.drc/)
-
 ## Cheatsheet
 
 <a href="https://github.com/philipp-baumann/spc-proc-concepts/blob/master/img/simplerspec_cheatsheet_crop.pdf"><img src="https://github.com/philipp-baumann/spc-proc-concepts/blob/master/img/simplerspec_cheatsheet.png" width="630"/></a>
-
-## Installation
-
-The newest version of the package is available on this GitHub repository. Note that the package is still under development. If you find bugs you are highly welcome to report issues (write me an [email](mailto:philipp.baumann@usys.ethz.ch) or create an [issue](https://github.com/philipp-baumann/simplerspec/issues)). You can install `simplerspec` using the devtools package.
-
-```R
-if (!require("devtools")) install.packages("devtools")
-devtools::install_github("philipp-baumann/simplerspec")
-```
-
-### Special installation note for Windows 8 and R versions 3.3 and 3.4
-
-For some Windows versions with recent R versions (3.3 and 3.4), there 
-might be an error message that the `Rcpp` package can not be installed because
-there is no precompiled binary (packaging up) of the `Rcpp` package available on CRAN. Because the `Rcpp` package contains C++ code, the package needs compilation.
-The compiler is supplied in the R tools (contains GCC 4.9.3 and Mingw-W64 V3).
-First, you need to download and install the latest R tools version from [here](https://cran.r-project.org/bin/windows/Rtools/). Then, you need to 
-install `Rcpp` from source provided on CRAN by 
-
-```R
-# install.packages("Rcpp", type = "source")
-```
-
 
 ## Motivation and key concepts
 
@@ -203,6 +185,10 @@ pls_C <- fit_pls(
   pls_ncomp_max = 7 # maximum number of PLS components tested during tuning
 ) 
 ```
+
+## Projects using simplerspec
+
+* [Spectral platform for soil samples of the Democratic Republic of Congo](https://sae-interactive-data.ethz.ch/simplerspec.drc/)
 
 ## Package help
 
