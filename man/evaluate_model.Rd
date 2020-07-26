@@ -10,16 +10,24 @@ evaluate_model(data, obs, pred)
 summary_df(df, x, y)
 }
 \arguments{
-\item{data}{`data.frame`` with predicted and observed data in columns.}
+\item{data}{\code{data.frame} with predicted and observed data in columns.}
 
-\item{obs}{Column that contains observed values, `symbol`/`name` or
-`character` (wrapped in "").}
+\item{obs}{Column that contains observed values, \code{symbol}/\code{name} or
+\code{character} (wrapped in "").}
 
-\item{pred}{Column that contains predicted values, `symbol`/`name` or
-`character` (wrapped in "").}
+\item{pred}{Column that contains predicted values, \code{symbol}/\code{name} or
+\code{character} (wrapped in "").}
+
+\item{df}{\code{data.frame} with predicted and observed data in columns.}
+
+\item{x}{Column that contains observed values, \code{symbol}/\code{name} or
+\code{character} (wrapped in "").}
+
+\item{y}{Column that contains predicted values, \code{symbol}/\code{name} or
+\code{character} (wrapped in "").}
 }
 \description{
-Calculate observed summary statistics and model evaluation
-statistics for assessing agreement between observed (`obs`) and
-predicted (`pred`) values.
+Calculate summary statistics of observed values and model
+evaluation statistics for assessing agreement between observed (\code{obs}) and
+predicted (\code{pred}) values.
 }

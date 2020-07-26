@@ -2,23 +2,37 @@
 % Please edit documentation in R/average-spc.R
 \name{average_spc}
 \alias{average_spc}
-\title{Average spectra in spectral tibble data frame}
+\title{Average spectra in list-column by entries in grouping column}
 \usage{
 average_spc(spc_tbl, by = "sample_id", column_in = "spc_rs")
 }
 \arguments{
-\item{spc_tbl}{Tibble data.frame containing spectra in list-column
-\code{spc_rs}. This list-column is created when resampling spectra
-with \code{resample_spc()}}
+\item{spc_tbl}{Tibble data frame containing at least the grouping column
+given in argument \code{by} and input spectra given in list-column \code{column_in}.}
 
-\item{by}{Character vector of length 1; specifies column by which spectra
-are averaged. Default is \code{"sample_id"}.}
+\item{by}{Character vector of length 1L or name/symbol that specifies the
+column by which groups of spectra are averaged. Default is \code{"sample_id"}.}
+
+\item{column_in}{Character vector of length 1L or or name/symbol that
+specifies the list-column that contains the inputs spectra to be averaged.
+Default is \code{"spc_rs"}, which are resampled spectra (i.e., resulting after
+preceding \code{resample_spc()} step).}
 }
 \value{
-Tibble data frame (class `tbl_df`) with mean spectra appended
-as list-column named \code{spc_mean}.
+Spectra tibble data frame (class \code{"tbl_df"}, \code{"tbl"}, \code{"data.frame"})
+with a new list-column of column name \code{"spc_mean"} at the last position,
+containing mean spectra with identical row replicates within the same
+\code{by}-group.
 }
 \description{
-Average spectra in tibble by a group column after
-resampling spectra by \code{simplerspec::resample_spc()}.
+Average spectra in list-column of spectra tibble (\code{spc_tbl}) by
+groups given in group column.
+}
+\details{
+For memory efficiency and subsequent modeling, consider slicing the
+extra row copies of \code{spc_mean} resulting from \code{average_spc()} for example by
+\itemize{
+\item \verb{split(x = spc_tbl, f = spc_tbl$<by>) \%>\% lapply(., function(x) x x[1, ]) \%>\% do.call(., rbind)}
+\item \verb{dplyr::group_by(spc_tbl, <by>) \%>\% dplyr::slice(1L)}
+}
 }

@@ -3,10 +3,14 @@
 \name{select_spc_vars}
 \alias{select_spc_vars}
 \title{Select every n-th spectral variable for all spectra and x-values in spectral
-tibble (`spc_tbl`)}
+tibble (\code{spc_tbl})}
 \usage{
-select_spc_vars(spc_tbl, lcol_spc = spc_pre,
-  lcol_xvalues = xvalues_pre, every = NULL)
+select_spc_vars(
+  spc_tbl,
+  lcol_spc = "spc_pre",
+  lcol_xvalues = "xvalues_pre",
+  every = NULL
+)
 }
 \arguments{
 \item{spc_tbl}{Tibble data.frame containing spectra in list-column}
@@ -19,7 +23,10 @@ column name as symbols or 1L character vector.}
 
 \item{every}{Every n-th spectral positions to keep as 1L integer vector.}
 }
+\value{
+
+}
 \description{
 Select every n-th spectral variable for all spectra and x-values in spectral
-tibble (`spc_tbl`)
+tibble (\code{spc_tbl})
 }
