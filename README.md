@@ -1,4 +1,6 @@
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/simplerspec-logo.png"><img src="https://github.com/philipp-baumann/simplerspec/blob/master/man/figures/simplerspec-logo.png" width="300"/></a>
+# simplerspec <img src="man/figures/logo.png" align="right" width = "120" />
+
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/simplerspec-logo.png"><img src="https://github.com/philipp-baumann/simplerspec/blob/master/man/figures/simplerspec-logo.png" align="right" width="300"/></a>
 
 <!-- badges: start -->
 [![Travis Build Status](https://travis-ci.org/philipp-baumann/simplerspec.svg?branch=master)](https://travis-ci.org/philipp-baumann/simplerspec)
@@ -6,7 +8,7 @@
 [![DOI](https://zenodo.org/badge/67121732.svg)](https://zenodo.org/badge/latestdoi/67121732)
 <!-- badges: end -->
 
-# Short description
+## Short description
 
 The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a data and modeling workflow. Data inputs and outputs are stored in common S3 `R` objects (`lists` and `data frames`), using in addition [`data.table`](https://rdatatable.gitlab.io/data.table/) and [`tibble`](https://tibble.tidyverse.org/index.html) extensions. The following features are covered in the current version of the package:
 
@@ -26,15 +28,15 @@ available (based on Kennard-Stones sampling)
 11. [`predict_from_spc()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/predict-spc.R): Predict multiple chemical properties from a list of calibrated models and new soil spectra
 12. [`assess_multimodels()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/utils-stats.R): Assess model performance given multiple pairs of predicted and measured variables.
 
-# Projects using simplerspec
+## Projects using simplerspec
 
 * [Spectral platform for soil samples of the Democratic Republic of Congo](https://sae-interactive-data.ethz.ch/simplerspec.drc/)
 
-# Cheatsheet
+## Cheatsheet
 
 <a href="https://github.com/philipp-baumann/spc-proc-concepts/blob/master/img/simplerspec_cheatsheet_crop.pdf"><img src="https://github.com/philipp-baumann/spc-proc-concepts/blob/master/img/simplerspec_cheatsheet.png" width="630"/></a>
 
-# Installation
+## Installation
 
 The newest version of the package is available on this GitHub repository. Note that the package is still under development. If you find bugs you are highly welcome to report issues (write me an [email](mailto:philipp.baumann@usys.ethz.ch) or create an [issue](https://github.com/philipp-baumann/simplerspec/issues)). You can install `simplerspec` using the devtools package.
 
@@ -43,7 +45,7 @@ if (!require("devtools")) install.packages("devtools")
 devtools::install_github("philipp-baumann/simplerspec")
 ```
 
-## Special installation note for Windows 8 and R versions 3.3 and 3.4
+### Special installation note for Windows 8 and R versions 3.3 and 3.4
 
 For some Windows versions with recent R versions (3.3 and 3.4), there 
 might be an error message that the `Rcpp` package can not be installed because
@@ -57,7 +59,7 @@ install `Rcpp` from source provided on CRAN by
 ```
 
 
-# Motivation and key concepts
+## Motivation and key concepts
 
 The functions are built to work in a pipeline and cover commonly used procedures for spectral model development. Many R packages are available to do tasks in spectral modeling such as pre-processing of spectral data. The motivation to create this package was:
 
@@ -85,7 +87,7 @@ provided by Jenny Brian. Further, simplerspec well integrates with the
 data processing API provided by the dplyr package, which makes spectroscopic
 analysis tidy and easy to understand.
 
-# Example workflow
+## Example workflow
 
 Bruker FTIR spectrometers produce binary files in the OPUS format that can contain different types of spectra and many parameters such as instrument type and settings that were used at the time of data acquisition and internal processing (e.g. Fourier transform operations). Basically, the entire set of setup measurement parameters, selected spectra, supplementary metadata such as the time of measurement are written into OPUS binary files. In contrast to simple text files that contain only plain text with a defined character encoding, binary files can contain any type of data represented as sequences of bytes (a single byte is sequence of 8 bits and 1 bit either represents 0 or 1).
 
@@ -204,12 +206,12 @@ pls_C <- fit_pls(
 ) 
 ```
 
-# Package help
+## Package help
 
 After successfully installing simplerspec, you can use the R build-in help
 using `?simplerspec::<fun_name>`
 
-# Credits
+## Credits
 
 I would like to thank the following people for the inspiration by concepts, code and packages:
 
