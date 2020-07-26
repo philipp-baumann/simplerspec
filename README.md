@@ -11,8 +11,8 @@
 The newest version of the package is available on this GitHub repository. Note that the package is still under development. If you find bugs you are highly welcome to report issues (write me an [email](mailto:philipp.baumann@usys.ethz.ch) or create an [issue](https://github.com/philipp-baumann/simplerspec/issues)). You can install `simplerspec` using the devtools package.
 
 ```R
-if (!require("devtools")) install.packages("devtools")
-devtools::install_github("philipp-baumann/simplerspec")
+if (!require("remotes")) install.packages("remotes")
+remotes::install_github("philipp-baumann/simplerspec")
 ```
 
 ## Short description
