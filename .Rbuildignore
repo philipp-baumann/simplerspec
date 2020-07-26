@@ -4,3 +4,5 @@
 LICENSE\.md
 ^appveyor\.yml$
 ^tic\.R$
+^\.ccache$
+^\.github$
