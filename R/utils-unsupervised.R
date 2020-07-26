@@ -1,14 +1,14 @@
 # Helper functions to compute principal component analysis on spectral
 # data and to append scores and importance -------------------------------------
 
-pca_append_scores <- function(spc_tbl, y = spc_pre,
+pca_append_scores <- function(spc_tbl, y = "spc_pre",
                               slice = TRUE, slice_by = sample_id,
                               select_comps = 1:2,
                               scale = TRUE, center = TRUE,
                               .unnest = NULL) {
-  var <- enquo(y)
-  var_nm_pca <- paste0(quo_name(var), "_pca_scores")
-  slice_by <- enquo(slice_by)
+  var <- rlang::enquo(y)
+  var_nm_pca <- paste0(rlang::quo_name(var), "_pca_scores")
+  slice_by <- rlang::enquo(slice_by)
 
   if (slice) {
     spc_tbl <- spc_tbl %>% dplyr::group_by(!!slice_by) %>% dplyr::slice(1L)
@@ -40,13 +40,13 @@ pca_append_scores <- function(spc_tbl, y = spc_pre,
   spc_tbl_pca
 }
 
-
-pca_append_importance <- function(spc_tbl, y = spc_pre,
-                                  slice = TRUE, slice_by = sample_id,
+#' @noRd
+pca_append_importance <- function(spc_tbl, y = "spc_pre",
+                                  slice = TRUE, slice_by = "sample_id",
                                   select_comps = 1:2,
                                   scale = TRUE, center = TRUE) {
-  var <- enquo(y)
-  slice_by <- enquo(slice_by)
+  var <- rlang::enquo(y)
+  slice_by <- rlang::enquo(slice_by)
 
   if (slice) {
     spc_tbl <- spc_tbl %>% dplyr::group_by(!!slice_by) %>% dplyr::slice(1L)
