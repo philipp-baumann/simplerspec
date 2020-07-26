@@ -1,38 +1,67 @@
+## tic Travis CI template: linux-macos-matrix-deploy
+## revision date: 2020-05-09
+
+matrix:
+  include:
+    - os: osx
+      r: release
+    - os: osx
+      r: oldrel
+    - os: linux
+      r: devel
+    - os: linux
+      r: release
+      env:
+      # if you use bookdown or blogdown, replace "PKGDOWN" by the respective
+      # capitalized term. This also might need to be done in tic.R
+      - BUILD_PKGDOWN=true
+    - os: linux
+      r: oldrel
+
+# meta -------------------------------------------------------------------------
 language: r
-sudo: false
-cache: packages
+cache:
+  - packages
+  - $HOME/.ccache
+  - $HOME/Library/Caches/Homebrew
+latex: false
+
+# environment variables --------------------------------------------------------
+
+env:
+  global:
+    - MAKEFLAGS="-j 2"
+
+# Stages -----------------------------------------------------------------------
 
 before_install:
- - sudo apt-get install libnlopt-dev
-
-r:
- - oldrel
- - release
- - devel
-
- script:
-  - |
-    R CMD build .
-    travis_wait 100 R CMD check simplerspec.tar.gz
-
-# addons:
-#   apt:
-#     packages:
-#       - libhunspell-dev
-
-# We want to use devel devtools to load packages so we can catch package
-# installation issues sooner rather than later.
-# r_github_packages:
-#  - hadley/devtools
-
-# We need to install BiocInstaller for testing Bioconductor packages
-# bioc_required: false
-
-# Set CXX1X for R-devel, as R-devel does not detect CXX1X support for gcc 4.6.3,
-# this was causing hunspell installation to fail
-# before_install:
-#   - if [[ "$TRAVIS_R_VERSION_STRING" = 'devel' ]]; then mkdir ~/.R && echo 'CXX1X=g++ -std=c++0x -g -O2 -fPIC' > ~/.R/Makevars; fi
-
-# Only report coverage for the release version
-#after_success:
-# - test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov()'
+  - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install ccache; fi
+  - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then export PATH="/usr/local/opt/ccache/libexec:$PATH"; fi
+  - echo -e "options(Ncpus = 8, repos = structure(c(CRAN = 'https://cloud.r-project.org/')))" > $HOME/.Rprofile
+  - mkdir -p $HOME/.R && echo -e 'CC=ccache gcc -std=gnu99\nCXX=ccache g++\nCXX11=ccache g++ -std=gnu99\nCXX14=ccache g++ -std=gnu99\nCXX17=ccache g++ -std=gnu99\nFC=ccache gfortran\nF77=ccache gfortran' > $HOME/.R/Makevars
+  - mkdir -p $HOME/.ccache && echo -e 'max_size = 5.0G\nsloppiness = include_file_ctime\nhash_dir=false' > $HOME/.ccache/ccache.conf
+  - R -q -e 'if (!requireNamespace("remotes")) install.packages("remotes")'
+  - R -q -e 'if (getRversion() < "3.2" && !requireNamespace("curl")) install.packages("curl")'
+  - R -q -e 'remotes::install_github("ropensci/tic", upgrade = "always"); print(tic::dsl_load()); tic::prepare_all_stages()'
+  - R -q -e 'tic::before_install()'
+install:
+  - R -q -e 'tic::install()'
+before_script:
+  - R -q -e 'tic::before_script()'
+script:
+  - R -q -e 'tic::script()'
+after_success:
+  - R -q -e 'tic::after_success()'
+after_failure:
+  - R -q -e 'tic::after_failure()'
+before_deploy:
+  - R -q -e 'tic::before_deploy()'
+deploy:
+  provider: script
+  script: R -q -e 'tic::deploy()'
+  on:
+    all_branches: true
+after_deploy:
+  - R -q -e 'tic::after_deploy()'
+after_script:
+  - R -q -e 'tic::after_script()'
