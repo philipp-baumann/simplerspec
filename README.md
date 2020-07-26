@@ -1,4 +1,4 @@
-# simplerspec <img src="man/figures/simplerspec-logo.png" align="right" width = "170" />
+# simplerspec <img src="man/figures/simplerspec-logo.png" align="right" width = "250" />
 
 <!-- badges: start -->
 [![Travis Build Status](https://travis-ci.org/philipp-baumann/simplerspec.svg?branch=master)](https://travis-ci.org/philipp-baumann/simplerspec)
