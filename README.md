@@ -6,6 +6,10 @@
 [![DOI](https://zenodo.org/badge/67121732.svg)](https://zenodo.org/badge/latestdoi/67121732)
 <!-- badges: end -->
 
+## Short description
+
+The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a data and modeling workflow. Data inputs and outputs are stored in common S3 `R` objects (`lists` and `data frames`), using in addition [`data.table`](https://rdatatable.gitlab.io/data.table/) and [`tibble`](https://tibble.tidyverse.org/index.html) extensions. The functions are built to work in a pipeline and cover commonly used procedures for spectral model development and application.
+
 ## Installation
 
 The newest version of the package is available on this GitHub repository. Note that the package is still under development. If you find bugs you are highly welcome to report issues (write me an [email](mailto:philipp.baumann@usys.ethz.ch) or create an [issue](https://github.com/philipp-baumann/simplerspec/issues)). You can install `simplerspec` using the remotes package.
@@ -15,9 +19,9 @@ if (!require("remotes")) install.packages("remotes")
 remotes::install_github("philipp-baumann/simplerspec")
 ```
 
-## Short description
+## Key features
 
-The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a data and modeling workflow. Data inputs and outputs are stored in common S3 `R` objects (`lists` and `data frames`), using in addition [`data.table`](https://rdatatable.gitlab.io/data.table/) and [`tibble`](https://tibble.tidyverse.org/index.html) extensions. The following features are covered in the current version of the package:
+The following features are covered in the current version of the package:
 
 1. [`read_opus_univ()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/read-opus-universal.R): Read spectra and metadata from Bruker OPUS binary files into R list
 2. [`gather_spc()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/gather-spc.R): Gather spectra and metadata from list into a tibble object (list-columns)
@@ -41,7 +45,7 @@ available (based on Kennard-Stones sampling)
 
 ## Motivation and key concepts
 
-The functions are built to work in a pipeline and cover commonly used procedures for spectral model development. Many R packages are available to do tasks in spectral modeling such as pre-processing of spectral data. The motivation to create this package was:
+Many R packages are available to do tasks in spectral modeling such as pre-processing of spectral data. The motivation to create this package was:
 
 1. Avoid repetition of code in model development (common source of errors).
 2. Provide a reproducible data analysis workflow for FT-IR spectroscopy.
