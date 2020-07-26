@@ -48,10 +48,10 @@ assess_multimodels <- function(data,
 
 
 #' @title Calculate model evaluation metrics
-#' @description Calculate observed summary statistics and model evaluation
-#' statistics for assessing agreement between observed (`obs`) and
+#' @description Calculate summary statistics of observed values and model
+#' evaluation statistics for assessing agreement between observed (`obs`) and
 #' predicted (`pred`) values.
-#' @param data `data.frame`` with predicted and observed data in columns.
+#' @param data `data.frame` with predicted and observed data in columns.
 #' @param obs Column that contains observed values, `symbol`/`name` or
 #' `character` (wrapped in "").
 #' @param pred Column that contains predicted values, `symbol`/`name` or
@@ -147,6 +147,11 @@ evaluate_model <- function(data, obs, pred) {
 # in the y-axis vs. predicted (P) in the x-axis ((OP) regressions), according
 # Pineiro et al. (2008)
 #' @rdname evaluate_model
+#' @param df `data.frame` with predicted and observed data in columns.
+#' @param x Column that contains observed values, `symbol`/`name` or
+#' `character` (wrapped in "").
+#' @param y Column that contains predicted values, `symbol`/`name` or
+#' `character` (wrapped in "").
 #' @export
 summary_df <- function(df, x, y) {
   evaluate_model(data = df, obs = x, pred = y)
