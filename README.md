@@ -21,7 +21,7 @@ remotes::install_github("philipp-baumann/simplerspec")
 
 ## Key features
 
-The following features are covered in the current version of the package:
+The current version of the package features among others the following functions:
 
 1. [`read_opus_univ()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/read-opus-universal.R): Read spectra and metadata from Bruker OPUS binary files into R list
 2. [`gather_spc()`](https://github.com/philipp-baumann/simplerspec/blob/master/R/gather-spc.R): Gather spectra and metadata from list into a tibble object (list-columns)
