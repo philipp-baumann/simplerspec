@@ -1,10 +1,10 @@
 <a href="https://github.com/philipp-baumann/simplerspec/blob/master/simplerspec-logo.png"><img src="https://github.com/philipp-baumann/simplerspec/blob/master/man/figures/simplerspec-logo.png" width="300"/></a>
 
-Travis-CI build status (Debian Linux) [![Travis Build Status](https://travis-ci.org/philipp-baumann/simplerspec.svg?branch=master)](https://travis-ci.org/philipp-baumann/simplerspec)
-
-AppVeyor build status (Windows) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/philipp-baumann/simplerspec?branch=master&svg=true)](https://ci.appveyor.com/project/philipp-baumann/simplerspec)
-
+<!-- badges: start -->
+[![Travis Build Status](https://travis-ci.org/philipp-baumann/simplerspec.svg?branch=master)](https://travis-ci.org/philipp-baumann/simplerspec)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/philipp-baumann/simplerspec?branch=master&svg=true)](https://ci.appveyor.com/project/philipp-baumann/simplerspec)
 [![DOI](https://zenodo.org/badge/67121732.svg)](https://zenodo.org/badge/latestdoi/67121732)
+<!-- badges: end -->
 
 # Short description
 

@@ -413,8 +413,8 @@ plot_spc_ext <- function(spc_tbl, spc_tbl_l = NULL,
         alpha = alpha, size = line_width)
       if (!is.null(group_color_palette)) {
         p <- p +
-          scale_colour_brewer(type = "div", palette = group_color_palette,
-            direction = -1)
+          ggplot2::scale_colour_brewer(type = "div",
+            palette = group_color_palette, direction = -1)
 
       }
     if (group_legend == FALSE) {
