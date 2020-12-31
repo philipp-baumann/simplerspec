@@ -8,7 +8,7 @@
 
 ## Short description
 
-The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a data and modeling workflow. Data inputs and outputs are stored in common S3 `R` objects (`lists` and `data frames`), using in addition [`data.table`](https://rdatatable.gitlab.io/data.table/) and [`tibble`](https://tibble.tidyverse.org/index.html) extensions. The functions are built to work in a pipeline and cover commonly used procedures for spectral model development and application.
+The simplerspec package aims to facilitate spectral and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a data and modeling workflow. Data inputs and outputs are stored in common S3 `R` objects (`lists` and `data frames`), using in addition [`data.table`](https://rdatatable.gitlab.io/data.table/) and [`tibble`](https://tibble.tidyverse.org/index.html) extensions. The functions are built to work in a pipeline and cover commonly used procedures for spectral model development and application.
 
 ## Installation
 
