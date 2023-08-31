@@ -19,20 +19,20 @@ If \code{rm = FALSE}, there will be no outlier removal}
 \value{
 Returns list \code{spectra_out} that contains:
 \itemize{
- \item \code{MIR_mean}: Outlier removed MIR spectra as
- data.frame object. If \code{remove = FALSE},
- the function will
- return almost identical list identical to \code{list_spectra},
- except that the first \code{indices} column of the spectral
- data frame \code{MIR_mean} is removed
- (This is done for both options
- \code{remove = TRUE} and \code{remove = FALSE}).
- \item \code{data_meta}: metadata data.frame, identical
- as in the \code{list_spectra} input list.
- \item \code{plot_out}: (optional) ggplot2 graph
- that shows all spectra (absorbance on x-axis and wavenumber
- on y-axis) with outlier marked, if
- \code{remove = TRUE}.
+\item \code{MIR_mean}: Outlier removed MIR spectra as
+data.frame object. If \code{remove = FALSE},
+the function will
+return almost identical list identical to \code{list_spectra},
+except that the first \code{indices} column of the spectral
+data frame \code{MIR_mean} is removed
+(This is done for both options
+\code{remove = TRUE} and \code{remove = FALSE}).
+\item \code{data_meta}: metadata data.frame, identical
+as in the \code{list_spectra} input list.
+\item \code{plot_out}: (optional) ggplot2 graph
+that shows all spectra (absorbance on x-axis and wavenumber
+on y-axis) with outlier marked, if
+\code{remove = TRUE}.
 }
 }
 \description{

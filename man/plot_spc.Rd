@@ -57,11 +57,6 @@ set. Default is \code{"red"}.}
 \item{ylab}{Character string or mathematical expression
 (use \code{expression}) for the y axis title. Default is \code{"absorbance"}.}
 
-\item{slice}{Logical whether to slice the data sets (select rows by position).
-Default is \code{TRUE}.
-This argument will soon be supported to group spectra based id variables present
-in spc_tbl such as the `sample_id` and slicing the data set prior to plotting.}
-
 \item{alpha}{Double in between 0 and 1. Sets the transparency for the plotted
 spectra lines.}
 

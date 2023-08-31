@@ -32,10 +32,6 @@
 #' \code{expression(paste("Wavenumber [", cm^-1, "]"))}.
 #' @param ylab Character string or mathematical expression
 #' (use \code{expression}) for the y axis title. Default is \code{"absorbance"}.
-#' @param slice Logical whether to slice the data sets (select rows by position).
-#' Default is \code{TRUE}.
-#' This argument will soon be supported to group spectra based id variables present
-#' in spc_tbl such as the `sample_id` and slicing the data set prior to plotting.
 #' @param alpha Double in between 0 and 1. Sets the transparency for the plotted
 #' spectra lines.
 #' @param legend Logical whether to plot a legend for the spectra describing
@@ -56,17 +52,12 @@ plot_spc <- function(spc_tbl, spc_tbl_2 = NULL,
                      graph_id_1 = "Set 1", graph_id_2 = "Set 2",
                      graph_id_1_col = "black", graph_id_2_col = "red",
                      xlab = expression(paste("Wavenumber [", cm^-1, "]")),
-                     ylab = "Absorbance", slice = TRUE, alpha = 0.2,
+                     ylab = "Absorbance", alpha = 0.2,
                      legend = TRUE) {
 
   # Fix `R CMD check NOTE`: "no visible binding for global variable ‘...‘"
   graph_id <- id <- variable <- value <- NULL
 
-  # (0) Slice spectra tibble to remove triplicate spectra (reps)
-  # only sample_id level
-  if(slice == TRUE) {
-    spc_tbl <- dplyr::slice(spc_tbl)
-  }
   # (1) Gather spectra into one data.table
   if(!is.null(spc_tbl_2)) {
     if(y == "spc") {

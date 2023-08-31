@@ -5,8 +5,13 @@
 \title{Merge list-columns of spectra, x-axis values, metadata and additional
 measured variables into a single long form data.table}
 \usage{
-merge_dts(spc_tbl, lcols_spc = c("spc", "spc_pre"), lcol_measure = NULL,
-  spc_id = "unique_id", group_id = "sample_id")
+merge_dts(
+  spc_tbl,
+  lcols_spc = c("spc", "spc_pre"),
+  lcol_measure = NULL,
+  spc_id = "unique_id",
+  group_id = "sample_id"
+)
 }
 \arguments{
 \item{spc_tbl}{Tibble data frame containing spectra, x-axis values, metadata

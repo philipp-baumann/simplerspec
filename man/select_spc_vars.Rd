@@ -24,7 +24,7 @@ column name as symbols or 1L character vector.}
 \item{every}{Every n-th spectral positions to keep as 1L integer vector.}
 }
 \value{
-
+a spectral tibble
 }
 \description{
 Select every n-th spectral variable for all spectra and x-values in spectral
