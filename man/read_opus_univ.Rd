@@ -16,7 +16,7 @@ Possible values are: "spc" (AB block in Bruker Opus software), "spc_nocomp"
 correction has been set in Opus), "ScSm" (Single channel spectrum of the
 sample), "ScRf" (Single channel spectrum of the sample), "IgSm" (Interferogram
 of the sample), "IgRf" (Interferogram of the reference). Default is
- \code{extract = c("spc")}.}
+\code{extract = c("spc")}.}
 
 \item{parallel}{Logical (\code{TRUE} or \code{FALSE} indicating whether
 files are read in parallel (multiple processors or multiple cores)).

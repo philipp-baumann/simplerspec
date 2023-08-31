@@ -4,8 +4,12 @@
 \alias{slice_xvalues}
 \title{Slice spectra into defined x-axis ranges}
 \usage{
-slice_xvalues(spc_tbl, xunit_lcol = "wavenumbers", spc_lcol = "spc",
-  xvalues_cut = NULL)
+slice_xvalues(
+  spc_tbl,
+  xunit_lcol = "wavenumbers",
+  spc_lcol = "spc",
+  xvalues_cut = NULL
+)
 }
 \arguments{
 \item{spc_tbl}{Spectral data in a tibble object (classes "tibble_df", "tbl"

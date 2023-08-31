@@ -4,8 +4,7 @@
 \alias{preprocess_spc}
 \title{Preprocess spectra}
 \usage{
-preprocess_spc(spc_tbl, select, column_in = "spc_mean",
-  custom_function = NULL)
+preprocess_spc(spc_tbl, select, column_in = "spc_mean", custom_function = NULL)
 }
 \arguments{
 \item{spc_tbl}{Tibble that contains spectra to be preprocessed within
@@ -24,7 +23,7 @@ in \code{select}.}
 
 \item{custom_function}{A character string of a custom processing function
 that is later parsed (produces expression in a list) and evaluated within
- the function \code{preprocess_spc}.
+the function \code{preprocess_spc}.
 The character vector argument of \code{custom_function}
 needs to contain \code{"spc_raw"}, which is the single data table of spectra
 that results from binding a list of data.tables (spectra to preprocess)

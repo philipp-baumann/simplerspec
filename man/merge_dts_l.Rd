@@ -5,8 +5,13 @@
 \title{Wrapper function around \code{merge_dts()} for list of tibbles to
 aggregate data for plotting.}
 \usage{
-merge_dts_l(spc_tbl_l, lcols_spc = c("spc", "spc_pre"), lcol_measure = NULL,
-  spc_id = "unique_id", group_id = "sample_id")
+merge_dts_l(
+  spc_tbl_l,
+  lcols_spc = c("spc", "spc_pre"),
+  lcol_measure = NULL,
+  spc_id = "unique_id",
+  group_id = "sample_id"
+)
 }
 \arguments{
 \item{spc_tbl_l}{List of spectral tibbles (data frames).}

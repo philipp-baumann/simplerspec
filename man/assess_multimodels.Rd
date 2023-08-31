@@ -4,15 +4,19 @@
 \alias{assess_multimodels}
 \title{Assess multiple pairs of measured and predicted values}
 \usage{
-assess_multimodels(data, ..., .metrics = c("simplerspec", "yardstick"),
-  .model_name = "model")
+assess_multimodels(
+  data,
+  ...,
+  .metrics = c("simplerspec", "yardstick"),
+  .model_name = "model"
+)
 }
 \arguments{
 \item{data}{Data frame with all measured (observed) and predicted variables.}
 
 \item{...}{Multiple arguments with observed (measured)-predicted pairs,
 specified with \code{dplyr::vars(o = <column_name>, p = <column_name>)}.
-Column names can strings or symbols. The arguments in `...` need to be named.}
+Column names can strings or symbols. The arguments in \code{...} need to be named.}
 
 \item{.metrics}{Character vector with package used for metrics calculation.
 Default is \code{"simplerspec"}, which uses

@@ -7,7 +7,7 @@
 #' @param lcol_xvalues List-column containing x-values, specified with
 #' column name as symbols or 1L character vector.
 #' @param every Every n-th spectral positions to keep as 1L integer vector.
-#' @return
+#' @return a spectral tibble
 #' @export
 select_spc_vars <- function(spc_tbl,
                             lcol_spc = "spc_pre",

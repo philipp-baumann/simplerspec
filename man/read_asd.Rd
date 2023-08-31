@@ -14,7 +14,7 @@ remaining columns are sample spectra referred by an ID name provided in the
 first row of these columns.}
 }
 \value{
-Spectra data in tibble data frame (class `tbl_df`) that contains
+Spectra data in tibble data frame (class \code{tbl_df}) that contains
 columns \code{sample_id} (derived from 2nd and following column names of
 tab delimited ASD exported text file),
 \code{spc} (list-column of spectral matrices)
