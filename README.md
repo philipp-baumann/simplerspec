@@ -1,6 +1,7 @@
 # simplerspec <img src="man/figures/simplerspec-logo.png" align="right" width = "250" />
 
 <!-- badges: start -->
+[![tic](https://github.com/philipp-baumann/simplerspec/workflows/tic/badge.svg?branch=main)](https://github.com/philipp-baumann/simplerspec/actions)
 [![DOI](https://zenodo.org/badge/67121732.svg)](https://zenodo.org/badge/latestdoi/67121732)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![runiverse-package simplerspec](https://philipp-baumann.r-universe.dev/badges/simplerspec?scale=1&color=pink&style=round)](https://philipp-baumann.r-universe.dev/simplerspec)
