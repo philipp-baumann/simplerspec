@@ -18,6 +18,9 @@ The newest version of the package is available on this GitHub repository. If you
 # option 1
 if (!require("remotes")) install.packages("remotes")
 remotes::install_github("philipp-baumann/simplerspec")
+```
+
+```R
 # option 2
 install.packages("simplerspec",
   repos = c("https://philipp-baumann.r-universe.dev", "https://cloud.r-project.org"))
