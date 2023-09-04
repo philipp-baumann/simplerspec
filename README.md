@@ -12,11 +12,15 @@ The simplerspec package aims to facilitate spectral and additional data handling
 
 ## Installation
 
-The newest version of the package is available on this GitHub repository. Note that the package is still under development. If you find bugs you are highly welcome to report issues (write me an [email](mailto:philipp.baumann@usys.ethz.ch) or create an [issue](https://github.com/philipp-baumann/simplerspec/issues)). You can install `simplerspec` using the remotes package.
+The newest version of the package is available on this GitHub repository. If you find bugs you are highly welcome to report issues (write me an [email](mailto:info@spectral-cockpit.space) or create an [issue](https://github.com/philipp-baumann/simplerspec/issues)). You can install {simplerspec} from GitHub or directly from the r-universe.
 
 ```R
+# option 1
 if (!require("remotes")) install.packages("remotes")
 remotes::install_github("philipp-baumann/simplerspec")
+# option 2
+install.packages("simplerspec",
+  repos = c("https://philipp-baumann.r-universe.dev", "https://cloud.r-project.org"))
 ```
 
 ## Key features
