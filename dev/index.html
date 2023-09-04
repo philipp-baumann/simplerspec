@@ -86,8 +86,9 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># option 1</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"philipp-baumann/simplerspec"</span><span class="op">)</span></span>
-<span><span class="co"># option 2</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"philipp-baumann/simplerspec"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># option 2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"simplerspec"</span>,</span>
 <span>  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://philipp-baumann.r-universe.dev"</span>, <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -158,7 +159,7 @@
 </h2>
 <p>Bruker FTIR spectrometers produce binary files in the OPUS format that can contain different types of spectra and many parameters such as instrument type and settings that were used at the time of data acquisition and internal processing (e.g. Fourier transform operations). Basically, the entire set of setup measurement parameters, selected spectra, supplementary metadata such as the time of measurement are written into OPUS binary files. In contrast to simple text files that contain only plain text with a defined character encoding, binary files can contain any type of data represented as sequences of bytes (a single byte is sequence of 8 bits and 1 bit either represents 0 or 1).</p>
 <p>Simplerspec comes with reader function <code><a href="reference/read_opus_univ.html">read_opus_univ()</a></code> that is intended to be a universal Bruker OPUS file reader that extracts spectra and key metadata from files. Usually, one is mostly interested to extract the final absorbance spectra (shown as <em>AB</em> in the OPUS viewer software).</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load simplerspec package for spectral model development wrapper functions</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/philipp-baumann/simplerspec" class="external-link">simplerspec</a></span><span class="op">)</span></span>
 <span><span class="co"># Load tidyverse packages: loads packages frequently used for data manipulation,</span></span>
@@ -185,7 +186,7 @@
 <span><span class="co">#&gt; ...</span></span></code></pre></div>
 <p>Pipes can make R code more readable and allows step-wise data processing when developing spectral models. The pipe operator (<code>%&gt;%</code>, called “then”) is a new operator in R that was introduced with the magrittr package. It facilitates readability of code and avoids to type intermediate objects. The basic behavior of the pipe operator is that the object on the left hand side is passed as the first argument to the function on the right hand side. When loading the tidyverse packages, the pipe operator is attached to the current R session. More details can be found <a href="https://magrittr.tidyverse.org" class="external-link">here</a>.</p>
 <p>The model development process can be quickly coded as the example below illustrates:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Spectral data processing pipe ===============================================</span></span>
 <span></span>
 <span><span class="va">soilspec_tbl</span> <span class="op">&lt;-</span> <span class="va">spc_list</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
