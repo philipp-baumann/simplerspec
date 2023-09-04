@@ -11,7 +11,7 @@ plot_spc(spc_tbl, spc_tbl_2 = NULL,
   graph_id_1_col = "black", graph_id_2_col = "red",
   xlab = expression(paste("Wavenumber [", cm^-1, "]")),
   ylab = "Absorbance",
-  slice = TRUE, alpha = 0.2, legend = TRUE)
+  alpha = 0.2, legend = TRUE)
 }
 \arguments{
 \item{spc_tbl}{Tibble that contains the first set of spectra to plot as
