@@ -53,10 +53,10 @@ Many R packages are available to do tasks in spectral modeling such as pre-proce
 
 This package builds mainly upon functions from the following R packages:
 
-* [`prospectr`](https://cran.r-project.org/web/packages/prospectr/index.html): Various utilities for pre-processing and sample selection based on spectroscopic data. An introduction to the package with examples can be found [here](http://antoinestevens.github.io/prospectr/).
-* `plyr` and [`dplyr`](https://dplyr.tidyverse.org/): Fast data manipulation tools with an unified interface. See [here](https://github.com/hadley/dplyr) for details.
-* `ggplot2 `: Alternative plotting system for R, based on the grammar of graphics. See [here](http://ggplot2.org/).
-* `caret `: Classification and regression training. A set of functions that attempt to streamline the process for creating predictive models. See [here](http://topepo.github.io/caret/index.html) for details.
+* [`prospectr`](https://cran.r-project.org/web/packages/prospectr/index.html): Various utilities for pre-processing and sample selection based on spectroscopic data. An introduction to the package with examples can be found [here](https://l-ramirez-lopez.r-universe.dev/articles/prospectr/prospectr.html).
+* `plyr` and [`dplyr`](https://dplyr.tidyverse.org): Fast data manipulation tools with an unified interface.
+* `ggplot2 `: Alternative plotting system for R, based on the grammar of graphics. See [here](https://ggplot2.tidyverse.org).
+* `caret `: Classification and regression training. A set of functions that attempt to streamline the process for creating predictive models. See [here](https://topepo.github.io/caret/) for details.
 
 Consistent and reproducible data and metadata management is an important prerequisite for spectral model development. Therefore, simplerspec functions are based on storing spectral data and related data in R data structures which keep related data in rows. Every row representing an observation contains data related to a single spectral measurement. Simplerspec functions uses tibble data frames as principal data structures because they allow to store lists within the well-known data frame structures. Lists are flexible data structures and can e.g. contain other lists, vectors, data.frames, or matrices.
 
@@ -64,7 +64,7 @@ List-columns features provided within the tibble framework are an excellent base
 Simplerspec internally uses popular functional programming extension tools provided
 by the [`purrr`](https://purrr.tidyverse.org/) package for processing and transforming spectra. 
 For learning more, I would recommend
-[this nice purrr list-column tutorial](https://jennybc.github.io/purrr-tutorial/ls13_list-columns.html) 
+[this nice purrr list-column tutorial](https://github.com/jennybc/purrr-tutorial/tree/gh-pages) 
 provided by Jenny Brian. Further, simplerspec well integrates with the 
 data processing API provided by the dplyr package, which makes spectroscopic
 analysis tidy and easy to understand.
@@ -110,7 +110,7 @@ the pipe operator is
 that the object on the left hand side is passed as the first argument
 to the function on the right hand side. When loading the tidyverse packages, the
 pipe operator is attached to the current R session.
-More details can be found [here](https://github.com/smbache/magrittr).
+More details can be found [here](https://magrittr.tidyverse.org).
 
 The model development process can be quickly coded as the example below illustrates:
 
@@ -205,10 +205,10 @@ using `?simplerspec::<fun_name>`
 
 I would like to thank the following people for the inspiration by concepts, code and packages:
 
-* Antoine Stevens and Leonardo Ramirez-Lopez for their contributions to the [prospectr package](https://cran.r-project.org/web/packages/prospectr/index.html) and the
+* Antoine Stevens and Leonardo Ramirez-Lopez for their contributions to the [prospectr package](https://l-ramirez-lopez.r-universe.dev/prospectr) and the
 *Guide to Diffuse Reflectance Spectroscopy & Multivariate Calibration*
 * Andrew Sila, Tomislav Hengl, and Thomas Terhoeven-Urselmans for the [`read.opus()`](https://github.com/cran/soil.spec/blob/master/R/read.opus.R)
-function from the [soil.spec](https://cran.r-project.org/web/packages/soil.spec/index.html) package developed at ICRAF.
-* [Hadley Wickham](http://hadley.nz/) for his work and concepts on data science within R
+function from the [soil.spec](https://cran.r-project.org/src/contrib/Archive/soil.spec/) package developed at ICRAF.
+* [Hadley Wickham](https://hadley.nz) for his work and concepts on data science within R
 * [Max Kuhn](https://github.com/topepo) for the creation of the caret package and for his excellent teaching
-materials on [applied predictive modeling](http://appliedpredictivemodeling.com/blog/)
+materials on [applied predictive modeling](https://link.springer.com/book/10.1007/978-1-4614-6849-3)
