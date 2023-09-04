@@ -8,7 +8,7 @@ Description: Functions that cover
     spectral preprocessing, calibration sampling, PLS regression
     using caret, and model diagnostic statistics and plots.
 Authors@R: person("Philipp", "Baumann",
-  email = "philipp.baumann@usys.ethz.ch", role = c("aut", "cre"))
+  email = "baumann-philipp@protonmail.com", role = c("aut", "cre"))
 URL: https://github.com/philipp-baumann/simplerspec
 BugReports: https://github.com/philipp-baumann/simplerspec
 Depends: R (>= 3.0),
