@@ -30,6 +30,7 @@ Imports:
     purrr,
     reshape2,
     rlang (>= 0.2.0),
+    stringr,
     tibble,
     tidyselect,
     tidyr,
