@@ -1,8 +1,6 @@
 # simplerspec <img src="man/figures/simplerspec-logo.png" align="right" width = "250" />
 
 <!-- badges: start -->
-[![Travis Build Status](https://travis-ci.org/philipp-baumann/simplerspec.svg?branch=master)](https://travis-ci.org/philipp-baumann/simplerspec)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/philipp-baumann/simplerspec?branch=master&svg=true)](https://ci.appveyor.com/project/philipp-baumann/simplerspec)
 [![DOI](https://zenodo.org/badge/67121732.svg)](https://zenodo.org/badge/latestdoi/67121732)
 <!-- badges: end -->
 
