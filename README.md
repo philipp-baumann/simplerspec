@@ -2,6 +2,8 @@
 
 <!-- badges: start -->
 [![DOI](https://zenodo.org/badge/67121732.svg)](https://zenodo.org/badge/latestdoi/67121732)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![runiverse-package simplerspec](https://philipp-baumann.r-universe.dev/badges/simplerspec?scale=1&color=pink&style=round)](https://philipp-baumann.r-universe.dev/simplerspec)
 <!-- badges: end -->
 
 ## Short description
