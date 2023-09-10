@@ -1,3 +1,10 @@
+<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+
+# simplerspec 0.2.0
+
+- Add new example data set `soilspec_yamsys`.
+- `gather_spc()`: Consolidate the documentation with details on how data are matched from list and gathered into a spectra tibble.
+
 # simplerspec 0.1.0.9001
 
 * `resample_spc()` now supports flexible spectra and x-axis types as inputs. Its
