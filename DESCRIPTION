@@ -38,7 +38,7 @@ Imports:
     glue,
     broom
 License: GPL-2
-LazyData: TRUE
+LazyData: true
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
