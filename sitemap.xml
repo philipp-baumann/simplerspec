@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://philipp-baumann.github.io/simplerspec/404.html</loc>
+  </url>
+  <url>
+    <loc>https://philipp-baumann.github.io/simplerspec/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://philipp-baumann.github.io/simplerspec/authors.html</loc>
+  </url>
+  <url>
     <loc>https://philipp-baumann.github.io/simplerspec/index.html</loc>
+  </url>
+  <url>
+    <loc>https://philipp-baumann.github.io/simplerspec/news/index.html</loc>
   </url>
   <url>
     <loc>https://philipp-baumann.github.io/simplerspec/reference/assess_multimodels.html</loc>
@@ -32,6 +44,9 @@
   </url>
   <url>
     <loc>https://philipp-baumann.github.io/simplerspec/reference/gather_spc.html</loc>
+  </url>
+  <url>
+    <loc>https://philipp-baumann.github.io/simplerspec/reference/index.html</loc>
   </url>
   <url>
     <loc>https://philipp-baumann.github.io/simplerspec/reference/join_chem_spec.html</loc>
@@ -89,6 +104,9 @@
   </url>
   <url>
     <loc>https://philipp-baumann.github.io/simplerspec/reference/slice_xvalues.html</loc>
+  </url>
+  <url>
+    <loc>https://philipp-baumann.github.io/simplerspec/reference/soilspec_yamsys.html</loc>
   </url>
   <url>
     <loc>https://philipp-baumann.github.io/simplerspec/reference/split_df2l.html</loc>

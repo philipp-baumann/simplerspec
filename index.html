@@ -22,6 +22,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -34,18 +36,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">simplerspec</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -55,8 +51,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/philipp-baumann/simplerspec/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/philipp-baumann/simplerspec/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -72,66 +68,71 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="simplerspec-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#simplerspec-" class="anchor"></a>simplerspec <img src="reference/figures/simplerspec-logo.png" align="right" width="250">
+<div class="section level1">
+<div class="page-header"><h1 id="simplerspec-">simplerspec <img src="reference/figures/simplerspec-logo.png" align="right" width="250"><a class="anchor" aria-label="anchor" href="#simplerspec-"></a>
 </h1></div>
 <!-- badges: start -->
 
-<div id="short-description" class="section level2">
-<h2 class="hasAnchor">
-<a href="#short-description" class="anchor"></a>Short description</h2>
-<p>The simplerspec package aims to facilitate spectra and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a data and modeling workflow. Data inputs and outputs are stored in common S3 <code>R</code> objects (<code>lists</code> and <code>data frames</code>), using in addition <a href="https://rdatatable.gitlab.io/data.table/"><code>data.table</code></a> and <a href="https://tibble.tidyverse.org/index.html"><code>tibble</code></a> extensions. The functions are built to work in a pipeline and cover commonly used procedures for spectral model development and application.</p>
+<div class="section level2">
+<h2 id="short-description">Short description<a class="anchor" aria-label="anchor" href="#short-description"></a>
+</h2>
+<p>The simplerspec package aims to facilitate spectral and additional data handling and model development for spectroscopy applications such as infrared soil spectroscopy. Different helper functions are designed to create a data and modeling workflow. Data inputs and outputs are stored in common S3 <code>R</code> objects (<code>lists</code> and <code>data frames</code>), using in addition <a href="https://rdatatable.gitlab.io/data.table/" class="external-link"><code>data.table</code></a> and <a href="https://tibble.tidyverse.org/index.html" class="external-link"><code>tibble</code></a> extensions. The functions are built to work in a pipeline and cover commonly used procedures for spectral model development and application.</p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>The newest version of the package is available on this GitHub repository. Note that the package is still under development. If you find bugs you are highly welcome to report issues (write me an <a href="mailto:philipp.baumann@usys.ethz.ch">email</a> or create an <a href="https://github.com/philipp-baumann/simplerspec/issues">issue</a>). You can install <code>simplerspec</code> using the remotes package.</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"remotes"</span>)) <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"remotes"</span>)
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"philipp-baumann/simplerspec"</span>)</pre></div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>The newest version of the package is available on this GitHub repository. If you find bugs you are highly welcome to report issues (write me an <a href="mailto:info@spectral-cockpit.space">email</a> or create an <a href="https://github.com/philipp-baumann/simplerspec/issues" class="external-link">issue</a>). You can install {simplerspec} from GitHub or directly from the r-universe.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># option 1</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"philipp-baumann/simplerspec"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># option 2</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"simplerspec"</span>,</span>
+<span>  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://philipp-baumann.r-universe.dev"</span>, <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="key-features" class="section level2">
-<h2 class="hasAnchor">
-<a href="#key-features" class="anchor"></a>Key features</h2>
-<p>The following features are covered in the current version of the package:</p>
-<ol>
+<div class="section level2">
+<h2 id="key-features">Key features<a class="anchor" aria-label="anchor" href="#key-features"></a>
+</h2>
+<p>The current version of the package features among others the following functions:</p>
+<ol style="list-style-type: decimal">
 <li>
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/read-opus-universal.R"><code><a href="reference/read_opus_univ.html">read_opus_univ()</a></code></a>: Read spectra and metadata from Bruker OPUS binary files into R list</li>
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/read-opus-universal.R" class="external-link"><code>read_opus_univ()</code></a>: Read spectra and metadata from Bruker OPUS binary files into R list</li>
 <li>
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/gather-spc.R"><code><a href="reference/gather_spc.html">gather_spc()</a></code></a>: Gather spectra and metadata from list into a tibble object (list-columns)</li>
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/gather-spc.R" class="external-link"><code>gather_spc()</code></a>: Gather spectra and metadata from list into a tibble object (list-columns)</li>
 <li>
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/resample-spc.R"><code><a href="reference/resample_spc.html">resample_spc()</a></code></a>: Resample spectra to new wavenumber intervals</li>
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/resample-spc.R" class="external-link"><code>resample_spc()</code></a>: Resample spectra to new wavenumber intervals</li>
 <li>
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/average-spc.R"><code><a href="reference/average_spc.html">average_spc()</a></code></a>: Average spectra for replicate scans</li>
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/average-spc.R" class="external-link"><code>average_spc()</code></a>: Average spectra for replicate scans</li>
 <li>
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/preprocess-spc.R"><code><a href="reference/preprocess_spc.html">preprocess_spc()</a></code></a>: Perform pre-processing of spectra</li>
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/preprocess-spc.R" class="external-link"><code>preprocess_spc()</code></a>: Perform pre-processing of spectra</li>
 <li>
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/select-spc.R"><code><a href="reference/select_spc_vars.html">select_spc_vars()</a></code></a>: Select every <code>n</code>-th spectral variable and corresponding X-unit values.</li>
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/select-spc.R" class="external-link"><code>select_spc_vars()</code></a>: Select every <code>n</code>-th spectral variable and corresponding X-unit values.</li>
 <li>
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/join-chem-spectra.R"><code><a href="reference/join_spc_chem.html">join_spc_chem()</a></code></a>: Join chemical and spectral data sets by <code>sample_id</code>
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/join-chem-spectra.R" class="external-link"><code>join_spc_chem()</code></a>: Join chemical and spectral data sets by <code>sample_id</code>
 </li>
 <li>
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/plot-spc-extended.R"><code><a href="reference/plot_spc_ext.html">plot_spc_ext()</a></code></a>: Extended spectral plotting; e.g. group spectra using different panels or color spectra based on chemical reference values to explore trends.</li>
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/plot-spc-extended.R" class="external-link"><code>plot_spc_ext()</code></a>: Extended spectral plotting; e.g. group spectra using different panels or color spectra based on chemical reference values to explore trends.</li>
 <li>
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/pls-modeling.R"><code><a href="reference/fit_pls.html">fit_pls()</a></code></a>: Perform model tuning and evaluation based on Partial Least Squares (PLS) regression</li>
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/pls-modeling.R" class="external-link"><code>fit_pls()</code></a>: Perform model tuning and evaluation based on Partial Least Squares (PLS) regression</li>
 <li>
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/select-ref-spectra.R"><code><a href="reference/select_ref_spc.html">select_ref_spc()</a></code></a>: Select a set of reference samples to measured by traditional analysis methods when no a priori sample data except spectra are available (based on Kennard-Stones sampling)</li>
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/select-ref-spectra.R" class="external-link"><code>select_ref_spc()</code></a>: Select a set of reference samples to measured by traditional analysis methods when no a priori sample data except spectra are available (based on Kennard-Stones sampling)</li>
 <li>
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/predict-spc.R"><code><a href="reference/predict_from_spc.html">predict_from_spc()</a></code></a>: Predict multiple chemical properties from a list of calibrated models and new soil spectra</li>
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/predict-spc.R" class="external-link"><code>predict_from_spc()</code></a>: Predict multiple chemical properties from a list of calibrated models and new soil spectra</li>
 <li>
-<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/utils-stats.R"><code><a href="reference/assess_multimodels.html">assess_multimodels()</a></code></a>: Assess model performance given multiple pairs of predicted and measured variables.</li>
+<a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/utils-stats.R" class="external-link"><code>assess_multimodels()</code></a>: Assess model performance given multiple pairs of predicted and measured variables.</li>
 </ol>
 </div>
-<div id="cheatsheet" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cheatsheet" class="anchor"></a>Cheatsheet</h2>
-<p><a href="https://github.com/philipp-baumann/spc-proc-concepts/blob/master/img/simplerspec_cheatsheet_crop.pdf"><img src="https://github.com/philipp-baumann/spc-proc-concepts/blob/master/img/simplerspec_cheatsheet.png" width="630"></a></p>
+<div class="section level2">
+<h2 id="cheatsheet">Cheatsheet<a class="anchor" aria-label="anchor" href="#cheatsheet"></a>
+</h2>
+<p><a href="https://github.com/philipp-baumann/spc-proc-concepts/blob/master/img/simplerspec_cheatsheet_crop.pdf" class="external-link"><img src="https://github.com/philipp-baumann/spc-proc-concepts/blob/master/img/simplerspec_cheatsheet.png" width="630"></a></p>
 </div>
-<div id="motivation-and-key-concepts" class="section level2">
-<h2 class="hasAnchor">
-<a href="#motivation-and-key-concepts" class="anchor"></a>Motivation and key concepts</h2>
+<div class="section level2">
+<h2 id="motivation-and-key-concepts">Motivation and key concepts<a class="anchor" aria-label="anchor" href="#motivation-and-key-concepts"></a>
+</h2>
 <p>Many R packages are available to do tasks in spectral modeling such as pre-processing of spectral data. The motivation to create this package was:</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Avoid repetition of code in model development (common source of errors).</li>
 <li>Provide a reproducible data analysis workflow for FT-IR spectroscopy.</li>
 <li>R packages are an ideal way to organize and share R code.</li>
@@ -141,144 +142,151 @@
 <p>This package builds mainly upon functions from the following R packages:</p>
 <ul>
 <li>
-<a href="https://cran.r-project.org/web/packages/prospectr/index.html"><code>prospectr</code></a>: Various utilities for pre-processing and sample selection based on spectroscopic data. An introduction to the package with examples can be found <a href="http://antoinestevens.github.io/prospectr/">here</a>.</li>
+<a href="https://cran.r-project.org/web/packages/prospectr/index.html" class="external-link"><code>prospectr</code></a>: Various utilities for pre-processing and sample selection based on spectroscopic data. An introduction to the package with examples can be found <a href="https://l-ramirez-lopez.r-universe.dev/articles/prospectr/prospectr.html" class="external-link">here</a>.</li>
 <li>
-<code>plyr</code> and <a href="https://dplyr.tidyverse.org/"><code>dplyr</code></a>: Fast data manipulation tools with an unified interface. See <a href="https://github.com/hadley/dplyr">here</a> for details.</li>
+<code>plyr</code> and <a href="https://dplyr.tidyverse.org" class="external-link"><code>dplyr</code></a>: Fast data manipulation tools with an unified interface.</li>
 <li>
-<code>ggplot2</code>: Alternative plotting system for R, based on the grammar of graphics. See <a href="http://ggplot2.org/">here</a>.</li>
+<code>ggplot2</code>: Alternative plotting system for R, based on the grammar of graphics. See <a href="https://ggplot2.tidyverse.org" class="external-link">here</a>.</li>
 <li>
-<code>caret</code>: Classification and regression training. A set of functions that attempt to streamline the process for creating predictive models. See <a href="http://topepo.github.io/caret/index.html">here</a> for details.</li>
+<code>caret</code>: Classification and regression training. A set of functions that attempt to streamline the process for creating predictive models. See <a href="https://topepo.github.io/caret/" class="external-link">here</a> for details.</li>
 </ul>
 <p>Consistent and reproducible data and metadata management is an important prerequisite for spectral model development. Therefore, simplerspec functions are based on storing spectral data and related data in R data structures which keep related data in rows. Every row representing an observation contains data related to a single spectral measurement. Simplerspec functions uses tibble data frames as principal data structures because they allow to store lists within the well-known data frame structures. Lists are flexible data structures and can e.g. contain other lists, vectors, data.frames, or matrices.</p>
-<p>List-columns features provided within the tibble framework are an excellent base to work with functional programming tools in R, which allows to efficiently write code. Simplerspec internally uses popular functional programming extension tools provided by the <a href="https://purrr.tidyverse.org/"><code>purrr</code></a> package for processing and transforming spectra. For learning more, I would recommend <a href="https://jennybc.github.io/purrr-tutorial/ls13_list-columns.html">this nice purrr list-column tutorial</a> provided by Jenny Brian. Further, simplerspec well integrates with the data processing API provided by the dplyr package, which makes spectroscopic analysis tidy and easy to understand.</p>
+<p>List-columns features provided within the tibble framework are an excellent base to work with functional programming tools in R, which allows to efficiently write code. Simplerspec internally uses popular functional programming extension tools provided by the <a href="https://purrr.tidyverse.org/" class="external-link"><code>purrr</code></a> package for processing and transforming spectra. For learning more, I would recommend <a href="https://github.com/jennybc/purrr-tutorial/tree/gh-pages" class="external-link">this nice purrr list-column tutorial</a> provided by Jenny Brian. Further, simplerspec well integrates with the data processing API provided by the dplyr package, which makes spectroscopic analysis tidy and easy to understand.</p>
 </div>
-<div id="example-workflow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-workflow" class="anchor"></a>Example workflow</h2>
+<div class="section level2">
+<h2 id="example-workflow">Example workflow<a class="anchor" aria-label="anchor" href="#example-workflow"></a>
+</h2>
 <p>Bruker FTIR spectrometers produce binary files in the OPUS format that can contain different types of spectra and many parameters such as instrument type and settings that were used at the time of data acquisition and internal processing (e.g. Fourier transform operations). Basically, the entire set of setup measurement parameters, selected spectra, supplementary metadata such as the time of measurement are written into OPUS binary files. In contrast to simple text files that contain only plain text with a defined character encoding, binary files can contain any type of data represented as sequences of bytes (a single byte is sequence of 8 bits and 1 bit either represents 0 or 1).</p>
 <p>Simplerspec comes with reader function <code><a href="reference/read_opus_univ.html">read_opus_univ()</a></code> that is intended to be a universal Bruker OPUS file reader that extracts spectra and key metadata from files. Usually, one is mostly interested to extract the final absorbance spectra (shown as <em>AB</em> in the OPUS viewer software).</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="co"># Load simplerspec package for spectral model development wrapper functions</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">simplerspec</span>)
-<span class="co"># Load tidyverse packages: loads packages frequently used for data manipulation,</span>
-<span class="co"># data tidying, import, and plotting</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)
-
-<span class="co">################################################################################</span>
-<span class="co">## Part 1: Read and pre-process spectra, read chemical data, and join</span>
-<span class="co">## spectral and chemical data sets</span>
-<span class="co">################################################################################</span>
-
-<span class="co">## Read spectra in list ========================================================</span>
-
-<span class="co"># List of OPUS binary spectra files</span>
-<span class="no">lf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span>(<span class="st">"data/spectra/soilspec_eth_bin"</span>, <span class="kw">full.names</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-
-<span class="co"># Read spectra from files into R list</span>
-<span class="no">spc_list</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/read_opus_univ.html">read_opus_univ</a></span>(<span class="kw">fnames</span> <span class="kw">=</span> <span class="no">lf</span>, <span class="kw">extract</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"spc"</span>))
-<span class="co"># Returns messages:</span>
-<span class="co">#&gt; Extracted spectra data from file: &lt;BF_lo_01_soil_cal.0&gt;</span>
-<span class="co">#&gt; Extracted spectra data from file: &lt;BF_lo_01_soil_cal.1&gt;</span>
-<span class="co">#&gt; Extracted spectra data from file: &lt;BF_lo_01_soil_cal.2&gt;</span>
-<span class="co">#&gt; Extracted spectra data from file: &lt;BF_lo_02_soil_cal.0&gt;</span>
-<span class="co">#&gt; ...</span></pre></div>
-<p>Pipes can make R code more readable and allows step-wise data processing when developing spectral models. The pipe operator (<code><a href="reference/pipe.html">%&gt;%</a></code>, called “then”) is a new operator in R that was introduced with the magrittr package. It facilitates readability of code and avoids to type intermediate objects. The basic behavior of the pipe operator is that the object on the left hand side is passed as the first argument to the function on the right hand side. When loading the tidyverse packages, the pipe operator is attached to the current R session. More details can be found <a href="https://github.com/smbache/magrittr">here</a>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load simplerspec package for spectral model development wrapper functions</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/philipp-baumann/simplerspec" class="external-link">simplerspec</a></span><span class="op">)</span></span>
+<span><span class="co"># Load tidyverse packages: loads packages frequently used for data manipulation,</span></span>
+<span><span class="co"># data tidying, import, and plotting</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">################################################################################</span></span>
+<span><span class="co">## Part 1: Read and pre-process spectra, read chemical data, and join</span></span>
+<span><span class="co">## spectral and chemical data sets</span></span>
+<span><span class="co">################################################################################</span></span>
+<span></span>
+<span><span class="co">## Read spectra in list ========================================================</span></span>
+<span></span>
+<span><span class="co"># List of OPUS binary spectra files</span></span>
+<span><span class="va">lf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="st">"data/spectra/soilspec_eth_bin"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Read spectra from files into R list</span></span>
+<span><span class="va">spc_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_opus_univ.html">read_opus_univ</a></span><span class="op">(</span>fnames <span class="op">=</span> <span class="va">lf</span>, extract <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"spc"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Returns messages:</span></span>
+<span><span class="co">#&gt; Extracted spectra data from file: &lt;BF_lo_01_soil_cal.0&gt;</span></span>
+<span><span class="co">#&gt; Extracted spectra data from file: &lt;BF_lo_01_soil_cal.1&gt;</span></span>
+<span><span class="co">#&gt; Extracted spectra data from file: &lt;BF_lo_01_soil_cal.2&gt;</span></span>
+<span><span class="co">#&gt; Extracted spectra data from file: &lt;BF_lo_02_soil_cal.0&gt;</span></span>
+<span><span class="co">#&gt; ...</span></span></code></pre></div>
+<p>Pipes can make R code more readable and allows step-wise data processing when developing spectral models. The pipe operator (<code>%&gt;%</code>, called “then”) is a new operator in R that was introduced with the magrittr package. It facilitates readability of code and avoids to type intermediate objects. The basic behavior of the pipe operator is that the object on the left hand side is passed as the first argument to the function on the right hand side. When loading the tidyverse packages, the pipe operator is attached to the current R session. More details can be found <a href="https://magrittr.tidyverse.org" class="external-link">here</a>.</p>
 <p>The model development process can be quickly coded as the example below illustrates:</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="co">## Spectral data processing pipe ===============================================</span>
-
-<span class="no">soilspec_tbl</span> <span class="kw">&lt;-</span> <span class="no">spc_list</span> <span class="kw">%&gt;%</span>
-  <span class="co"># Gather list of spectra data into tibble data frame</span>
-  <span class="fu"><a href="reference/gather_spc.html">gather_spc</a></span>() <span class="kw">%&gt;%</span>
-  <span class="co"># Resample spectra to new wavenumber interval</span>
-  <span class="fu"><a href="reference/resample_spc.html">resample_spc</a></span>(<span class="kw">wn_lower</span> <span class="kw">=</span> <span class="fl">500</span>, <span class="kw">wn_upper</span> <span class="kw">=</span> <span class="fl">3996</span>, <span class="kw">wn_interval</span> <span class="kw">=</span> <span class="fl">2</span>) <span class="kw">%&gt;%</span>
-  <span class="co"># Average replicate scans per sample_id</span>
-  <span class="fu"><a href="reference/average_spc.html">average_spc</a></span>() <span class="kw">%&gt;%</span>
-  <span class="co"># Preprocess spectra using Savitzky-Golay first derivative with a window size</span>
-  <span class="co"># of 21 points</span>
-  <span class="fu"><a href="reference/preprocess_spc.html">preprocess_spc</a></span>(<span class="kw">select</span> <span class="kw">=</span> <span class="st">"sg_1_w21"</span>)
-
-<span class="no">soilspec_tbl</span>
-<span class="co"># A tibble: 284 x 11</span>
-<span class="co">#&gt;                                 unique_id             file_id         sample_id</span>
-<span class="co">#&gt;                                     &lt;chr&gt;               &lt;chr&gt;             &lt;chr&gt;</span>
-<span class="co">#&gt; 1 BF_lo_01_soil_cal.0_2015-11-06 14:34:10 BF_lo_01_soil_cal.0 BF_lo_01_soil_cal</span>
-<span class="co">#&gt; 2 BF_lo_01_soil_cal.1_2015-11-06 14:38:14 BF_lo_01_soil_cal.1 BF_lo_01_soil_cal</span>
-<span class="co">#&gt; 3 BF_lo_01_soil_cal.2_2015-11-06 14:40:55 BF_lo_01_soil_cal.2 BF_lo_01_soil_cal</span>
-<span class="co">#&gt; 4 BF_lo_02_soil_cal.0_2015-11-06 17:27:55 BF_lo_02_soil_cal.0 BF_lo_02_soil_cal</span>
-<span class="co">#&gt; 5 BF_lo_02_soil_cal.1_2015-11-06 17:30:19 BF_lo_02_soil_cal.1 BF_lo_02_soil_cal</span>
-<span class="co">#&gt; 6 BF_lo_02_soil_cal.2_2015-11-06 17:32:47 BF_lo_02_soil_cal.2 BF_lo_02_soil_cal</span>
-<span class="co">#&gt; 7 BF_lo_03_soil_cal.0_2015-11-09 11:32:55 BF_lo_03_soil_cal.0 BF_lo_03_soil_cal</span>
-<span class="co">#&gt; 8 BF_lo_03_soil_cal.1_2015-11-09 11:35:26 BF_lo_03_soil_cal.1 BF_lo_03_soil_cal</span>
-<span class="co">#&gt; 9 BF_lo_03_soil_cal.2_2015-11-09 11:38:08 BF_lo_03_soil_cal.2 BF_lo_03_soil_cal</span>
-<span class="co">#&gt; 10 BF_lo_04_soil_cal.0_2015-11-06 10:36:13 BF_lo_04_soil_cal.0 BF_lo_04_soil_cal</span>
-<span class="co">#&gt; # ... with 274 more rows, and 8 more variables: spc &lt;list&gt;, wavenumbers &lt;list&gt;,</span>
-<span class="co">#&gt; #   metadata &lt;list&gt;, spc_rs &lt;list&gt;, wavenumbers_rs &lt;list&gt;, spc_mean &lt;list&gt;,</span>
-<span class="co">#&gt; #   spc_pre &lt;list&gt;, xvalues_pre &lt;list&gt;</span>
-
-
-<span class="co">## Read chemical reference data and join with spectral data ====================</span>
-
-<span class="co"># Read chemical reference analysis data</span>
-<span class="no">soilchem_tbl</span> <span class="kw">&lt;-</span> <span class="fu">read_csv</span>(<span class="kw">file</span> <span class="kw">=</span> <span class="st">"data/soilchem/soilchem_yamsys.csv"</span>)
-<span class="co">#&gt; Parsed with column specification:</span>
-<span class="co">#&gt; cols(</span>
-<span class="co">#&gt;   .default = col_double(),</span>
-<span class="co">#&gt;   sample_ID = col_character(),</span>
-<span class="co">#&gt;   country = col_character(),</span>
-<span class="co">#&gt;   site = col_character(),</span>
-<span class="co">#&gt;   material = col_character(),</span>
-<span class="co">#&gt;   site_comb = col_character()</span>
-<span class="co">#&gt; )</span>
-<span class="co">#&gt; See spec(...) for full column specifications.</span>
-
-<span class="co"># Join spectra tibble and chemical reference analysis tibble</span>
-<span class="no">spec_chem</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/join_spc_chem.html">join_spc_chem</a></span>(
-  <span class="kw">spc_tbl</span> <span class="kw">=</span> <span class="no">soilspec_tbl</span>, <span class="kw">chem_tbl</span> <span class="kw">=</span> <span class="no">soilchem_tbl</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="st">"sample_id"</span>)
-<span class="co">#&gt; Joining, by = "sample_id"</span>
-
-<span class="co">################################################################################</span>
-<span class="co">## Part 2: Run PLS regression models for different soil variables</span>
-<span class="co">################################################################################</span>
-
-<span class="co"># Example Partial Least Squares (PLS) Regression model for total Carbon (C)</span>
-<span class="co"># Use repeated k-fold cross-validation to tune the model (choose optimal </span>
-<span class="co"># number of PLS components) and estimate model performance on hold-out </span>
-<span class="co"># predictions of the finally chosen model (model assessment).</span>
-<span class="co"># This allows to use the entire set for both model building and evaluation;</span>
-<span class="co"># recommended for small data sets</span>
-<span class="no">pls_C</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/fit_pls.html">fit_pls</a></span>(
-  <span class="co"># remove rows with NA in the data</span>
-  <span class="kw">spec_chem</span> <span class="kw">=</span> <span class="no">spec_chem</span>[!<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="no">spec_chem</span>$<span class="no">C</span>), ],
-  <span class="kw">response</span> <span class="kw">=</span> <span class="no">C</span>,
-  <span class="kw">evaluation_method</span> <span class="kw">=</span> <span class="st">"resampling"</span>,
-  <span class="kw">tuning_method</span> <span class="kw">=</span> <span class="st">"resampling"</span>,
-  <span class="kw">resampling_method</span> <span class="kw">=</span> <span class="st">"rep_kfold_cv"</span>,
-  <span class="kw">pls_ncomp_max</span> <span class="kw">=</span> <span class="fl">7</span> <span class="co"># maximum number of PLS components tested during tuning</span>
-)</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Spectral data processing pipe ===============================================</span></span>
+<span></span>
+<span><span class="va">soilspec_tbl</span> <span class="op">&lt;-</span> <span class="va">spc_list</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="co"># Gather list of spectra data into tibble data frame</span></span>
+<span>  <span class="fu"><a href="reference/gather_spc.html">gather_spc</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="co"># Resample spectra to new wavenumber interval</span></span>
+<span>  <span class="fu"><a href="reference/resample_spc.html">resample_spc</a></span><span class="op">(</span>wn_lower <span class="op">=</span> <span class="fl">500</span>, wn_upper <span class="op">=</span> <span class="fl">3996</span>, wn_interval <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="co"># Average replicate scans per sample_id</span></span>
+<span>  <span class="fu"><a href="reference/average_spc.html">average_spc</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="co"># Preprocess spectra using Savitzky-Golay first derivative with a window size</span></span>
+<span>  <span class="co"># of 21 points</span></span>
+<span>  <span class="fu"><a href="reference/preprocess_spc.html">preprocess_spc</a></span><span class="op">(</span>select <span class="op">=</span> <span class="st">"sg_1_w21"</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="va">soilspec_tbl</span></span>
+<span><span class="co"># A tibble: 284 x 11</span></span>
+<span><span class="co">#&gt;                                 unique_id             file_id         sample_id</span></span>
+<span><span class="co">#&gt;                                     &lt;chr&gt;               &lt;chr&gt;             &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 BF_lo_01_soil_cal.0_2015-11-06 14:34:10 BF_lo_01_soil_cal.0 BF_lo_01_soil_cal</span></span>
+<span><span class="co">#&gt; 2 BF_lo_01_soil_cal.1_2015-11-06 14:38:14 BF_lo_01_soil_cal.1 BF_lo_01_soil_cal</span></span>
+<span><span class="co">#&gt; 3 BF_lo_01_soil_cal.2_2015-11-06 14:40:55 BF_lo_01_soil_cal.2 BF_lo_01_soil_cal</span></span>
+<span><span class="co">#&gt; 4 BF_lo_02_soil_cal.0_2015-11-06 17:27:55 BF_lo_02_soil_cal.0 BF_lo_02_soil_cal</span></span>
+<span><span class="co">#&gt; 5 BF_lo_02_soil_cal.1_2015-11-06 17:30:19 BF_lo_02_soil_cal.1 BF_lo_02_soil_cal</span></span>
+<span><span class="co">#&gt; 6 BF_lo_02_soil_cal.2_2015-11-06 17:32:47 BF_lo_02_soil_cal.2 BF_lo_02_soil_cal</span></span>
+<span><span class="co">#&gt; 7 BF_lo_03_soil_cal.0_2015-11-09 11:32:55 BF_lo_03_soil_cal.0 BF_lo_03_soil_cal</span></span>
+<span><span class="co">#&gt; 8 BF_lo_03_soil_cal.1_2015-11-09 11:35:26 BF_lo_03_soil_cal.1 BF_lo_03_soil_cal</span></span>
+<span><span class="co">#&gt; 9 BF_lo_03_soil_cal.2_2015-11-09 11:38:08 BF_lo_03_soil_cal.2 BF_lo_03_soil_cal</span></span>
+<span><span class="co">#&gt; 10 BF_lo_04_soil_cal.0_2015-11-06 10:36:13 BF_lo_04_soil_cal.0 BF_lo_04_soil_cal</span></span>
+<span><span class="co">#&gt; # ... with 274 more rows, and 8 more variables: spc &lt;list&gt;, wavenumbers &lt;list&gt;,</span></span>
+<span><span class="co">#&gt; #   metadata &lt;list&gt;, spc_rs &lt;list&gt;, wavenumbers_rs &lt;list&gt;, spc_mean &lt;list&gt;,</span></span>
+<span><span class="co">#&gt; #   spc_pre &lt;list&gt;, xvalues_pre &lt;list&gt;</span></span>
+<span>  </span>
+<span></span>
+<span><span class="co">## Read chemical reference data and join with spectral data ====================</span></span>
+<span></span>
+<span><span class="co"># Read chemical reference analysis data</span></span>
+<span><span class="va">soilchem_tbl</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span>file <span class="op">=</span> <span class="st">"data/soilchem/soilchem_yamsys.csv"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Parsed with column specification:</span></span>
+<span><span class="co">#&gt; cols(</span></span>
+<span><span class="co">#&gt;   .default = col_double(),</span></span>
+<span><span class="co">#&gt;   sample_ID = col_character(),</span></span>
+<span><span class="co">#&gt;   country = col_character(),</span></span>
+<span><span class="co">#&gt;   site = col_character(),</span></span>
+<span><span class="co">#&gt;   material = col_character(),</span></span>
+<span><span class="co">#&gt;   site_comb = col_character()</span></span>
+<span><span class="co">#&gt; )</span></span>
+<span><span class="co">#&gt; See spec(...) for full column specifications.</span></span>
+<span></span>
+<span><span class="co"># Join spectra tibble and chemical reference analysis tibble</span></span>
+<span><span class="va">spec_chem</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/join_spc_chem.html">join_spc_chem</a></span><span class="op">(</span></span>
+<span>  spc_tbl <span class="op">=</span> <span class="va">soilspec_tbl</span>, chem_tbl <span class="op">=</span> <span class="va">soilchem_tbl</span>, by <span class="op">=</span> <span class="st">"sample_id"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Joining, by = "sample_id"</span></span>
+<span></span>
+<span><span class="co">################################################################################</span></span>
+<span><span class="co">## Part 2: Run PLS regression models for different soil variables</span></span>
+<span><span class="co">################################################################################</span></span>
+<span></span>
+<span><span class="co"># Example Partial Least Squares (PLS) Regression model for total Carbon (C)</span></span>
+<span><span class="co"># Use repeated k-fold cross-validation to tune the model (choose optimal </span></span>
+<span><span class="co"># number of PLS components) and estimate model performance on hold-out </span></span>
+<span><span class="co"># predictions of the finally chosen model (model assessment).</span></span>
+<span><span class="co"># This allows to use the entire set for both model building and evaluation;</span></span>
+<span><span class="co"># recommended for small data sets</span></span>
+<span><span class="va">pls_C</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_pls.html">fit_pls</a></span><span class="op">(</span></span>
+<span>  <span class="co"># remove rows with NA in the data</span></span>
+<span>  spec_chem <span class="op">=</span> <span class="va">spec_chem</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">spec_chem</span><span class="op">$</span><span class="va">C</span><span class="op">)</span>, <span class="op">]</span>,</span>
+<span>  response <span class="op">=</span> <span class="va">C</span>,</span>
+<span>  evaluation_method <span class="op">=</span> <span class="st">"resampling"</span>,</span>
+<span>  tuning_method <span class="op">=</span> <span class="st">"resampling"</span>,</span>
+<span>  resampling_method <span class="op">=</span> <span class="st">"rep_kfold_cv"</span>,</span>
+<span>  pls_ncomp_max <span class="op">=</span> <span class="fl">7</span> <span class="co"># maximum number of PLS components tested during tuning</span></span>
+<span><span class="op">)</span> </span></code></pre></div>
 </div>
-<div id="projects-using-simplerspec" class="section level2">
-<h2 class="hasAnchor">
-<a href="#projects-using-simplerspec" class="anchor"></a>Projects using simplerspec</h2>
+<div class="section level2">
+<h2 id="projects-using-simplerspec">Projects using simplerspec<a class="anchor" aria-label="anchor" href="#projects-using-simplerspec"></a>
+</h2>
 <ul>
-<li><a href="https://sae-interactive-data.ethz.ch/simplerspec.drc/">Spectral platform for soil samples of the Democratic Republic of Congo</a></li>
+<li><a href="https://sae-interactive-data.ethz.ch/simplerspec.drc/" class="external-link">Spectral platform for soil samples of the Democratic Republic of Congo</a></li>
 </ul>
 </div>
-<div id="package-help" class="section level2">
-<h2 class="hasAnchor">
-<a href="#package-help" class="anchor"></a>Package help</h2>
+<div class="section level2">
+<h2 id="package-help">Package help<a class="anchor" aria-label="anchor" href="#package-help"></a>
+</h2>
 <p>After successfully installing simplerspec, you can use the R build-in help using <code>?simplerspec::&lt;fun_name&gt;</code></p>
 </div>
-<div id="credits" class="section level2">
-<h2 class="hasAnchor">
-<a href="#credits" class="anchor"></a>Credits</h2>
+<div class="section level2">
+<h2 id="like-it">Like it?<a class="anchor" aria-label="anchor" href="#like-it"></a>
+</h2>
+<p><a href="https://www.buymeacoffee.com/specphil" class="external-link"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="“Buy Me A Coffee”"></a></p>
+</div>
+<div class="section level2">
+<h2 id="credits">Credits<a class="anchor" aria-label="anchor" href="#credits"></a>
+</h2>
 <p>I would like to thank the following people for the inspiration by concepts, code and packages:</p>
 <ul>
-<li>Antoine Stevens and Leonardo Ramirez-Lopez for their contributions to the <a href="https://cran.r-project.org/web/packages/prospectr/index.html">prospectr package</a> and the <em>Guide to Diffuse Reflectance Spectroscopy &amp; Multivariate Calibration</em>
+<li>Antoine Stevens and Leonardo Ramirez-Lopez for their contributions to the <a href="https://l-ramirez-lopez.r-universe.dev/prospectr" class="external-link">prospectr package</a> and the <em>Guide to Diffuse Reflectance Spectroscopy &amp; Multivariate Calibration</em>
 </li>
-<li>Andrew Sila, Tomislav Hengl, and Thomas Terhoeven-Urselmans for the <a href="https://github.com/cran/soil.spec/blob/master/R/read.opus.R"><code>read.opus()</code></a> function from the <a href="https://cran.r-project.org/web/packages/soil.spec/index.html">soil.spec</a> package developed at ICRAF.</li>
+<li>Andrew Sila, Tomislav Hengl, and Thomas Terhoeven-Urselmans for the <a href="https://github.com/cran/soil.spec/blob/master/R/read.opus.R" class="external-link"><code>read.opus()</code></a> function from the <a href="https://cran.r-project.org/src/contrib/Archive/soil.spec/" class="external-link">soil.spec</a> package developed at ICRAF.</li>
 <li>
-<a href="http://hadley.nz/">Hadley Wickham</a> for his work and concepts on data science within R</li>
+<a href="https://hadley.nz" class="external-link">Hadley Wickham</a> for his work and concepts on data science within R</li>
 <li>
-<a href="https://github.com/topepo">Max Kuhn</a> for the creation of the caret package and for his excellent teaching materials on <a href="http://appliedpredictivemodeling.com/blog/">applied predictive modeling</a>
+<a href="https://github.com/topepo" class="external-link">Max Kuhn</a> for the creation of the caret package and for his excellent teaching materials on <a href="https://link.springer.com/book/10.1007/978-1-4614-6849-3" class="external-link">applied predictive modeling</a>
 </li>
 </ul>
 </div>
@@ -287,46 +295,50 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/philipp-baumann/simplerspec/">https://​github.com/​philipp-baumann/​simplerspec/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/philipp-baumann/simplerspec">https://​github.com/​philipp-baumann/​simplerspec</a>
-</li>
+<li><a href="https://github.com/philipp-baumann/simplerspec/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/philipp-baumann/simplerspec" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a></small></li>
+<li><small><a href="https://www.r-project.org/Licenses/GPL-2" class="external-link">GPL-2</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing simplerspec</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Philipp Baumann <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://travis-ci.org/philipp-baumann/simplerspec"><img src="https://travis-ci.org/philipp-baumann/simplerspec.svg?branch=master" alt="Travis Build Status"></a></li>
-<li><a href="https://ci.appveyor.com/project/philipp-baumann/simplerspec"><img src="https://ci.appveyor.com/api/projects/status/github/philipp-baumann/simplerspec?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
-<li><a href="https://zenodo.org/badge/latestdoi/67121732"><img src="https://zenodo.org/badge/67121732.svg" alt="DOI"></a></li>
-</ul>
-</div>
-</div>
+
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Philipp Baumann.</p>
+  <p></p>
+<p>Developed by Philipp Baumann.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -334,6 +346,8 @@
 
   
 
+
+  
 
   </body>
 </html>
