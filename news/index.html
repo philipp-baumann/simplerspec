@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">simplerspec</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -47,6 +47,11 @@
       <small>Source: <a href="https://github.com/philipp-baumann/simplerspec/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.1" id="simplerspec-021">simplerspec 0.2.1<a class="anchor" aria-label="anchor" href="#simplerspec-021"></a></h2>
+<ul><li>
+<code><a href="../reference/fit_pls.html">fit_pls()</a></code>: Fixed the join of predicted vs. measured values when choosing evaluation with cross-validation; now predictions and model evaluation statistics are reported at best <code>ncomp</code>. Instead of an <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::inner_join()</a></code>, all cross-validated predictions were done with <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">dplyr::anti_join()</a></code>, specifically when using <code>evaluation_method == "resampling"</code> together with <code>tuning_method == "resampling"</code>. This resulted in predictions incorrectly being aggregated for all tested but not best ncomp (calculated in caret). Thus, also the cross-validation metrics were not correctly reported what should have been the case at optimal <code>ncomp</code> derived based on resampling and model tuning. The fix now correctly does an inner join, so that only the values at best <code>ncomp</code> are extracted and used for the evaluation statistics. This is also shown on the resulting plot outputs.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.0" id="simplerspec-020">simplerspec 0.2.0<a class="anchor" aria-label="anchor" href="#simplerspec-020"></a></h2>
 <ul><li>Add new example data set <code>soilspec_yamsys</code>.</li>
