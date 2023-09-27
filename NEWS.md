@@ -1,5 +1,20 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# simplerspec 0.2.1
+
+- `fit_pls()`: Fixed the join of predicted vs. measured values when choosing 
+  evaluation with cross-validation; now predictions and model evaluation 
+  statistics are reported at best `ncomp`. Instead of an `dplyr::inner_join()`,
+  all cross-validated predictions were done with `dplyr::anti_join()`, 
+  specifically when using `evaluation_method == "resampling"` together with 
+  `tuning_method == "resampling"`. This resulted in predictions incorrectly
+  being aggregated for all tested but not best ncomp (calculated in caret). 
+  Thus, also the cross-validation metrics were not correctly reported what 
+  should have been the case at optimal `ncomp` derived based on resampling and
+  model tuning. The fix now correctly does an inner join, so that only the
+  values at best `ncomp` are extracted and used for the evaluation statistics. 
+  This is also shown on the resulting plot outputs.
+
 # simplerspec 0.2.0
 
 - Add new example data set `soilspec_yamsys`.
