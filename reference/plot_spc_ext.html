@@ -8,7 +8,7 @@ additional measure variable, e.g. determined by chemical reference analysis.'><!
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -36,20 +36,20 @@ additional measure variable, e.g. determined by chemical reference analysis.'><!
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipp-baumann/simplerspec/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>ggplot2 wrapper for extended spectra plotting</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipp-baumann/simplerspec/blob/HEAD/R/plot-spc-extended.R" class="external-link"><code>R/plot-spc-extended.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/plot-spc-extended.R" class="external-link"><code>R/plot-spc-extended.R</code></a></small>
     <div class="hidden name"><code>plot_spc_ext.Rd</code></div>
     </div>
 
@@ -88,118 +88,118 @@ additional measure variable, e.g. determined by chemical reference analysis.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>spc_tbl</dt>
+
+
+<dl><dt id="arg-spc-tbl">spc_tbl<a class="anchor" aria-label="anchor" href="#arg-spc-tbl"></a></dt>
 <dd><p>Tibble data frame containing spectra, x-axis values, metadata
 and eventual measured variables as list-columns.</p></dd>
 
 
-<dt>spc_tbl_l</dt>
+<dt id="arg-spc-tbl-l">spc_tbl_l<a class="anchor" aria-label="anchor" href="#arg-spc-tbl-l"></a></dt>
 <dd><p>List of spectral tibbles (data frames). Default is
 <code>NULL</code> (argument is not used).</p></dd>
 
 
-<dt>lcols_spc</dt>
+<dt id="arg-lcols-spc">lcols_spc<a class="anchor" aria-label="anchor" href="#arg-lcols-spc"></a></dt>
 <dd><p>Character vector of spectral list-columns to be extracted.
 Default is <code>"spc"</code> (raw spectra).</p></dd>
 
 
-<dt>lcol_measure</dt>
+<dt id="arg-lcol-measure">lcol_measure<a class="anchor" aria-label="anchor" href="#arg-lcol-measure"></a></dt>
 <dd><p>Character vector of length 1 denoting the column name
 of the measure columns. This argument is optional. Default is <code>NULL</code>,
 which does not extract an additional measure column.</p></dd>
 
 
-<dt>lcol_measure_col_palette</dt>
+<dt id="arg-lcol-measure-col-palette">lcol_measure_col_palette<a class="anchor" aria-label="anchor" href="#arg-lcol-measure-col-palette"></a></dt>
 <dd><p>Palette value supplied to
 <code>ggplot::scale_colour_brewer()</code>. Default is <code>"Spectral"</code>, but you can set
 it to the default argument <code>1</code> (will use
 <code>scale_colour_brewer(..., palette = 1)</code>).</p></dd>
 
 
-<dt>lcol_measure_col_direction</dt>
+<dt id="arg-lcol-measure-col-direction">lcol_measure_col_direction<a class="anchor" aria-label="anchor" href="#arg-lcol-measure-col-direction"></a></dt>
 <dd><p>Sets the the order of colours in the scale
 that is based on a measure column. Default is <code>-1</code> which reverses the
 scale. Argument is passed on to the function <code>ggplot2::sclae_colour_brewer()</code>
 as argument <code>direction</code>.</p></dd>
 
 
-<dt>spc_id</dt>
+<dt id="arg-spc-id">spc_id<a class="anchor" aria-label="anchor" href="#arg-spc-id"></a></dt>
 <dd><p>Character vector denoting column name for a unique spectrum ID.
 Default is <code>"unique_id"</code>.</p></dd>
 
 
-<dt>group_id</dt>
+<dt id="arg-group-id">group_id<a class="anchor" aria-label="anchor" href="#arg-group-id"></a></dt>
 <dd><p>Character vector denoting column name for the spectrum group
 ID. Default is <code>"sample_id"</code>. The group ID is used for
 plotting spectra by group (e.g. by using different colors or panels).</p></dd>
 
 
-<dt>group_id_order</dt>
+<dt id="arg-group-id-order">group_id_order<a class="anchor" aria-label="anchor" href="#arg-group-id-order"></a></dt>
 <dd><p>Logical that specifies whether the panel names
 derived from a numeric <code>group_id</code> column are reordered using ascending
 numbers. Default is <code>TRUE</code>.</p></dd>
 
 
-<dt>group_color</dt>
+<dt id="arg-group-color">group_color<a class="anchor" aria-label="anchor" href="#arg-group-color"></a></dt>
 <dd><p>Logical defining whether spectra are colored by the column
 specified by <code>group_id</code>.</p></dd>
 
 
-<dt>group_color_palette</dt>
+<dt id="arg-group-color-palette">group_color_palette<a class="anchor" aria-label="anchor" href="#arg-group-color-palette"></a></dt>
 <dd><p>Character (1L) defining the diverging colour
 scales from colorbrewer.org; see <code>?scale_colour_brewer</code> for supported
 diverging colur types (<code>palette</code> argument).</p></dd>
 
 
-<dt>group_panel</dt>
+<dt id="arg-group-panel">group_panel<a class="anchor" aria-label="anchor" href="#arg-group-panel"></a></dt>
 <dd><p>Logical defining whether spectra are arranged into panels
 by groups specified in <code>group_id</code>. Default is <code>TRUE</code>.</p></dd>
 
 
-<dt>group_legend</dt>
+<dt id="arg-group-legend">group_legend<a class="anchor" aria-label="anchor" href="#arg-group-legend"></a></dt>
 <dd><p>Logical defining whether a legend for the <code>group_id</code>
 is plotted. Default is <code>FALSE</code>.</p></dd>
 
 
-<dt>ncol</dt>
+<dt id="arg-ncol">ncol<a class="anchor" aria-label="anchor" href="#arg-ncol"></a></dt>
 <dd><p>Integer vector of length 1. Defines number of columns when
 plotting panels (facets). Default is <code>NULL</code> (argument not used).</p></dd>
 
 
-<dt>relabel_spc</dt>
+<dt id="arg-relabel-spc">relabel_spc<a class="anchor" aria-label="anchor" href="#arg-relabel-spc"></a></dt>
 <dd><p>Logical defining whether panels are relabeled with custom
 names for spectra types. Default is TRUE. When <code>TRUE</code>, arguments
 from <code>relabel_spc_types</code> can be passed to <code>plot_spc_ext</code>
 (supported via the <code>...</code> (ellipsis) argument)</p></dd>
 
 
-<dt>ylab</dt>
+<dt id="arg-ylab">ylab<a class="anchor" aria-label="anchor" href="#arg-ylab"></a></dt>
 <dd><p>Character vector or vector of type <code>"expression"</code> created by
 mathematical expression created by <code>expression</code>. Custom annotation for
 y-axis of spectra</p></dd>
 
 
-<dt>alpha</dt>
+<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
 <dd><p>Integer of length 1, from 0 to 1. Defines transparency of
 spectral lines. Default is <code>0.5</code> (0 is completely transparent and
 1 is no transparency).</p></dd>
 
 
-<dt>line_width</dt>
+<dt id="arg-line-width">line_width<a class="anchor" aria-label="anchor" href="#arg-line-width"></a></dt>
 <dd><p>Numeric vector of length 1 specifying the width of the
 spectral lines. Default is <code>0.2</code>.</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Further arguments to be passed to <code>plot_spc_ext</code>. Currently,
 arguments of <code>relabel_spc_types</code> are supported.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>Object of class <code>"ggplot"</code> (ggplot2 graph).</p>
+    <p>Object of class <code>"ggplot"</code> (ggplot2 graph).</p>
     </div>
 
   </div>
@@ -214,15 +214,15 @@ arguments of <code>relabel_spc_types</code> are supported.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

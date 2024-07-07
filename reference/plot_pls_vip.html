@@ -6,11 +6,11 @@ spectra. Regions with VIP &amp;gt; 1 are highlighted across the stacked graphs
 in beige colour rectangles. VIP calculation is implemented as described in
 Chong, I.-G., and Jun, C.-H. (2005). Performance of some variable selection
 methods when multicollinearity is present. Chemometrics and Intelligent
-Laboratory Systems, 78(1--2), 103--112. https://doi.org/10.1016/j.chemolab.2004.12.011"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+Laboratory Systems, 78(1–2), 103–112. https://doi.org/10.1016/j.chemolab.2004.12.011"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -38,20 +38,20 @@ Laboratory Systems, 78(1--2), 103--112. https://doi.org/10.1016/j.chemolab.2004.
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipp-baumann/simplerspec/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot stacked ggplot2 graphs with the Variable Importance for the Projection (VIP) scores, mean replicate spectra (absorbance) per sample_id, and the preprocessed spectra.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipp-baumann/simplerspec/blob/HEAD/R/pls-vip.R" class="external-link"><code>R/pls-vip.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/pls-vip.R" class="external-link"><code>R/pls-vip.R</code></a></small>
     <div class="hidden name"><code>plot_pls_vip.Rd</code></div>
     </div>
 
@@ -63,7 +63,7 @@ spectra. Regions with VIP &gt; 1 are highlighted across the stacked graphs
 in beige colour rectangles. VIP calculation is implemented as described in
 Chong, I.-G., and Jun, C.-H. (2005). Performance of some variable selection
 methods when multicollinearity is present. Chemometrics and Intelligent
-Laboratory Systems, 78(1--2), 103--112. https://doi.org/10.1016/j.chemolab.2004.12.011</p>
+Laboratory Systems, 78(1–2), 103–112. https://doi.org/10.1016/j.chemolab.2004.12.011</p>
     </div>
 
     <div id="ref-usage">
@@ -76,48 +76,50 @@ Laboratory Systems, 78(1--2), 103--112. https://doi.org/10.1016/j.chemolab.2004.
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>mout</dt>
+
+
+<dl><dt id="arg-mout">mout<a class="anchor" aria-label="anchor" href="#arg-mout"></a></dt>
 <dd><p>Model output list that is returned from
 <code><a href="fit_pls.html">simplerspec::fit_pls()</a></code>. This object contains a nested list with
 the <code><a href="https://rdrr.io/pkg/caret/man/train.html" class="external-link">caret::train()</a></code> object (class <code>train</code>), based on which
 VIPs at finally selected number of PLS components are computed.</p></dd>
 
 
-<dt>y1</dt>
+<dt id="arg-y-">y1<a class="anchor" aria-label="anchor" href="#arg-y-"></a></dt>
 <dd><p>Character vector of list-column name in
 <code>mout$data$calibration</code>, where spectra for bottom graph are extracted.
 Default is <code>"spc_mean"</code>, which plots the mean calibration spectra after
 resampling.</p></dd>
 
 
-<dt>y2</dt>
+<dt id="arg-y-">y2<a class="anchor" aria-label="anchor" href="#arg-y-"></a></dt>
 <dd><p>Character string of list-column name in
 <code>mout$data$calibration</code>, where spectra for bottom graph are extracted.
 Default is <code>"spc_pre"</code>, which plots the preprocessed calibration
 spectra after resampling.</p></dd>
 
 
-<dt>by</dt>
+<dt id="arg-by">by<a class="anchor" aria-label="anchor" href="#arg-by"></a></dt>
 <dd><p>Character string that is used to assign spectra to the same group
 and therefore ensures that all spectra are plotted with the same colour.
 Default is <code>"sample_id"</code></p></dd>
 
 
-<dt>xlab</dt>
+<dt id="arg-xlab">xlab<a class="anchor" aria-label="anchor" href="#arg-xlab"></a></dt>
 <dd><p>Character string of X axis title for shared x axis of stacked
 graphs. Default is <code>expression(paste("Wavenumber [", cm^-1, "]"))</code></p></dd>
 
 
-<dt>ylab1</dt>
+<dt id="arg-ylab-">ylab1<a class="anchor" aria-label="anchor" href="#arg-ylab-"></a></dt>
 <dd><p>Y axis title of bottom spectrum. Default is <code>"Absorbance"</code>.</p></dd>
 
 
-<dt>ylab2</dt>
+<dt id="arg-ylab-">ylab2<a class="anchor" aria-label="anchor" href="#arg-ylab-"></a></dt>
 <dd><p>Y axis title of bottom spectrum. Default is
 <code>"Preprocessed Abs."</code>.</p></dd>
 
 
-<dt>alpha</dt>
+<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
 <dd><p>Double between 0 and 1 that defines transparency of spectra
 lines in returned graph (ggplot plot object).</p></dd>
 
@@ -135,15 +137,15 @@ lines in returned graph (ggplot plot object).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

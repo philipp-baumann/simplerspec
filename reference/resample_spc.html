@@ -10,7 +10,7 @@ spectrometer devices and/or measurement settings)."><!-- mathjax --><script src=
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -38,20 +38,20 @@ spectrometer devices and/or measurement settings)."><!-- mathjax --><script src=
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipp-baumann/simplerspec/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Resample spectra in list-column to new x-axis interval</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipp-baumann/simplerspec/blob/HEAD/R/resample-spc.R" class="external-link"><code>R/resample-spc.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/resample-spc.R" class="external-link"><code>R/resample-spc.R</code></a></small>
     <div class="hidden name"><code>resample_spc.Rd</code></div>
     </div>
 
@@ -83,7 +83,9 @@ spectrometer devices and/or measurement settings).</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>spc_tbl</dt>
+
+
+<dl><dt id="arg-spc-tbl">spc_tbl<a class="anchor" aria-label="anchor" href="#arg-spc-tbl"></a></dt>
 <dd><p>Spectra data embedded in a tibble object (classes
 <code>"tbl_df", "tbl", "data.frame"</code>). The spectra tibble needs to contain at
 least of one of the the spectra columns <code>spc</code>, <code>spc_rs</code>, <code>spc_mean</code>,
@@ -94,12 +96,12 @@ spectrum type and corresponding x-axis type"</em> describes the spectra types
 and corresponding x-axis types.</p></dd>
 
 
-<dt>column_in</dt>
+<dt id="arg-column-in">column_in<a class="anchor" aria-label="anchor" href="#arg-column-in"></a></dt>
 <dd><p>Character vector of length 1L or symbol/name
 specifying the name of list-column that contains the spectra to be resampled.</p></dd>
 
 
-<dt>x_unit</dt>
+<dt id="arg-x-unit">x_unit<a class="anchor" aria-label="anchor" href="#arg-x-unit"></a></dt>
 <dd><p>Character vector of length 1L specifying the measurement unit
 of the x-axis values (list-column) of the input spectra in <code>spc_tbl</code>.
 Possible values are <code>"wavenumber"</code> (default) or <code>"wavelength"</code>. Wavenumber
@@ -108,48 +110,48 @@ where wavelength is often used as spatial period for the visible and
 near-infrared range.</p></dd>
 
 
-<dt>wn_lower</dt>
+<dt id="arg-wn-lower">wn_lower<a class="anchor" aria-label="anchor" href="#arg-wn-lower"></a></dt>
 <dd><p>Numeric value of lowest wavenumber. This argument will only
 be used if <code>x_unit = "wavenumber"</code>. The value serves as starting value for
 the new wavenumber sequence that the spectra will be resampled upon. Default
 value is 500 (i.e., in reciprocal centimeters).</p></dd>
 
 
-<dt>wn_upper</dt>
+<dt id="arg-wn-upper">wn_upper<a class="anchor" aria-label="anchor" href="#arg-wn-upper"></a></dt>
 <dd><p>Numeric value of highest wavenumber. This argument will only
 be used if <code>x_unit = "wavenumber</code>. The value will be used as last value of
 the new wavenumber sequence that the spectra will be resampled upon. Default
 value is 4000 (i.e., in reciprocal centimeters).</p></dd>
 
 
-<dt>wn_interval</dt>
+<dt id="arg-wn-interval">wn_interval<a class="anchor" aria-label="anchor" href="#arg-wn-interval"></a></dt>
 <dd><p>Numeric value of the wavenumber increment for the new
 wavenumber sequence that the spectra will be resampled upon. Default value
 is 2 (i.e., in reciprocal centimeters).</p></dd>
 
 
-<dt>wl_lower</dt>
+<dt id="arg-wl-lower">wl_lower<a class="anchor" aria-label="anchor" href="#arg-wl-lower"></a></dt>
 <dd><p>Numeric value of lowest wavelength. This argument will only
 be used if <code>x_unit = "wavelength"</code>. The value serves as starting value of
 the new wavenumber sequence that the spectra will be resampled upon.
 Default value is 350 (i.e. in nanometers).</p></dd>
 
 
-<dt>wl_upper</dt>
+<dt id="arg-wl-upper">wl_upper<a class="anchor" aria-label="anchor" href="#arg-wl-upper"></a></dt>
 <dd><p>Numeric value of highest wavelength. This argument will only
 be used if <code>x_unit = "wavelength"</code>. The value will be used as last value of
 the new wavenumber sequence that the spectra will be resampled upon. Default
 value is 2500 (i.e., in nanometers).</p></dd>
 
 
-<dt>wl_interval</dt>
+<dt id="arg-wl-interval">wl_interval<a class="anchor" aria-label="anchor" href="#arg-wl-interval"></a></dt>
 <dd><p>Numeric value of the wavelength increment for the new
 wavenumber sequence that the spectra will be resampled upon. This argument
 will only be used if <code>x_unit = "wavelength"</code>. Default value is 1 (i.e., in
 nanometers).</p></dd>
 
 
-<dt>interpol_method</dt>
+<dt id="arg-interpol-method">interpol_method<a class="anchor" aria-label="anchor" href="#arg-interpol-method"></a></dt>
 <dd><p>Character of <code>"linear"</code> (default) or <code>"spline"</code> with
 the interpolation method. <code>"spline"</code> uses a cubic spline to interpolate the
 input spectra at given x-axis values to new equispaced x-axis intervals.</p></dd>
@@ -157,15 +159,13 @@ input spectra at given x-axis values to new equispaced x-axis intervals.</p></dd
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>A spectra tibble (<code>spc_tbl</code>) containing two added list-columns:</p><ul><li><p><code>spc_rs:</code> Resampled spectra as list of <code>data.table</code>s</p></li>
+    <p>A spectra tibble (<code>spc_tbl</code>) containing two added list-columns:</p><ul><li><p><code>spc_rs:</code> Resampled spectra as list of <code>data.table</code>s</p></li>
 <li><p><code>wavenumbers_rs</code> or <code>wavelengths_rs</code>: Resampled x-axis values as list of
 numeric vectors</p></li>
 </ul></div>
     <div id="matching-spectrum-type-and-corresponding-x-axis-type">
     <h2>Matching spectrum type and corresponding x-axis type</h2>
-    
+
 
 <p>The combinations of input spectrum types (<code>column_in</code>) and
 corresponding x-axis types are generated from a simple lookup list. The
@@ -194,15 +194,15 @@ reference spectra)</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

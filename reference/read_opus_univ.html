@@ -5,7 +5,7 @@ read_opus_univ is a wrapper for read_opus_bin_univ())"><!-- mathjax --><script s
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -33,20 +33,20 @@ read_opus_univ is a wrapper for read_opus_bin_univ())"><!-- mathjax --><script s
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipp-baumann/simplerspec/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Read a list of Bruker OPUS spectrum binary files.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipp-baumann/simplerspec/blob/HEAD/R/read-opus-universal.R" class="external-link"><code>R/read-opus-universal.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipp-baumann/simplerspec/blob/master/R/read-opus-universal.R" class="external-link"><code>R/read-opus-universal.R</code></a></small>
     <div class="hidden name"><code>read_opus_univ.Rd</code></div>
     </div>
 
@@ -63,11 +63,13 @@ containing spectra are in OPUS binary format.
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>fnames</dt>
+
+
+<dl><dt id="arg-fnames">fnames<a class="anchor" aria-label="anchor" href="#arg-fnames"></a></dt>
 <dd><p>List of character vectors containing full path names of spectra</p></dd>
 
 
-<dt>extract</dt>
+<dt id="arg-extract">extract<a class="anchor" aria-label="anchor" href="#arg-extract"></a></dt>
 <dd><p>Character vector of spectra types to extract from file.
 Possible values are: "spc" (AB block in Bruker Opus software), "spc_nocomp"
 (Spectra before final atmospheric compensation; only present if background
@@ -77,14 +79,14 @@ of the sample), "IgRf" (Interferogram of the reference). Default is
 <code>extract = c("spc")</code>.</p></dd>
 
 
-<dt>parallel</dt>
+<dt id="arg-parallel">parallel<a class="anchor" aria-label="anchor" href="#arg-parallel"></a></dt>
 <dd><p>Logical (<code>TRUE</code> or <code>FALSE</code> indicating whether
 files are read in parallel (multiple processors or multiple cores)).
 Default is <code>parallel = FALSE</code>. If <code>TRUE</code> a parallel backend needs
 to be registered, e.g. by using the <code>doParallel</code> package.</p></dd>
 
 
-<dt>atm_comp_minus4offset</dt>
+<dt id="arg-atm-comp-minus-offset">atm_comp_minus4offset<a class="anchor" aria-label="anchor" href="#arg-atm-comp-minus-offset"></a></dt>
 <dd><p>Logical whether spectra after atmospheric
 compensation are read with an offset of <code>-4</code> bites from Bruker OPUS
 files. Default is <code>FALSE</code>.</p></dd>
@@ -92,9 +94,7 @@ files. Default is <code>FALSE</code>.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>out List spectra and metadata (parameters) extracted from
+    <p>out List spectra and metadata (parameters) extracted from
 Bruker OPUS spectrometer files. List names are the names of the OPUS
 files whose spectral data were extracted.</p>
     </div>
@@ -111,15 +111,15 @@ files whose spectral data were extracted.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 
